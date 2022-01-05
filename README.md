@@ -1,0 +1,2 @@
+# TraderTrot
+Mini Project
