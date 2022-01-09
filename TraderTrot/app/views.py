@@ -11,4 +11,4 @@ def blogs(request):
 def login(request):
     return render (request,'login.html')
 def user_reg(request):
-    return render (request,'user_reg.html') 
+    return render (request,'user_reg.html')
