@@ -7,4 +7,8 @@ def index(request):
 def blog(request):
     return render (request,'blog.html')
 def blogs(request):
-    return render (request,'blog-details.html')    
+    return render (request,'blog-details.html') 
+def login(request):
+    return render (request,'login.html')
+def user_reg(request):
+    return render (request,'user_reg.html') 
