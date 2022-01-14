@@ -1,3 +1,4 @@
+{%load static%}
 <html>
 
 <head>
@@ -7,7 +8,7 @@
   <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
-  <title>Trader Trot - UserRegistration</title>
+  <title>Trader Trot - User Registration</title>
 </head>
 <header class="header">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -17,7 +18,7 @@
 
 
     <nav class="navbar">
-        <a href="#">Home</a>
+        <a href="/index/">Home</a>
         <a href="#">Contact Us</a>
         <a href="#">about</a>
     </nav>
@@ -37,8 +38,8 @@
  
 <section class="home loginpage" id="home">
     
-        <div class="loginimage" align ="center" style="margin-top: 20%;">
-            <img src="../static/assets/img/good-team-animate.svg"  alt="" height="400px" width="400px">
+        <div class="loginimage" align ="center" style="margin-top: 15%;">
+            <img src="../static/assets/img/good-team-animate.svg"  alt="" height="500px" width="100%">
         </div>
     
   <div class="main1"  align ="center">
@@ -53,11 +54,8 @@
       <input class="pass" type="text" align="center" placeholder="Profession">
 
       <a class="submit" align="center">Sign Up</a>
-      <a class="submit" align="center">Sign in</a>
-      <!-- <p class="forgot" align="center"><a  style="margin-left: 38px; ">Already User? </p> -->
-
-
-            
+      <p class="forgot" align="center"><a  style="margin-left: 38px; " href="/login/">Already User?</p>
+        
     </form>        
     </div>
 
