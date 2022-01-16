@@ -4,9 +4,9 @@ from django.http import HttpResponse
 # Create your views here.
 def index(request):
     return render (request,'index.html')
-def blog(request):
-    return render (request,'blog.html')
 def blogs(request):
+    return render (request,'blogs.html')
+def blog(request):
     return render (request,'blog-details.html') 
 def login(request):
     return render (request,'login.html')
