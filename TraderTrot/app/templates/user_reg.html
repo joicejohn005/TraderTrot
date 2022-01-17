@@ -43,17 +43,30 @@
     
   <div class="main1"  align ="center">
     <p class="sign" align="center" style="margin-top: -50px;">Sign Up</p>
-    <form class="form1" action="" method="post">
-      <input class="un " type="text" align="center" placeholder="Name">
-      <input class="pass" type="email" align="center" placeholder="Email">
-      <input class="pass" type="mobile" align="center" placeholder="Contact Number">
-      <input class="pass" type="number" align="center" placeholder="Experience year">
-      <input class="pass" type="password" align="center" placeholder="Enter Password">
-      <input class="pass" type="text" align="center" placeholder="Confirm Password">
+    <form class="form1" action="register" method="post">
+      {% csrf_token %}
+      <input class="un" type="text" align="center" placeholder="Name" id="Name" onclick="return clearValid()">
+      <span id="nm"></span>
 
-      <input class="pass" type="text" align="center" placeholder="Profession">
+      <input class="un" type="email" align="center" placeholder="Email" id="email" onclick="return clearValid()">
+      <span id="un"></span>
 
-      <a class="submit" align="center">Sign Up</a>
+      <input class="un" type="mobile" align="center" placeholder="Contact Number" id="mobile" onclick="return clearValid()">
+      <span id="cnum"></span>
+
+      <input class="un" type="number" align="center" placeholder="Experience year" id="year" onclick="return clearValid()">
+      <span id="yr"></span>
+
+      <input class="un" type="password" align="center" placeholder="Enter Password" id="pswd" onclick="return clearValid()">
+      <span id="psd"></span>
+
+      <input class="un" type="text" align="center" placeholder="Confirm Password" id="cpswd" onclick="return clearValid()">
+      <span id="cpsd"></span>
+
+      <input class="un" type="text" align="center" placeholder="Profession" id="profession" onclick="return clearValid()">
+      <span id="pro"></span>
+
+      <a class="submit" align="center"  onclick="return validate()">Sign Up</a>
       <p class="forgot" align="center"><a  style="margin-left: 38px; " href="/login/">Already User?</p>
         
     </form>        
@@ -61,4 +74,72 @@
 
 </section>
 </body>
+<script>
+  function validate()
+  {
+    var uname=document.getElementById('uname').value.trim();
+    var email=document.getElementById('email').value.trim();
+    var mobile=document.getElementById('mobile').value.trim();
+    var year=document.getElementById('year').value.trim();
+    var pswd=document.getElementById('pswd').value.trim();
+    var cpswd=document.getElementById('cpswd').value.trim();
+    var profession=document.getElementById('profession').value.trim();
+
+    if (uname=="")
+    {
+      document.getElementById('nm').innerHTML="**Enter Name";
+      return false;
+    }
+    if(email=="")
+    {
+      document.getElementById('un').innerHTML="**Enter Email";
+      return false;
+    }
+    //is an email
+    if(mobile=="")
+    {
+      document.getElementById('cnum').innerHTML="**Enter Contact Number";
+      return false;
+    }
+    if(year=="")
+    {
+      document.getElementById('yr').innerHTML="**Enter Experience year";
+      return false;
+    }
+    //is a number validation
+    if(password=="")
+    {
+      document.getElementById('psd').innerHTML="**Enter Password";
+      return false;
+    }
+    //is it contain alphabets,number,symbols?
+    if(cpassword=="")
+    {
+      document.getElementById('cpsd').innerHTML="**Confirm Password";
+      return false;
+    }
+    if(password!=cpassword)
+    {
+      document.getElementById('cpsd').innerHTML="**Password does't match";
+      return false;
+    }
+    if(profession=="")
+    {
+      document.getElementById('pro').innerHTML="**Enter Profession";
+      return false;
+    }
+  }
+
+  function clearValid()
+  {
+    document.getElementById('un').innerHTML="";
+    document.getElementById('nm').innerHTML="";
+    document.getElementById('cnum').innerHTML="";
+    document.getElementById('yr').innerHTML="";
+    document.getElementById('psd').innerHTML="";
+    document.getElementById('cpsd').innerHTML="";
+    document.getElementById('pro').innerHTML="";
+    return false;
+  }
+</script>
 </html

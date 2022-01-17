@@ -42,16 +42,46 @@
   <div class="main"  align ="center">
     <p class="sign" align="center">Sign in</p>  
     <form class="form1" action="" method="post">
-      <input class="un " type="text" align="center" placeholder="Email">
-      <input class="pass" type="password" align="center" placeholder="Password">
-      <a class="submit" align="center">Sign in</a>
-     <p class="forgot" align="center"><a  style="margin-left: 38px; " href="#">Forgot Password?</p>
-     <p class="forgot" align="center"><a  style="margin-left: 38px; " href="/user_reg/">New User?</p>
 
-            
+      <span id="un" style="color:red;"></span><br>
+      <input class="un " type="text" align="center" placeholder="Email" id="uname" onclick="return clearValid()"><br>
+
+      <span id="psd" style="color:red;"></span><br>
+      <input class="pass" type="password" align="center" placeholder="Password" id="pswd" onclick="return clearValid()"><br>
+  <a class="submit" align="center" onclick="return validate()"> Sign in</a>
+  <p class="forgot" align="center"><a  style="margin-left: 38px; " href="#">Forgot Password?</p>
+  <p class="forgot" align="center"><a  style="margin-left: 38px; " href="/user_reg/">New User?</p>  
     </form>        
     </div>
-
 </section>
 </body>
+<script>
+  function validate()
+  {
+    var uname=document.getElementById('uname').value.trim();
+    var pswd=document.getElementById('pswd').value.trim();
+
+    if (uname=="")
+    {
+      document.getElementById('un').innerHTML="**Enter Username";
+      return false;
+    }
+    if(pswd=="")
+    {
+      document.getElementById('psd').innerHTML="**Enter Password";
+      return false;
+    }
+    else
+    {
+      return true;
+    }
+
+  }
+
+  function clearValid(){
+    document.getElementById('un').innerHTML="";
+    document.getElementById('psd').innerHTML="";
+    return false;
+  }
+</script>
 </html
