@@ -14,7 +14,7 @@ class login_tbl(models.Model):
 
 class user_tbl(models.Model):
     Name=models.CharField(max_length=30)
-    Email=models.EmailField(max_length=30)
+    #Email=models.EmailField(max_length=30)
     ContactNo=models.CharField(max_length=12)
     ExperienceYr=models.CharField(max_length=2)
     Profession=models.CharField(max_length=30)

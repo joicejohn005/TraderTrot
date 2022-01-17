@@ -27,6 +27,6 @@ urlpatterns = [
     path('blogs/',views.blogs),
     path('login/',views.login),
     path('user_reg/',views.user_reg),
-
-    #path('register/',views.register)
+    
+    path('user_reg/register',views.register)
 ]

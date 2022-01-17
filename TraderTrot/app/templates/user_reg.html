@@ -2,12 +2,12 @@
 <html>
 
 <head>
-  <link rel="stylesheet" href="../static/assets/css/login.css">
-  <link rel="stylesheet" href="../static/assets/css/log_login.css">
+  <link rel="stylesheet" href="{% static 'assets/css/login.css'%}">
+  <link rel="stylesheet" href="{% static 'assets/css/log_login.css'%}">
 
-  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+  <link href="{% static 'https://fonts.googleapis.com/css?family=Ubuntu'%}" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{% static 'path/to/font-awesome/css/font-awesome.min.css'%}">
   <title>Trader Trot - User Registration</title>
 </head>
 <header class="header">
@@ -43,30 +43,34 @@
     
   <div class="main1"  align ="center">
     <p class="sign" align="center" style="margin-top: -50px;">Sign Up</p>
-    <form class="form1" action="register" method="post">
-      {% csrf_token %}
-      <input class="un" type="text" align="center" placeholder="Name" id="Name" onclick="return clearValid()">
-      <span id="nm"></span>
+    <form class="form1" action="register" method="post"  onclick="return validate()">
+     
+      {% csrf_token %}  <!-- this token takes data -->
 
-      <input class="un" type="email" align="center" placeholder="Email" id="email" onclick="return clearValid()">
-      <span id="un"></span>
+      <span id="nm" style="color:red;"></span><br>
+      <input class="un" name="name" type="text" align="center" placeholder="Name" id="Name" onclick="return clearValid()">
 
-      <input class="un" type="mobile" align="center" placeholder="Contact Number" id="mobile" onclick="return clearValid()">
-      <span id="cnum"></span>
+      <span id="un" style="color:red;"></span><br>
+      <input class="un" name="email" type="email" align="center" placeholder="Email" id="email" onclick="return clearValid()">
 
-      <input class="un" type="number" align="center" placeholder="Experience year" id="year" onclick="return clearValid()">
-      <span id="yr"></span>
+      <span id="cnum" style="color:red;"></span><br>
+      <input class="un" name="mobile" type="mobile" align="center" placeholder="Contact Number" id="mobile" onclick="return clearValid()">
 
-      <input class="un" type="password" align="center" placeholder="Enter Password" id="pswd" onclick="return clearValid()">
-      <span id="psd"></span>
+      <span id="yr" style="color:red;"></span><br>
+      <input class="un" name="year" type="number" align="center" placeholder="Experience year" id="year" onclick="return clearValid()">
 
-      <input class="un" type="text" align="center" placeholder="Confirm Password" id="cpswd" onclick="return clearValid()">
-      <span id="cpsd"></span>
+      <span id="psd" style="color:red;"></span><br>
+      <input class="un" name="pswd" type="password" align="center" placeholder="Enter Password" id="pswd" onclick="return clearValid()">
 
-      <input class="un" type="text" align="center" placeholder="Profession" id="profession" onclick="return clearValid()">
-      <span id="pro"></span>
+      <span id="cpsd" style="color:red;"></span><br>
+      <input class="un" name="cpswd" type="text" align="center" placeholder="Confirm Password" id="cpswd" onclick="return clearValid()">
+      <span id=""></span>
 
-      <a class="submit" align="center"  onclick="return validate()">Sign Up</a>
+      <span id="pro" style="color:red;"></span><br>
+      <input class="un" name="profession" type="text" align="center" placeholder="Profession" id="profession" onclick="return clearValid()">
+
+      <input type="submit" name="submit" value="submit"class="submit" align="center" > 
+      <!-- <a class="submit" align="center"  onclick="return validate()">Sign Up</a> -->
       <p class="forgot" align="center"><a  style="margin-left: 38px; " href="/login/">Already User?</p>
         
     </form>        
@@ -77,7 +81,7 @@
 <script>
   function validate()
   {
-    var uname=document.getElementById('uname').value.trim();
+    var uname=document.getElementById('Name').value.trim();
     var email=document.getElementById('email').value.trim();
     var mobile=document.getElementById('mobile').value.trim();
     var year=document.getElementById('year').value.trim();
@@ -107,18 +111,18 @@
       return false;
     }
     //is a number validation
-    if(password=="")
+    if(pswd=="")
     {
       document.getElementById('psd').innerHTML="**Enter Password";
       return false;
     }
     //is it contain alphabets,number,symbols?
-    if(cpassword=="")
+    if(cpswd=="")
     {
       document.getElementById('cpsd').innerHTML="**Confirm Password";
       return false;
     }
-    if(password!=cpassword)
+    if(pswd!=cpswd)
     {
       document.getElementById('cpsd').innerHTML="**Password does't match";
       return false;
@@ -127,6 +131,10 @@
     {
       document.getElementById('pro').innerHTML="**Enter Profession";
       return false;
+    }
+    else
+    {
+      return true;
     }
   }
 

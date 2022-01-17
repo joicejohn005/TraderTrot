@@ -1,13 +1,19 @@
 {%load static%}
 <html>
 <head>
+  <script>
+    var a = "{{message}}"
+    if(a.length=0){
+      alert(a);
+    }
+  </script> 
   <link rel="stylesheet" href="../static/assets/css/login.css">
   <link rel="stylesheet" href="../static/assets/css/log_login.css">
 
   <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
-  <title>Sign in</title>
+  <title>Trader Trot - Sign in</title>
 </head>
 <header class="header">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -48,11 +54,13 @@
 
       <span id="psd" style="color:red;"></span><br>
       <input class="pass" type="password" align="center" placeholder="Password" id="pswd" onclick="return clearValid()"><br>
-  <a class="submit" align="center" onclick="return validate()"> Sign in</a>
-  <p class="forgot" align="center"><a  style="margin-left: 38px; " href="#">Forgot Password?</p>
-  <p class="forgot" align="center"><a  style="margin-left: 38px; " href="/user_reg/">New User?</p>  
+  
+      <a class="submit" align="center" onclick="return validate()"> Sign in</a>  
+      <p class="forgot" align="center"><a  style="margin-left: 38px; " href="#">Forgot Password?</p> 
+      <p class="forgot" align="center"><a  style="margin-left: 38px; " href="/user_reg/">New User?</p>  
+    
     </form>        
-    </div>
+  </div>
 </section>
 </body>
 <script>
@@ -75,9 +83,7 @@
     {
       return true;
     }
-
   }
-
   function clearValid(){
     document.getElementById('un').innerHTML="";
     document.getElementById('psd').innerHTML="";
