@@ -3,7 +3,7 @@
 <head>
   <script>
     var a = "{{message}}"
-    if(a.length=0){
+    if(a.length!=0){
       alert(a);
     }
   </script> 
@@ -47,15 +47,17 @@
     
   <div class="main"  align ="center">
     <p class="sign" align="center">Sign in</p>  
-    <form class="form1" action="" method="post">
-
+    <form class="form1" action="checklogin" method="post" onclick="return validate()">
+      {% csrf_token %} 
       <span id="un" style="color:red;"></span><br>
-      <input class="un " type="text" align="center" placeholder="Email" id="uname" onclick="return clearValid()"><br>
+      <input class="un " type="text" name="email" align="center" placeholder="Email" id="uname" onclick="return clearValid()"><br>
 
       <span id="psd" style="color:red;"></span><br>
-      <input class="pass" type="password" align="center" placeholder="Password" id="pswd" onclick="return clearValid()"><br>
-  
-      <a class="submit" align="center" onclick="return validate()"> Sign in</a>  
+      <input class="pass" type="password" name="pswd" align="center" placeholder="Password" id="pswd" onclick="return clearValid()"><br>
+      
+      <span id="un" style="color:red;">{{message2}}</span><br>
+      <!-- <a class="submit" align="center" onclick="return validate()"> Sign in</a>   -->
+      <input type="submit" name="submit" value="submit" class="submit" align="center" > 
       <p class="forgot" align="center"><a  style="margin-left: 38px; " href="#">Forgot Password?</p> 
       <p class="forgot" align="center"><a  style="margin-left: 38px; " href="/user_reg/">New User?</p>  
     

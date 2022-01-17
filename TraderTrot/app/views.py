@@ -1,5 +1,6 @@
+from email import message
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import *
 from app.models import *
 
 # Create your views here.
@@ -24,7 +25,7 @@ def register(request):
         profession = request.POST['profession']
 
         #import models from app (line 3)
-        data = login_tbl.objects.filter(Unemail=email).count()
+        data = login_tbl.objects.filter(Unemail=email).count() #to get all rows of data use filter
         if data == 0:
             login = login_tbl.objects.create(Unemail=email,password=password,status=1,type=0) #a=b,a->coloumn name of corresponding table,b->variable name
             login.save() #saving detals
@@ -32,6 +33,18 @@ def register(request):
 
             user = user_tbl.objects.create(Name=name,ContactNo=mobile,ExperienceYr=year,Profession=profession,login_id=userid.id)
             user.save()
-            message="Your registration is successfull"
+            message="Your registration is successfull... Please Login"
             return render(request,"login.html",{"message":message})
-            
+def checklogin(request):
+    if request.method=="POST":
+        email = request.POST['email']
+        password = request.POST['pswd']
+        data = login_tbl.objects.filter(Unemail=email,password=password)
+        count= data.count()
+        if count==1:
+            for c in data:
+                id = c.id
+            request.session['id']=id
+            return render(request, "index.html")
+        message="Invalid USername or Password"
+        return render(request,"login.html",{"message2":message})
