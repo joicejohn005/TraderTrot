@@ -1,10 +1,11 @@
+from asyncio.windows_events import NULL
 from email import message
 from django.shortcuts import render
 from django.http import *
 from app.models import *
 
 # Create your views here.
-def index(request):
+def index(request):  
     return render (request,'index.html')
 def blogs(request):
     return render (request,'blogs.html')
@@ -16,6 +17,7 @@ def user_reg(request):
     return render (request,'user_reg.html')
 
 def register(request):
+ 
     if request.method=="POST":
         name = request.POST['name'] #to get values by POST method frm form
         email = request.POST['email']
@@ -33,8 +35,11 @@ def register(request):
 
             user = user_tbl.objects.create(Name=name,ContactNo=mobile,ExperienceYr=year,Profession=profession,login_id=userid.id)
             user.save()
-            message="Your registration is successfull... Please Login"
-            return render(request,"login.html",{"message":message})
+            message1="Your registration is successfull... Please Login"
+            return render(request,"user_reg.html",{"message":message1})
+        message2="Email already registered"
+        return render(request, 'user_reg.html',{"message":message2})
+     
 def checklogin(request):
     if request.method=="POST":
         email = request.POST['email']
@@ -45,6 +50,22 @@ def checklogin(request):
             for c in data:
                 id = c.id
             request.session['id']=id
-            return render(request, "index.html")
+            return HttpResponseRedirect('/newindex')
         message="Invalid USername or Password"
         return render(request,"login.html",{"message2":message})
+
+def newindex(request):
+    if request.session.is_empty():
+      return render(request, 'index.html')
+    id = request.session['id']
+    data=login_tbl.objects.get(id=id)
+    userdata = user_tbl.objects.get(id=data.id)
+    return render(request,"index.html",{"username":userdata.Name})   
+
+def logout(request):
+    if request.session.is_empty():
+        return HttpResponseRedirect('/index')
+    request.session.flush()
+    return HttpResponseRedirect('/index') 
+
+              

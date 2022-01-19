@@ -25,9 +25,11 @@ urlpatterns = [
     path('index/', views.index),
     path('blog/',views.blog),
     path('blogs/',views.blogs),
-    path('login/',views.login),
-    path('user_reg/',views.user_reg),
+    path('login',views.login),
+    path('user_reg',views.user_reg),
     
-    path('user_reg/register',views.register),
-    path('login/checklogin',views.checklogin)
+    path('register',views.register),
+    path('checklogin',views.checklogin),
+    path('newindex',views.newindex),
+    path('logout',views.logout),
 ]

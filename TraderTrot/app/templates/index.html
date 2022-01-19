@@ -34,6 +34,17 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+  <script>
+
+  function logout(){
+    if(confirm("Logging out")){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+  </script>
 </head>
 
 <body>
@@ -73,8 +84,13 @@
             </ul>
           </li>-->
           <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
-          <li><a class="nav-link scrollto" href="/login/">Login</a></li>
-          <li><a class="nav-link scrollto" href="/user_reg/">Register</a></li>
+          {% if request.session.id == NULL %}
+          <li><a class="nav-link scrollto" href="/login">Login</a></li>
+          <li><a class="nav-link scrollto" href="/user_reg">Register</a></li>
+          {% else %}
+          <li><a class="nav-link scrollto" href="">{{username}}</a></li>
+          <li><a class="nav-link scrollto"  onclick="return logout()"href="/logout">Logout</a></li>
+          {% endif %}
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->

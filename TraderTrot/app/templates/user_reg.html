@@ -1,7 +1,12 @@
 {%load static%}
 <html>
-
 <head>
+  <script>
+    var a = "{{message}}"
+    if(a.length!=0){
+      alert(a);
+    }
+  </script> 
   <link rel="stylesheet" href="{% static 'assets/css/login.css'%}">
   <link rel="stylesheet" href="{% static 'assets/css/log_login.css'%}">
 
@@ -38,10 +43,11 @@
 <section class="home loginpage" id="home">
     
         <div class="loginimage" align ="center" style="margin-top: 15%;">
-            <img src="../static/assets/img/good-team-animate.svg"  alt="" height="500px" width="100%">
+            <img src="{% static 'assets/img/good-team-animate.svg '%}"  alt="" height="500px" width="100%">
         </div>
-    
+     
   <div class="main1"  align ="center">
+   
     <p class="sign" align="center" style="margin-top: -50px;">Sign Up</p>
     <form class="form1" action="register" method="post"  onclick="return validate()">
      
@@ -70,10 +76,9 @@
       <input class="un" name="profession" type="text" align="center" placeholder="Profession" id="profession" onclick="return clearValid()">
 
       <input type="submit" name="submit" value="submit"class="submit" align="center" > 
-      <!-- <a class="submit" align="center"  onclick="return validate()">Sign Up</a> -->
-      <p class="forgot" align="center"><a  style="margin-left: 38px; " href="/login/">Already User?</p>
         
-    </form>        
+    </form>  
+    <p class="forgot" align="center"><a  style="margin-left: 38px; " href="/login">Already User?</p>      
     </div>
 
 </section>
