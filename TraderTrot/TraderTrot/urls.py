@@ -38,6 +38,7 @@ urlpatterns = [
     path('ad_acManage/', views.ad_acManage),
     path('ad_home/',views.ad_home),
 
-    path('tradebook/',views.tradebook)
+    path('tradebook/',views.tradebook),
+    path('tradereport/',views.tradereport)
 
 ]

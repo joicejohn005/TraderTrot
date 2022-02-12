@@ -31,7 +31,11 @@ def ad_home(request):
 
 #user
 def tradebook(request):
-    return render(request,'tradebook')
+    if request.session.is_empty():
+        return HttpResponseRedirect('/login')
+    return render(request,'tradebook.html')
+def tradereport(request):
+    return render(request,'tradereport.html')
 
 def register(request):
  
