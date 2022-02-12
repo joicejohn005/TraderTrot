@@ -1,0 +1,45 @@
+{% include "ad_aside.html" %}
+{% include "ad_header.html" %}
+{% include "ad_head.html" %}
+{% load static %}
+{% block content %}
+<main id="main" class="main">
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Manage Users</h5>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">No</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Contact No</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <td>Brandon Jacob</td>
+                  <td>Designer</td>
+                  <td>28</td>
+                  <td>2016-05-25</td>
+                  <td><button type="button" class="btn btn-primary btn-sm">Disable</button></td>
+                  <td>
+                    <button type="button" class="btn btn-success btn-sm">Update</button>
+                    <button type="button" class="btn btn-danger btn-sm">Remove</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}

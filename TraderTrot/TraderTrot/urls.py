@@ -33,5 +33,11 @@ urlpatterns = [
     path('newindex',views.newindex),
     path('logout',views.logout),
 
-    path('ad_ac_reg/',views.ad_ac_reg)
+    path('ad_ac_reg/',views.ad_ac_reg),
+    path('ad_userManage/', views.ad_userManage),
+    path('ad_acManage/', views.ad_acManage),
+    path('ad_home/',views.ad_home),
+
+    path('tradebook/',views.tradebook)
+
 ]

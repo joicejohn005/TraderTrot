@@ -1,10 +1,13 @@
+from ast import Global
 from asyncio.windows_events import NULL
 from email import message
 from django.shortcuts import render
 from django.http import *
 from app.models import *
+import datetime
 
 # Create your views here.
+#all user
 def index(request):  
     return render (request,'index.html')
 def blogs(request):
@@ -15,9 +18,20 @@ def login(request):
     return render (request,'login.html')
 def user_reg(request):
     return render (request,'user_reg.html')
-    
+
+#admin  
 def ad_ac_reg(request):
     return render(request,'ad_ac_reg.html')
+def ad_userManage(request):
+    return render(request,'ad_userManage.html')
+def ad_acManage(request):
+    return render(request,'ad_acManage.html')
+def ad_home(request):
+    return render(request,'ad_home.html')
+
+#user
+def tradebook(request):
+    return render(request,'tradebook')
 
 def register(request):
  
@@ -70,3 +84,8 @@ def logout(request):
         return HttpResponseRedirect('/index')
     request.session.flush()
     return HttpResponseRedirect('/index')
+
+def date(request):
+    date = datetime.datetime.now().strftime("%b %d %Y")
+    #datetoday = {'date': date}
+    return render(request,"ad_ac_reg.html", {"date":date})
