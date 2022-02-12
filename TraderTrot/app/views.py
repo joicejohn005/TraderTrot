@@ -15,6 +15,9 @@ def login(request):
     return render (request,'login.html')
 def user_reg(request):
     return render (request,'user_reg.html')
+    
+def ad_ac_reg(request):
+    return render(request,'ad_ac_reg.html')
 
 def register(request):
  
@@ -66,6 +69,4 @@ def logout(request):
     if request.session.is_empty():
         return HttpResponseRedirect('/index')
     request.session.flush()
-    return HttpResponseRedirect('/index') 
-
-              
+    return HttpResponseRedirect('/index')

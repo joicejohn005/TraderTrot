@@ -32,4 +32,6 @@ urlpatterns = [
     path('checklogin',views.checklogin),
     path('newindex',views.newindex),
     path('logout',views.logout),
+
+    path('ad_ac_reg/',views.ad_ac_reg)
 ]
