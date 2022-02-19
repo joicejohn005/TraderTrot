@@ -53,30 +53,22 @@
      
       {% csrf_token %}  <!-- this token takes data -->
 
-      <span id="nm" style="color:red;"></span><br>
-      <input class="un" name="name" type="text" align="center" placeholder="Name" id="Name" onclick="return clearValid()"> <br>
+      <input class="un" name="name" type="text" align="center" placeholder="Name" id="Name" onclick="return clearValid()"> 
 
-      <span id="un" style="color:red;"></span><br>
-      <input class="un" name="email" type="email" align="center" placeholder="Email" id="email" onclick="return clearValid()"> <br>
+      <input class="un" name="email" type="email" align="center" placeholder="Email" id="email" onclick="return clearValid()"> 
 
-      <span id="cnum" style="color:red;"></span><br>
-      <input class="un" name="mobile" type="mobile" align="center" placeholder="Contact Number" id="mobile" onclick="return clearValid()"> <br>
+      <input class="un" name="mobile" type="mobile" align="center" placeholder="Contact Number" id="mobile" onclick="return clearValid()">
 
-      <span id="yr" style="color:red;"></span><br>
-      <input class="un" name="year" type="number" align="center" placeholder="Experience year" id="year" onclick="return clearValid()"> <br>
+      <input class="un" name="year" type="number" align="center" placeholder="Experience year" id="year" onclick="return clearValid()"> 
 
-      <span id="psd" style="color:red;"></span><br>
-      <input class="un" name="pswd" type="password" align="center" placeholder="Enter Password" id="pswd" onclick="return clearValid()"><br>
+      <input class="un" name="pswd" type="password" align="center" placeholder="Enter Password" id="pswd" onclick="return clearValid()">
 
-      <span id="cpsd" style="color:red;"></span><br>
-      <input class="un" name="cpswd" type="text" align="center" placeholder="Confirm Password" id="cpswd" onclick="return clearValid()"><br>
-      <span id=""></span>
+      <input class="un" name="cpswd" type="text" align="center" placeholder="Confirm Password" id="cpswd" onclick="return clearValid()">
 
-      <span id="pro" style="color:red;"></span><br>
-      <input class="un" name="profession" type="text" align="center" placeholder="Profession" id="profession" onclick="return clearValid()"><br>
+      <input class="un" name="profession" type="text" align="center" placeholder="Profession" id="profession" onclick="return clearValid()">
 
+     <br><span id="pro" style="color:red;"></span><br>
       <input type="submit" name="submit" value="submit"class="submit" align="center" > 
-        
     </form>  
     <p class="forgot" align="center"><a  style="margin-left: 38px; " href="/login">Already User?</p>      
     </div>
@@ -96,40 +88,40 @@
 
     if (uname=="")
     {
-      document.getElementById('nm').innerHTML="**Enter Name";
+      document.getElementById('pro').innerHTML="**Enter Name";
       return false;
     }
     if(email=="")
     {
-      document.getElementById('un').innerHTML="**Enter Email";
+      document.getElementById('pro').innerHTML="**Enter Email";
       return false;
     }
     //is an email
     if(mobile=="")
     {
-      document.getElementById('cnum').innerHTML="**Enter Contact Number";
+      document.getElementById('pro').innerHTML="**Enter Contact Number";
       return false;
     }
     if(year=="")
     {
-      document.getElementById('yr').innerHTML="**Enter Experience year";
+      document.getElementById('pro').innerHTML="**Enter Experience year";
       return false;
     }
     //is a number validation
     if(pswd=="")
     {
-      document.getElementById('psd').innerHTML="**Enter Password";
+      document.getElementById('pro').innerHTML="**Enter Password";
       return false;
     }
     //is it contain alphabets,number,symbols?
     if(cpswd=="")
     {
-      document.getElementById('cpsd').innerHTML="**Confirm Password";
+      document.getElementById('pro').innerHTML="**Confirm Password";
       return false;
     }
     if(pswd!=cpswd)
     {
-      document.getElementById('cpsd').innerHTML="**Password does't match";
+      document.getElementById('pro').innerHTML="**Password does't match";
       return false;
     }
     if(profession=="")
@@ -145,12 +137,12 @@
 
   function clearValid()
   {
-    document.getElementById('un').innerHTML="";
-    document.getElementById('nm').innerHTML="";
-    document.getElementById('cnum').innerHTML="";
-    document.getElementById('yr').innerHTML="";
-    document.getElementById('psd').innerHTML="";
-    document.getElementById('cpsd').innerHTML="";
+    document.getElementById('pro').innerHTML="";
+    document.getElementById('pro').innerHTML="";
+    document.getElementById('pro').innerHTML="";
+    document.getElementById('pro').innerHTML="";
+    document.getElementById('pro').innerHTML="";
+    document.getElementById('pro').innerHTML="";
     document.getElementById('pro').innerHTML="";
     return false;
   }

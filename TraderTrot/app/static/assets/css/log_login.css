@@ -14,7 +14,7 @@
     margin:0; padding: 0;
     box-sizing: border-box;
     outline: none; border: none;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
     transition: all .2s ease-out;
     text-decoration: none;
 }
@@ -632,6 +632,7 @@ section:nth-child(even){
 }
 
 ul {
+
     list-style-type: none;
 }
 
