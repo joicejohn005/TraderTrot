@@ -22,3 +22,16 @@ class user_tbl(models.Model):
 
     class Meta:
         db_table= "user_tbl"
+
+class academy_tbl(models.Model):
+    ac_name=models.CharField(max_length=30)
+    ac_yr=models.CharField(max_length=4)
+    ac_contact=models.CharField(max_length=12)
+    ac_info=models.CharField(max_length=100)
+    ac_city=models.CharField(max_length=30)
+    ac_website=models.CharField(max_length=30)
+    ac_logo=models.CharField(max_length=100)
+    ac_date=models.DateField()
+
+    class Meta:
+        db_table= "academy_tbl"

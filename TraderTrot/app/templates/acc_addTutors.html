@@ -1,0 +1,145 @@
+{% include "ad_aside.html" %}
+{% include "ad_header.html" %}
+{% include "ad_head.html" %}
+{% load static %}
+{% block content %}
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+          <b><h1 style="margin-top:-50px;">Tutor Registration {{ date }} 
+            <button type="submit" class="btn btn-outline-info"><a href="/#/">Manage</a></button>
+          
+          </h1></b>
+
+          <section class="section">
+            <div class="row">
+              <div class="col-lg-6">
+
+                <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title"></h5>
+        
+                      <form action="/#/" method="post" class="row g-3" onsubmit="return Validate();">
+
+                        {% csrf_token %}  <!-- this token takes data -->
+
+                        <div class="col-md-12">
+                          <input type="text" class="form-control" placeholder="Name" name="acname" id="aname" onclick="return FormClear();">
+                        </div>
+                        <div class="col-md-6">
+                          <input type="email" class="form-control" placeholder="Email" name="email" id="aemail" onclick="return FormClear();">
+                        </div>
+                        <div class="col-md-6">
+                          <input type="password" class="form-control" placeholder="Password" name="pswd" id="apswd" onclick="return FormClear();">
+                        </div>
+                        <div class="col-md-6">
+                          <input type="password" class="form-control" placeholder="Confirm Password" name="cpswd" id="acpswd" onclick="return FormClear();">
+                        </div>
+                        <div class="col-6">
+                          <div class="input-group mb-4">
+                          <input type="text" class="form-control" placeholder="Experience" name="exp" id="texp" onclick="return FormClear();">
+                          <span class="input-group-text">Year</span>
+                        </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="input-group mb-4">
+                          <span class="input-group-text">+91</span>
+                          <input type="text" class="form-control" placeholder="Contact No" name="mobile" id="amobile" onclick="return FormClear();">
+                        </div>  
+                        </div>
+                        
+                        <div class="col-md-6">
+                          <div class="input-group mb-4">
+                          <input type="text" class="form-control" placeholder="Consistancy" name="city" id="acity" onclick="return FormClear();">
+                          <span class="input-group-text">%</span>
+                          </div>
+                        </div>
+                       
+                        <div class="col-md-12">
+                          <textarea name="" id="ainfo" cols="50" rows="2" placeholder="Description" name="info" onclick="return FormClear();"></textarea>
+                        </div>
+                        <span id="valid" style="color: red;text-align: center;"></span>
+                        <div class="text-center">
+                          <input type="submit" class="btn btn-primary" value="Submit" name="submit">
+                          <button type="reset" class="btn btn-secondary">Reset</button>
+                        </div>
+
+                      </form>
+        
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </section>
+          </div>
+    </main>
+    <script>
+      function Validate()
+      {
+        var a = document.getElementById('aname').value.trim();
+        var b = document.getElementById('aemail').value.trim();
+        var c = document.getElementById('apswd').value.trim();
+        var d = document.getElementById('texp').value.trim();
+        var e = document.getElementById('amobile').value.trim();
+        var g = document.getElementById('acity').value.trim();
+        var i = document.getElementById('ainfo').value.trim();
+        var j = document.getElementById('acpswd').value.trim();
+
+        if(a=="")
+        {
+          document.getElementById('valid').innerHTML = "Enter Tutor's name";
+          return false;
+        }
+        if(b=="")
+        {
+          document.getElementById('valid').innerHTML = "Enter Email";
+          return false;
+        }
+        if(c=="")
+        {
+          document.getElementById('valid').innerHTML = "Enter Password";
+          return false;
+        }
+        if(c.length<8)
+        {
+          document.getElementById('valid').innerHTML = "Password must contain minimum 8 characters";
+          return false;
+        }
+        if(j=="")
+        {
+          document.getElementById('valid').innerHTML = "Confirm Password";
+          return false;
+        }
+        if(c!=j)
+        {
+          document.getElementById('valid').innerHTML = "Password Doesn't Match";
+          return false;
+        }
+        if(d=="")
+        {
+          document.getElementById('valid').innerHTML = "Enter Experience";
+          return false;
+        }
+        if(e=="")
+        {
+          document.getElementById('valid').innerHTML = "Enter Contact No";
+          return false;
+        }
+       
+        if(g=="")
+        {
+          document.getElementById('valid').innerHTML = "Tutor's Consistancy";
+          return false;
+        }
+        if(i=="")
+        {
+          document.getElementById('valid').innerHTML = "Provide Description";
+          return false;
+        }
+      }
+      function FormClear(){
+        document.getElementById('valid').innerHTML = "";
+        return false;
+      }
+    </script>
+{% endblock %}

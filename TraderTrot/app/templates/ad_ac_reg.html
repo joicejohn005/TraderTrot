@@ -6,7 +6,10 @@
     <main id="main" class="main">
 
         <div class="pagetitle">
-          <b><h1>Accademy Registration {{ date }}</h1></b>
+          <b><h1 style="margin-top:-50px;">Accademy Registration {{ date }} 
+            <button type="submit" class="btn btn-outline-info"><a href="/ad_acManage/">Manage</a></button>
+          
+          </h1></b>
 
           <section class="section">
             <div class="row">
@@ -16,27 +19,27 @@
                     <div class="card-body">
                       <h5 class="card-title"></h5>
         
-                      <form class="row g-3">
+                      <form action="/ac_reg/" method="post" class="row g-3" onsubmit="return Validate();">
+
+                        {% csrf_token %}  <!-- this token takes data -->
+
                         <div class="col-md-12">
-                          <input type="text" class="form-control" placeholder="Accademy Name">
+                          <input type="text" class="form-control" placeholder="Academy Name" name="acname" id="aname" onclick="return FormClear();">
                         </div>
                         <div class="col-md-6">
-                          <input type="email" class="form-control" placeholder="Email">
+                          <input type="email" class="form-control" placeholder="Email" name="email" id="aemail" onclick="return FormClear();">
                         </div>
                         <div class="col-md-6">
-                          <input type="password" class="form-control" placeholder="Password">
+                          <input type="password" class="form-control" placeholder="Password" name="pswd" id="apswd" onclick="return FormClear();">
+                        </div>
+                        <div class="col-md-6">
+                          <input type="password" class="form-control" placeholder="Confirm Password" name="cpswd" id="acpswd" onclick="return FormClear();">
                         </div>
                         <div class="col-6">
-                          <input type="text" class="form-control" placeholder="Website">
+                          <input type="text" class="form-control" placeholder="Website" name="web" id="aweb" onclick="return FormClear();">
                         </div>
                         <div class="col-md-6">
-                          <input type="text" class="form-control" placeholder="Contact No">
-                        </div>
-                        <div class="col-md-3">
-                          <input type="number" class="form-control" placeholder="Tutors">
-                        </div>
-                        <div class="col-md-4">
-                          <input type="number" class="form-control" placeholder="Package">
+                          <input type="text" class="form-control" placeholder="Contact No" name="mobile" id="amobile" onclick="return FormClear();">
                         </div>
                         <!-- <div class="col-md-4">
                           <select id="inputState" class="form-select">
@@ -44,25 +47,24 @@
                             <option>...</option>
                           </select>
                         </div> -->
-                        <div class="col-md-5">
-                          <input type="date" class="form-control" placeholder="Started Year">
+                        <div class="col-md-6">
+                          <input type="date" class="form-control" placeholder="Started Year" name="date" id="ayear" onclick="return FormClear();">
                         </div>
                         <div class="col-md-6">
-                          <input type="text" class="form-control" placeholder="City">
+                          <input type="text" class="form-control" placeholder="City" name="city" id="acity" onclick="return FormClear();">
                         </div>
-                        
                         <div class="col-md-6">
-                          <input type="file" class="form-control" placeholder="Logo">
+                          <input type="file" class="form-control" placeholder="Logo" name="logo" required>
                         </div>
                         <div class="col-md-12">
-                          <!-- <input type="file" class="form-control" placeholder="Logo"> -->
-                          <textarea name="" id="" cols="50" rows="2" placeholder="Information"></textarea>
+                          <textarea name="" id="ainfo" cols="50" rows="2" placeholder="Information" name="info" onclick="return FormClear();"></textarea>
                         </div>
+                        <span id="valid" style="color: red;text-align: center;"></span>
                         <div class="text-center">
-                          <button type="submit" class="btn btn-primary">Submit</button>
+                          <input type="submit" class="btn btn-primary" value="Submit" name="submit">
                           <button type="reset" class="btn btn-secondary">Reset</button>
-                          <button type="submit" class="btn btn-outline-info"><a href="/ad_acManage/">Manage</a></button>
                         </div>
+
                       </form>
         
                     </div>
@@ -72,4 +74,80 @@
           </section>
           </div>
     </main>
+    <script>
+      function Validate()
+      {
+        var a = document.getElementById('aname').value.trim();
+        var b = document.getElementById('aemail').value.trim();
+        var c = document.getElementById('apswd').value.trim();
+        var d = document.getElementById('aweb').value.trim();
+        var e = document.getElementById('amobile').value.trim();
+        var f = document.getElementById('ayear').value.trim();
+        var g = document.getElementById('acity').value.trim();
+        var i = document.getElementById('ainfo').value.trim();
+        var j = document.getElementById('acpswd').value.trim();
+        /*var validemail=/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;*/
+
+
+        if(a=="")
+        {
+          document.getElementById('valid').innerHTML = "Enter Academy name";
+          return false;
+        }
+        if(b=="")
+        {
+          document.getElementById('valid').innerHTML = "Enter Email";
+          return false;
+        }
+        if(c=="")
+        {
+          document.getElementById('valid').innerHTML = "Enter Password";
+          return false;
+        }
+        if(c.length<8)
+        {
+          document.getElementById('valid').innerHTML = "Password must contain minimum 8 characters";
+          return false;
+        }
+        if(j=="")
+        {
+          document.getElementById('valid').innerHTML = "Confirm Password";
+          return false;
+        }
+        if(c!=j)
+        {
+          document.getElementById('valid').innerHTML = "Password Doesn't Match";
+          return false;
+        }
+        if(d=="")
+        {
+          document.getElementById('valid').innerHTML = "Enter Website";
+          return false;
+        }
+        if(e=="")
+        {
+          document.getElementById('valid').innerHTML = "Enter Contact No";
+          return false;
+        }
+        if(f=="")
+        {
+          document.getElementById('valid').innerHTML = "Choose Academy started date";
+          return false;
+        }
+        if(g=="")
+        {
+          document.getElementById('valid').innerHTML = "Enter Academy location";
+          return false;
+        }
+        if(i=="")
+        {
+          document.getElementById('valid').innerHTML = "Provide Academy Information";
+          return false;
+        }
+      }
+      function FormClear(){
+        document.getElementById('valid').innerHTML = "";
+        return false;
+      }
+    </script>
 {% endblock %}

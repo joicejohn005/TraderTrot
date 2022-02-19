@@ -37,6 +37,16 @@ def tradebook(request):
 def tradereport(request):
     return render(request,'tradereport.html')
 
+#accademy
+def acc_addPackage(request):
+    return render(request,'acc_addPackage.html')
+def acc_addTutors(request):
+    return render(request,'acc_addTutors.html')
+
+#testing
+def clipboard(request):
+    return render(request,'clipboard.html')
+
 def register(request):
  
     if request.method=="POST":
@@ -91,5 +101,20 @@ def logout(request):
 
 def date(request):
     date = datetime.datetime.now().strftime("%b %d %Y")
-    #datetoday = {'date': date}
+    datetoday = {'date': date}
     return render(request,"ad_ac_reg.html", {"date":date})
+
+def ac_reg(request):
+    d=academy_tbl()
+    e=login_tbl()
+    e.Unemail=request.POST.get('email')
+    e.password=request.POST.get('pswd')
+    e.save()
+    d.ac_name=request.POST.get('acname')
+    d.ac_website=request.POST.get('web')
+    d.ac_contact=request.POST.get('mobile')
+    #d.ac_date=request.POST.get('date')
+    d.ac_city=request.POST.get('city')
+    d.ac_logo=request.POST.get('logo')
+    d.ac_info=request.POST.get('info')
+    d.save()

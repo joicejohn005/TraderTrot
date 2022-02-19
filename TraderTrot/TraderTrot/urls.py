@@ -39,6 +39,15 @@ urlpatterns = [
     path('ad_home/',views.ad_home),
 
     path('tradebook/',views.tradebook),
-    path('tradereport/',views.tradereport)
+    path('tradereport/',views.tradereport),
+
+    #accademy
+    path('ac_reg/',views.ac_reg),
+    path('acc_addPackage/',views.acc_addPackage),
+    path('acc_addTutors/',views.acc_addTutors),
+
+    #testing
+    path('clipboard/',views.clipboard)
+
 
 ]
