@@ -19,7 +19,7 @@
                     <div class="card-body">
                       <h5 class="card-title"></h5>
         
-                      <form action="/#/" method="post" class="row g-3" onsubmit="return Validate();">
+                      <form action="" method="post" class="row g-3" onsubmit="return Validate();">
 
                         {% csrf_token %}  <!-- this token takes data -->
 
@@ -56,7 +56,7 @@
                         </div>
                        
                         <div class="col-md-12">
-                          <textarea name="" id="ainfo" cols="50" rows="2" placeholder="Description" name="info" onclick="return FormClear();"></textarea>
+                          <textarea name="" id="ainfo" cols="50" rows="2" placeholder="Additional Information" name="info" onclick="return FormClear();"></textarea>
                         </div>
                         <span id="valid" style="color: red;text-align: center;"></span>
                         <div class="text-center">
@@ -133,7 +133,7 @@
         }
         if(i=="")
         {
-          document.getElementById('valid').innerHTML = "Provide Description";
+          document.getElementById('valid').innerHTML = "Provide Information";
           return false;
         }
       }

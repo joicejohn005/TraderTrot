@@ -14,7 +14,6 @@ class login_tbl(models.Model):
 
 class user_tbl(models.Model):
     Name=models.CharField(max_length=30)
-    #Email=models.EmailField(max_length=30)
     ContactNo=models.CharField(max_length=12)
     ExperienceYr=models.CharField(max_length=2)
     Profession=models.CharField(max_length=30)
@@ -31,6 +30,8 @@ class academy_tbl(models.Model):
     ac_city=models.CharField(max_length=30)
     ac_website=models.CharField(max_length=30)
     ac_logo=models.CharField(max_length=100)
+    ac_tutorcount=models.CharField(max_length=10)
+    ac_packagecount=models.CharField(max_length=10)
     ac_date=models.DateField()
 
     class Meta:

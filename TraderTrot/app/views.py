@@ -36,12 +36,16 @@ def tradebook(request):
     return render(request,'tradebook.html')
 def tradereport(request):
     return render(request,'tradereport.html')
+def user_home(request):
+    return render(request,'user_home.html')
 
 #accademy
 def acc_addPackage(request):
     return render(request,'acc_addPackage.html')
 def acc_addTutors(request):
     return render(request,'acc_addTutors.html')
+def acc_home(request):
+    return render(request,'acc_home.html')
 
 #testing
 def clipboard(request):

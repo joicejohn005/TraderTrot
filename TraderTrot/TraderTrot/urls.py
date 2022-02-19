@@ -26,25 +26,29 @@ urlpatterns = [
     path('blog/',views.blog),
     path('blogs/',views.blogs),
     path('login',views.login),
-    path('user_reg',views.user_reg),
+    
     
     path('register',views.register),
     path('checklogin',views.checklogin),
     path('newindex',views.newindex),
     path('logout',views.logout),
 
+    #admin
     path('ad_ac_reg/',views.ad_ac_reg),
     path('ad_userManage/', views.ad_userManage),
     path('ad_acManage/', views.ad_acManage),
     path('ad_home/',views.ad_home),
 
+    #user/trader
+    path('user_reg',views.user_reg),
     path('tradebook/',views.tradebook),
-    path('tradereport/',views.tradereport),
+    path('user_home/',views.user_home),
 
     #accademy
     path('ac_reg/',views.ac_reg),
     path('acc_addPackage/',views.acc_addPackage),
     path('acc_addTutors/',views.acc_addTutors),
+    path('acc_home/',views.acc_home),
 
     #testing
     path('clipboard/',views.clipboard)
