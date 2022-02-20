@@ -17,26 +17,33 @@
                   <th scope="col">Name</th>
                   <th scope="col">Email</th>
                   <th scope="col">Contact No</th>
-                  <th scope="col">Status</th>
+                  <th scope="col">Profession</th>
                   <th scope="col">Status</th>
                   <th scope="col">Action</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <th scope="row">1</th>
-                  <td>Brandon Jacob</td>
-                  <td>Designer</td>
-                  <td>28</td>
-                  <td>2016-05-25</td>
+                  {% for j in b %}
+                  {% for k in c %}
+                  {% if j.login_id == k.id %}
+                  <th scope="row">{{ forloop.counter }}</th>
+                  <td>{{j.Name}}</td>
+                  <td>{{k.Unemail}}</td>
+                  <td>{{j.ContactNo}}</td>
+                  <td>{{j.Profession}}</td>
                   <td>
                     <div class="form-check form-switch">
                       <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
                     </div>
                   <td>
-                    <button type="button" class="btn btn-success btn-sm">Update</button>
-                    <button type="button" class="btn btn-danger btn-sm">Remove</button></td>
+                    <button type="button" class="btn btn-danger btn-sm">Remove</button>
+                  </td>
                 </tr>
+                  {% endif %}
+                  {% endfor %}
+                {% endfor %}
+                
               </tbody>
             </table>
           </div>

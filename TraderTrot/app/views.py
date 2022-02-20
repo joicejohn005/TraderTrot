@@ -1,9 +1,11 @@
 from ast import Global
 from asyncio.windows_events import NULL
 from email import message
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import *
 from app.models import *
+from django.core.files.storage import FileSystemStorage
+from django.db.models import Q
 import datetime
 
 # Create your views here.
@@ -22,13 +24,51 @@ def user_reg(request):
 #admin  
 def ad_ac_reg(request):
     return render(request,'ad_ac_reg.html')
+
+def ac_reg(request):
+    
+    e=login_tbl()
+    mail=request.POST.get('email')   
+    e.Unemail=mail
+    data = 0
+    data = login_tbl.objects.filter(Unemail=e.Unemail).count()
+    acname=request.POST.get('acname')
+    acyr=request.POST.get('sdate')
+    accont=request.POST.get('mobile')
+    acinfo=request.POST.get('info')
+    accity=request.POST.get('city')
+    acweb=request.POST.get('web')
+    if data == 0:
+        e.password=request.POST.get('pswd')
+        e.status=1
+        e.type=2
+        e.save()
+        Photo=request.FILES['logo']
+        fs=FileSystemStorage()
+        fn=fs.save(Photo.name,Photo)
+        uploaded_file_url=fs.url(fn)
+        uurl=uploaded_file_url
+        d = academy_tbl.objects.create(ac_name=acname,ac_yr=acyr,ac_contact=accont,ac_info=acinfo,ac_city=accity,ac_website=acweb,ac_logo=uurl,login=e)
+        d.save()
+
+    else:
+        return redirect('/ad_ac_reg/')    
+    
+    return redirect('/ad_acManage/')
+
 def ad_userManage(request):
-    return render(request,'ad_userManage.html')
+    userdata=user_tbl.objects.all()
+    logindata=login_tbl.objects.all()
+    return render(request,'ad_userManage.html',{"b":userdata,"c":logindata})
+
 def ad_acManage(request):
-    return render(request,'ad_acManage.html')
+    acdata=academy_tbl.objects.all()
+    logindata=login_tbl.objects.all()
+    return render(request,'ad_acManage.html',{"a":acdata,"b":logindata})
+
 def ad_home(request):
     return render(request,'ad_home.html')
-
+ 
 #user
 def tradebook(request):
     if request.session.is_empty():
@@ -42,8 +82,40 @@ def user_home(request):
 #accademy
 def acc_addPackage(request):
     return render(request,'acc_addPackage.html')
+
+def addPackage(request):
+    p=package_tbl()
+    d=academy_tbl()
+    p.pkg_name=request.POST.get('acname')
+    p.pkg_duration=request.POST.get('sdate')
+    p.pkg_price=request.POST.get('mobile')
+    p.pkg_desc=request.POST.get('info')
+    p.pkg_thumb=request.POST.get('logo')
+   
+    p.save()
+
 def acc_addTutors(request):
     return render(request,'acc_addTutors.html')
+
+def addTutors(request):
+    t=tutor_tbl()
+    e=login_tbl()
+    e.Unemail=request.POST.get('email')
+    data = login_tbl.objects.filter(Unemail=e.Unemail).count()
+    if data == 0:
+        e.password=request.POST.get('pswd')
+        e.status=1
+        e.type=4
+        e.save()
+
+    t.tu_name=request.POST.get('')
+    t.tu_exp=request.POST.get('')
+    t.tu_cons=request.POST.get('')
+    t.tu_contact=request.POST.get('')
+    t.tu_desc=request.POST.get('')
+    t.tu_acid=request.POST.get('')
+    t.save()
+
 def acc_home(request):
     return render(request,'acc_home.html')
 
@@ -83,8 +155,26 @@ def checklogin(request):
         count= data.count()
         if count==1:
             for c in data:
-                id = c.id
-            request.session['id']=id
+                #id = c.id
+                if c.type == 0:
+                    id = c.id
+                    request.session['id']=id
+                    return redirect("/newindex/")
+                elif c.type == 1:
+                    id = c.id
+                    request.session['id']=id
+                    return render(request,"ad_home.html")
+                elif c.type == 2:
+                    id = c.id
+                    request.session['id']=id
+                    acid=academy_tbl.objects.get(login_id=id)
+                    request.session['acname']=acid.ac_name
+                    return render(request,"acc_home.html")
+                elif c.type == 3:
+                    id = c.id
+                    request.session['id']=id
+                    return render(request,"#")#tutor home
+            
             return HttpResponseRedirect('/newindex')
         message="Invalid USername or Password"
         return render(request,"login.html",{"message2":message})
@@ -95,7 +185,8 @@ def newindex(request):
     id = request.session['id']
     data=login_tbl.objects.get(id=id)
     userdata = user_tbl.objects.get(id=data.id)
-    return render(request,"index.html",{"username":userdata.Name})   
+    request.session['Name']=userdata.Name
+    return render(request,"index.html")   
 
 def logout(request):
     if request.session.is_empty():
@@ -107,18 +198,3 @@ def date(request):
     date = datetime.datetime.now().strftime("%b %d %Y")
     datetoday = {'date': date}
     return render(request,"ad_ac_reg.html", {"date":date})
-
-def ac_reg(request):
-    d=academy_tbl()
-    e=login_tbl()
-    e.Unemail=request.POST.get('email')
-    e.password=request.POST.get('pswd')
-    e.save()
-    d.ac_name=request.POST.get('acname')
-    d.ac_website=request.POST.get('web')
-    d.ac_contact=request.POST.get('mobile')
-    #d.ac_date=request.POST.get('date')
-    d.ac_city=request.POST.get('city')
-    d.ac_logo=request.POST.get('logo')
-    d.ac_info=request.POST.get('info')
-    d.save()

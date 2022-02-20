@@ -19,7 +19,7 @@
                     <div class="card-body">
                       <h5 class="card-title"></h5>
         
-                      <form action="/ac_reg/" method="post" class="row g-3" onsubmit="return Validate();">
+                      <form action="/ac_reg/" method="post" class="row g-3" enctype="multipart/form-data" onsubmit="return Validate();">
 
                         {% csrf_token %}  <!-- this token takes data -->
 
@@ -41,23 +41,18 @@
                         <div class="col-md-6">
                           <input type="text" class="form-control" placeholder="Contact No" name="mobile" id="amobile" onclick="return FormClear();">
                         </div>
-                        <!-- <div class="col-md-4">
-                          <select id="inputState" class="form-select">
-                            <option selected>Choose...</option>
-                            <option>...</option>
-                          </select>
-                        </div> -->
+               
                         <div class="col-md-6">
-                          <input type="date" class="form-control" placeholder="Started Year" name="date" id="ayear" onclick="return FormClear();">
+                          <input type="date" class="form-control" placeholder="Started Year" name="sdate" id="ayear" onclick="return FormClear();">
                         </div>
                         <div class="col-md-6">
                           <input type="text" class="form-control" placeholder="City" name="city" id="acity" onclick="return FormClear();">
                         </div>
                         <div class="col-md-6">
-                          <input type="file" class="form-control" placeholder="Logo" name="logo" required>
+                          <input type="file" class="form-control" placeholder="Logo" name="logo"  required>
                         </div>
                         <div class="col-md-12">
-                          <textarea name="" id="ainfo" cols="50" rows="2" placeholder="Information" name="info" onclick="return FormClear();"></textarea>
+                          <textarea id="ainfo" cols="50" rows="2" placeholder="Information" name="info" onclick="return FormClear();"></textarea>
                         </div>
                         <span id="valid" style="color: red;text-align: center;"></span>
                         <div class="text-center">

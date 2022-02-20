@@ -6,9 +6,9 @@
 <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="#" class="logo d-flex align-items-center">
+      <a href="/newindex/" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
-        <span class="d-none d-lg-block">TraderTrot</span>
+        <span class="d-none d-lg-block">TraderTroty</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -118,8 +118,8 @@
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>Kevin Anderson</h6>
-              <span>Admin</span>
+              <h6>{{request.session.ac_name}}</h6>
+              <span>Acadamy</span>
             </li>
             <li>
               <hr class="dropdown-divider">

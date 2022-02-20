@@ -1,5 +1,5 @@
-{% include "ad_aside.html" %}
-{% include "ad_header.html" %}
+{% include "acc_aside.html" %}
+{% include "acc_header.html" %}
 {% include "ad_head.html" %}
 {% load static %}
 {% block content %}
@@ -37,23 +37,23 @@
                             <div class="card-body">
                               <h5 class="card-title"></h5>
                 
-                              <form class="row g-3">
+                              <form class="row g-3" method="/addPackage/">
                                 <div class="col-md-12">
-                                  <input type="text" class="form-control" placeholder="Package Name" id="" name="">
+                                  <input type="text" class="form-control" placeholder="Package Name" id="" name="pname">
                                 </div> 
                                 <div class="col-md-6">
                                   <div class="input-group mb-4">
-                                  <input type="number" class="form-control" placeholder="Duration" id="" name="">
+                                  <input type="number" class="form-control" placeholder="Duration" id="" name="pmonth">
                                   <span class="input-group-text">Month</span>
                                   </div>
                                 </div>
                                 <div class="col-md-6">
-                                  <input type="file" class="form-control" placeholder="Logo" id="" name="">
+                                  <input type="file" class="form-control" placeholder="Logo" id="" name="pfile">
                                 </div>
                                
                                 <div class="input-group mb-4">
                                   <span class="input-group-text">Rs</span>
-                                  <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="" name="">
+                                  <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="" name="pprice">
                                   <span class="input-group-text">.00</span>
                                 </div>
                                 

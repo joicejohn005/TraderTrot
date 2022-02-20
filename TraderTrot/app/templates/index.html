@@ -88,7 +88,7 @@
           <li><a class="nav-link scrollto" href="/login">Login</a></li>
           <li><a class="nav-link scrollto" href="/user_reg">Register</a></li>
           {% else %}
-          <li><a class="nav-link scrollto" href="">{{username}}</a></li>
+          <li><a class="nav-link scrollto" href="">{{request.session.Name}}</a></li>
           <li><a class="nav-link scrollto"  onclick="return logout()"href="/logout">Logout</a></li>
           {% endif %}
         </ul>
@@ -217,7 +217,7 @@
         <div class="row">
           <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="section-headline services-head text-center">
-              <h2>Our Services</h2>
+              <a href="/user_home/"><h2>Our Services</h2></a>
             </div>
           </div>
         </div>
