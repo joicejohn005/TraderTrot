@@ -98,10 +98,15 @@ def register(request):
         message2="Email already registered"
         return render(request, 'user_reg.html',{"message":message2})
 
+def user_home(request):
+    return render(request,'user_home.html')
+
 def tradebook(request):
     if request.session.is_empty():
         return HttpResponseRedirect('/login')
-    return render(request,'tradebook.html')
+    tradedata = tradebook_tbl.objects.all()
+    return render(request,'tradebook.html',{"td":tradedata})
+
 # def tradereport(request):
 #     return render(request,'tradereport.html')
 def addtrade(request):
@@ -116,14 +121,12 @@ def addtrade(request):
         gain = request.POST['gain']
         strategy = request.POST['strg']
         remark = request.POST['remark'] 
-        
+
         id = request.session['id']
         
         trade = tradebook_tbl.objects.create(stock=stock,qty=quantity,b_date=edate,s_date=exdate,buy=entry,sell=exit,pnl=pnl,gain=gain,strategy=strategy,remark=remark,login_id=id)
         trade.save()
     return redirect('/tradebook/')
-def user_home(request):
-    return render(request,'user_home.html')
 
 #accademy
 def acc_addPackage(request):
@@ -144,23 +147,29 @@ def acc_addTutors(request):
     return render(request,'acc_addTutors.html')
 
 def addTutors(request):
-    t=tutor_tbl()
-    e=login_tbl()
-    e.Unemail=request.POST.get('email')
-    data = login_tbl.objects.filter(Unemail=e.Unemail).count()
-    if data == 0:
-        e.password=request.POST.get('pswd')
-        e.status=1
-        e.type=4
-        e.save()
+    e = login_tbl()
+    if request.method=="POST":
+        tcname = request.POST['tcname']
+        temail = request.POST['temail']
+        tpswd = request.POST
+        texp = request.POST['texp']
+        tmobile = request.POST['tmobile']
+        tcity = request.POST['tcity']
+        tinfo = request.POST['tinfo']
+        
+        data = login_tbl.objects.filter(Unemail=temail).count() #to get all rows of data use filter
+        if data == 0:
+            e.Unemail = temail
+            e.password = tpswd
+            e.status = 1
+            e.type=3
+            e.save()
 
-    t.tu_name=request.POST.get('')
-    t.tu_exp=request.POST.get('')
-    t.tu_cons=request.POST.get('')
-    t.tu_contact=request.POST.get('')
-    t.tu_desc=request.POST.get('')
-    t.tu_acid=request.POST.get('')
-    t.save()
+        id = request.session['id'] #to know which academy is adding
+        acc = academy_tbl.objects.get(login_id=id)
+        tutor = tutor_tbl.objects.create(tu_name=tcname,tu_exp=texp,tu_contact=tmobile,tu_cons=tcity,tu_desc=tinfo,login=e,tu_acid_id=acc.id)
+        tutor.save()
+    return redirect('/acc_addTutors/')
 
 def acc_home(request):
     return render(request,'acc_home.html')

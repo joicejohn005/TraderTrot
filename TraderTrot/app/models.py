@@ -47,8 +47,8 @@ class tutor_tbl(models.Model):
     tu_cons=models.CharField(max_length=4)
     tu_contact=models.CharField(max_length=12)
     tu_desc=models.CharField(max_length=100)
-    tu_acid=models.ForeignKey(academy_tbl, on_delete=models.CASCADE)
-    login=models.ForeignKey(login_tbl, on_delete=models.CASCADE)
+    tu_acid=models.ForeignKey(academy_tbl, on_delete=models.CASCADE, null=True)
+    login=models.ForeignKey(login_tbl, on_delete=models.CASCADE, null=True)
 
     class Meta:
         db_table= "tutor_tbl"
@@ -77,9 +77,9 @@ class tradebook_tbl(models.Model):
     qty=models.IntegerField()
     b_date=models.DateField()
     s_date=models.DateField()
-    buy=models.DecimalField(max_digits=10, decimal_places=3)
-    sell=models.DecimalField(max_digits=10, decimal_places=3)
-    pnl=models.DecimalField(max_digits=10, decimal_places=3)
+    buy=models.DecimalField(max_digits=10, decimal_places=2)
+    sell=models.DecimalField(max_digits=10, decimal_places=2)
+    pnl=models.DecimalField(max_digits=10, decimal_places=2)
     gain=models.DecimalField(max_digits=5, decimal_places=2,null=True)
     strategy=models.CharField(max_length=100, null=True)
     remark=models.CharField(max_length=100, null=True)

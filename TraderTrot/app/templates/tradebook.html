@@ -38,7 +38,7 @@
                               <h5 class="card-title"></h5>
                 
                               <form class="row g-3" action="/addtrade/" method="post">
-                                
+
                               {% csrf_token %}  <!-- this token takes data -->
 
                                 <div class="col-md-6">
@@ -108,14 +108,14 @@
                             <table class="table table-hover">
                               <thead>
                                 <tr>
-                                  <th scope="col">No</th>
+                                  <!-- <th scope="col">No</th> -->
                                   <th scope="col">Stock</th>
                                   <th scope="col">Quantity</th>
                                   <th scope="col">Entry</th>
                                   <th scope="col">Date</th>
                                   <th scope="col">Exit</th>
                                   <th scope="col">Date</th>
-                                  <th scope="col">Gain</th>
+                                  <th scope="col">Gain %</th>
                                   <th scope="col">Strategy</th>
                                   <th scope="col">Mistake/Remark</th>
                 
@@ -123,33 +123,19 @@
                               </thead>
                               <tbody>
                                 <tr>
-                                  <th scope="row">1</th>
-                                  <td>Brandon Jacob</td>
-                                  <td>Designer</td>
-                                  <td>28</td>
-                                  <td>date</td>
-                                  <td>28</td>
-                                  <td>date</td>
-                                  <td>1000</td>
-                                  <td>Pivot point</td>
-                                  <td>Impatience</td>
-                                  
+                                  <!-- <th scope="row">1</th> -->
+                                  {% for j in td %}
+                                  <td>{{j.stock}}</td>
+                                  <td>{{j.qty}}</td>
+                                  <td>{{j.buy}}</td>
+                                  <td>{{j.b_date}}</td>
+                                  <td>{{j.sell}}</td>
+                                  <td>{{j.s_date}}</td>
+                                  <td>{{j.gain}}</td>
+                                  <td>{{j.strategy}}</td>
+                                  <td>{{j.remark}}</td>
                                 </tr>
-                              </tbody>
-                              <tbody>
-                                <tr>
-                                  <th scope="row">1</th>
-                                  <td>Brandon Jacob</td>
-                                  <td>Designer</td>
-                                  <td>28</td>
-                                  <td>date</td>
-                                  <td>28</td>
-                                  <td>date</td>
-                                  <td>1000</td>
-                                  <td>Pivot point</td>
-                                  <td>Impatience</td>
-                                  
-                                </tr>
+                                {% endfor %}
                               </tbody>
                             </table>
                           </div>

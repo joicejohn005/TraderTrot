@@ -50,6 +50,7 @@ urlpatterns = [
     path('ac_reg/',views.ac_reg),
     path('acc_addPackage/',views.acc_addPackage),
     path('acc_addTutors/',views.acc_addTutors),
+    path('addTutors/',views.addTutors),
     path('acc_home/',views.acc_home),
 
     #testing
