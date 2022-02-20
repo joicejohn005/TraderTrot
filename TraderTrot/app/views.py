@@ -8,7 +8,7 @@ from matplotlib.style import context
 from app.models import *
 from django.core.files.storage import FileSystemStorage
 from django.db.models import Q
-import datetime
+from datetime import date
 from plotly import express as px
 import plotly.offline as opy
 
@@ -56,8 +56,7 @@ def ac_reg(request):
         d.save()
 
     else:
-        return redirect('/ad_ac_reg/')    
-    
+        return redirect('/ad_ac_reg/')
     return redirect('/ad_acManage/')
 
 def ad_userManage(request):
@@ -107,18 +106,16 @@ def tradebook(request):
     tradedata = tradebook_tbl.objects.all()
     return render(request,'tradebook.html',{"td":tradedata})
 
-# def tradereport(request):
-#     return render(request,'tradereport.html')
 def addtrade(request):
     if request.method=="POST":
         stock = request.POST['stock']
-        quantity = request.POST['qty']
-        entry = request.POST['entry']
+        quantity = int(request.POST['qty'])
+        entry = int( request.POST['entry'])
         edate = request.POST['edate']
-        exit = request.POST['exit']
+        exit = int(request.POST['exit'])
         exdate = request.POST['exdate']
-        pnl = request.POST['pl']
-        gain = request.POST['gain']
+        pnl = (exit-entry)*quantity
+        gain = (pnl / (quantity*entry)) * 100
         strategy = request.POST['strg']
         remark = request.POST['remark'] 
 
@@ -140,7 +137,6 @@ def addPackage(request):
     p.pkg_price=request.POST.get('mobile')
     p.pkg_desc=request.POST.get('info')
     p.pkg_thumb=request.POST.get('logo')
-   
     p.save()
 
 def acc_addTutors(request):
@@ -151,7 +147,7 @@ def addTutors(request):
     if request.method=="POST":
         tcname = request.POST['tcname']
         temail = request.POST['temail']
-        tpswd = request.POST
+        tpswd = request.POST['tpswd']
         texp = request.POST['texp']
         tmobile = request.POST['tmobile']
         tcity = request.POST['tcity']
@@ -171,14 +167,40 @@ def addTutors(request):
         tutor.save()
     return redirect('/acc_addTutors/')
 
+def acc_tutorManage(request):
+    tutordata=tutor_tbl.objects.all()
+    return render(request,'acc_addTutors.html',{"a":tutordata})
+
 def acc_home(request):
     return render(request,'acc_home.html')
+
+#tutor activities
+def addblog(request):
+
+    if request.method=="POST":
+        title = request.POST['title']
+        sub = request.POST['sub']
+        content = request.POST['content']
+        Photo=request.FILES['logo']
+        fs=FileSystemStorage()
+        fn=fs.save(Photo.name,Photo)
+        uploaded_file_url=fs.url(fn)
+        url = uploaded_file_url
+        bdate = date.today()
+        status = 1
+
+        id = request.session['id']   
+        acc=tutor_tbl.objects.get(login=id)
+
+        b = blog_tbl.objects.create(btitle=title,bsub=sub,bdesc=content,bthumb=url,bstatus=status,bdate=bdate,b_tid=id,b_acid=acc)
+        b.save()
+
+    return render(request,'user_home.html')
+
 
 #testing
 def clipboard(request):
     return render(request,'clipboard.html')
-
-
      
 def checklogin(request):
     if request.method=="POST":
@@ -206,7 +228,7 @@ def checklogin(request):
                 elif c.type == 3:
                     id = c.id
                     request.session['id']=id
-                    return render(request,"#")#tutor home
+                    return render(request,"tu_addBlog.html")
             
             return HttpResponseRedirect('/newindex')
         message="Invalid USername or Password"

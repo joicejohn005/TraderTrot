@@ -1,45 +1,139 @@
-{% include "ad_aside.html" %}
-{% include "ad_header.html" %}
+{% include "user_aside.html" %}
+{% include "user_header.html" %}
 {% include "ad_head.html" %}
 {% load static %}
 {% block content %}
 <main id="main" class="main">
 
     <div class="pagetitle">
-      <b><h1>Create Blog</h1></b>
+      <b><h1>Blog Creation</h1></b>
 
       <section class="section">
         <div class="row">
-          <div class="col-lg-6">
+          <div class="col-xl-12">
 
             <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title"></h5>
-    
-                  <form class="row g-3">
-                    <div class="col-md-12">
-                      <input type="text" class="form-control" placeholder="Blog Title" id="" name="">
-                    </div> 
-                    <div class="col-md-12">
-                      <input type="date" class="form-control" placeholder="Date" id="" name="">
+              <div class="card-body pt-3">
+                <!-- Bordered Tabs -->
+                <ul class="nav nav-tabs nav-tabs-bordered">
+  
+                  <li class="nav-item">
+                    <button class="nav-link active btn btn-outline-success" data-bs-toggle="tab" data-bs-target="#profile-overview">Add Blog</button>
+                  </li>
+  
+                  <li class="nav-item">
+                    <button class="nav-link btn btn-outline-info" data-bs-toggle="tab" data-bs-target="#profile-edit">View My Blog</button>
+                  </li>
+  
+                </ul>
+                <div class="tab-content pt-2">
+  
+                  <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                    
+                    <div class="row">
+                      <div class="col-lg-12">
+            
+                        <div class="card">
+                            <div class="card-body">
+                              <h5 class="card-title"></h5>
+                
+                              <form class="row g-3" action="/addblog/" enctype="multipart/form-data" method="post" onsubmit="return Validate();" >
+
+                              {% csrf_token %}  <!-- this token takes data -->
+
+                                <div class="col-md-6">
+                                  <input type="text" class="form-control" placeholder="Title" id="aname" name="title">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" placeholder="Sub heading" id="aemail" name="sub">
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <input type="file" class="form-control" placeholder="Thumbnail Image" name="logo"  required>
+                                </div>
+
+                                <div class="col-md-12">
+                                  <textarea name="content" id="apswd" cols="105" rows="4" placeholder="Paste content Here" ></textarea>
+                                </div>
+
+                                <span id="valid" style="color: red;text-align: center;"></span>
+                              <div class="text-center">
+                                <input type="submit" class="btn btn-primary" value="Submit" name="submit">
+                                <button type="reset" class="btn btn-secondary">Reset</button>
+                              </div>
+                              </form>
+                
+                            </div>
+                          </div>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                      <input type="file" class="form-control" placeholder="Thumnail" id="" name="">
+  
+                  </div>
+  
+                  <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+  
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="card">
+                          <div class="card-body">
+                              
+                            <table class="table table-hover">
+                              <tbody>
+                                <tr>
+                                <td>
+                                    <div class="card">
+                                        <img src="{% static 'assets/img/card.jpg' %}" class="card-img-top" alt=".">
+                                        <div class="card-body">
+                                        <h5 class="card-title">Card with an image on top</h5>
+                                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                    </div>
+                                  </div>
+                                </td>
+                                </tbody>
+                            </table>
+                          </div>
+                        </div> 
                     </div>
-                    <div class="col-md-12">
-                      <textarea name="" id="" cols="50" rows="2" placeholder="Description"></textarea>
-                    </div>
-                    <div class="text-center">
-                      <button type="submit" class="btn btn-primary">Submit</button>
-                      <button type="reset" class="btn btn-secondary">Reset</button>
-                      <button type="submit" class="btn btn-outline-info"><a href="/editBlog/">Manage</a></button>
-                    </div>
-                  </form>
+                    <!-- End Profile Edit Form -->
+                  </div>
                 </div>
+                <!-- End Bordered Tabs -->
               </div>
             </div>
+          </div>
         </div>
       </section>
       </div>
 </main>
+
+<script>
+    function Validate()
+    {
+      var a = document.getElementById('aname').value.trim();
+      var b = document.getElementById('aemail').value.trim();
+      var c = document.getElementById('apswd').value.trim();
+
+      if(a=="")
+      {
+        document.getElementById('valid').innerHTML = "Enter Title";
+        return false;
+      }
+      if(b=="")
+      {
+        document.getElementById('valid').innerHTML = "Enter SubhEading";
+        return false;
+      }
+      if(c=="")
+      {
+        document.getElementById('valid').innerHTML = "Enter Content";
+        return false;
+      }
+
+    }
+    function FormClear(){
+      document.getElementById('valid').innerHTML = "";
+      return false;
+    }
+  </script>
 {% endblock %}

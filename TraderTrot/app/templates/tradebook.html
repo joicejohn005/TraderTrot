@@ -49,7 +49,7 @@
                                 </div>                      
                                 <div class="col-md-6">
                                   <div class="input-group mb-4">
-                                  <input type="text" class="form-control" placeholder="Entry" id="" name="entry">
+                                  <input type="number" class="form-control" placeholder="Entry" id="" name="entry">
                                   <span class="input-group-text">Rs</span>
                                   </div>
                                 </div>
@@ -58,33 +58,19 @@
                                 </div>
                                 <div class="col-6">
                                   <div class="input-group mb-4">
-                                  <input type="text" class="form-control" placeholder="Exit" id="" name="exit">
+                                  <input type="number" class="form-control" placeholder="Exit" id="" name="exit">
                                   <span class="input-group-text">Rs</span>
                                   </div>
                                 </div>
                                 <div class="col-md-6">
                                   <input type="date" class="form-control" placeholder="Date" id="" name="exdate">
                                 </div>
-        
-                                <div class="col-md-3">
-                                  <div class="input-group mb-4">
-                                  <input type="number" class="form-control" placeholder="P and L" id="" name="pl">
-                                  <span class="input-group-text">Rs</span>
-                                  </div>
-                                </div>
-        
-                                <div class="col-md-3">
-                                  <div class="input-group mb-4">
-                                  <input type="number" class="form-control" placeholder="Gain" id="" name="gain">
-                                  <span class="input-group-text">%</span>
-                                  </div>
-                                </div>
                                 
                                 <div class="col-md-6">
                                   <input type="text" class="form-control" placeholder="Strategy" id="" name="strg">
                                 </div>
-                                <div class="col-md-12">
-                                  <textarea name="remark" id="" cols="105" rows="2" placeholder="Mistake / Remarks" ></textarea>
+                                <div class="col-md-6">
+                                  <textarea name="remark" id="" cols="50" rows="2" placeholder="Mistake / Remarks" ></textarea>
                                 </div>
                                 <div class="text-center">
                                   <button type="submit" class="btn btn-primary">Save</button>
@@ -115,7 +101,7 @@
                                   <th scope="col">Date</th>
                                   <th scope="col">Exit</th>
                                   <th scope="col">Date</th>
-                                  <th scope="col">Gain %</th>
+                                  <th scope="col">Gain</th>
                                   <th scope="col">Strategy</th>
                                   <th scope="col">Mistake/Remark</th>
                 
@@ -131,7 +117,7 @@
                                   <td>{{j.b_date}}</td>
                                   <td>{{j.sell}}</td>
                                   <td>{{j.s_date}}</td>
-                                  <td>{{j.gain}}</td>
+                                  <td>{{j.gain}}%</td>
                                   <td>{{j.strategy}}</td>
                                   <td>{{j.remark}}</td>
                                 </tr>

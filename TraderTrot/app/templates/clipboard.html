@@ -1,0 +1,29 @@
+def ac_reg(request):
+    
+    e=login_tbl()
+    mail=request.POST.get('email')   
+    e.Unemail=mail
+    data = 0
+    data = login_tbl.objects.filter(Unemail=e.Unemail).count()
+    acname=request.POST.get('acname')
+    acyr=request.POST.get('sdate')
+    accont=request.POST.get('mobile')
+    acinfo=request.POST.get('info')
+    accity=request.POST.get('city')
+    acweb=request.POST.get('web')
+    if data == 0:
+        e.password=request.POST.get('pswd')
+        e.status=1
+        e.type=2
+        e.save()
+        Photo=request.FILES['logo']
+        fs=FileSystemStorage()
+        fn=fs.save(Photo.name,Photo)
+        uploaded_file_url=fs.url(fn)
+        uurl=uploaded_file_url
+        d = academy_tbl.objects.create(ac_name=acname,ac_yr=acyr,ac_contact=accont,ac_info=acinfo,ac_city=accity,ac_website=acweb,ac_logo=uurl,login=e)
+        d.save()
+
+    else:
+        return redirect('/ad_ac_reg/')
+    return redirect('/ad_acManage/')

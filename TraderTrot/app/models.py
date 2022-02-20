@@ -87,3 +87,16 @@ class tradebook_tbl(models.Model):
 
     class Meta:
         db_table= "tradebook_tbl"
+
+class blog_tbl(models.Model):
+    btitle=models.CharField(max_length=100)
+    bsub=models.CharField(max_length=100)
+    bstatus=models.BooleanField(default=True)
+    bdate=models.DateField(auto_now_add=True)
+    bdesc=models.CharField(max_length=500)
+    bthumb=models.CharField(max_length=100)
+    b_acid=models.ForeignKey(academy_tbl, on_delete=models.CASCADE, null=True)
+    b_tid=models.ForeignKey(tutor_tbl, on_delete=models.CASCADE, null=True) # foreign key academy
+
+    class Meta:
+        db_table= "blog_tbl"

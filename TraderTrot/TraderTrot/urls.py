@@ -53,6 +53,9 @@ urlpatterns = [
     path('addTutors/',views.addTutors),
     path('acc_home/',views.acc_home),
 
+    #tutor
+    path('addblog/',views.addblog),
+
     #testing
     path('clipboard/',views.clipboard),
     path('plotly/',views.plot)
