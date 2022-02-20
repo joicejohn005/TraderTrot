@@ -1,0 +1,17 @@
+{% include "user_aside.html" %}
+{% include "user_header.html" %}
+{% include "ad_head.html" %}
+{% load static %}
+{% block content %}
+<html>
+    <main id="main" class="main">
+    {% if graph %}
+    <div style="width:600; height: 500;">
+        {{ graph|safe }}
+    </div>
+    {% else %}
+    <p>NO graph</p>
+    {% endif %}
+</main>
+</html>
+{% endblock %}

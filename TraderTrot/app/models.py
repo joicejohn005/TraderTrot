@@ -1,4 +1,5 @@
 from tkinter import CASCADE
+from unicodedata import decimal
 from django.db import models
 
 # Create your models here.
@@ -79,6 +80,9 @@ class tradebook_tbl(models.Model):
     buy=models.DecimalField(max_digits=10, decimal_places=3)
     sell=models.DecimalField(max_digits=10, decimal_places=3)
     pnl=models.DecimalField(max_digits=10, decimal_places=3)
+    gain=models.DecimalField(max_digits=5, decimal_places=2,null=True)
+    strategy=models.CharField(max_length=100, null=True)
+    remark=models.CharField(max_length=100, null=True)
     login=models.ForeignKey(login_tbl, on_delete=models.CASCADE) #setting foreign key
 
     class Meta:

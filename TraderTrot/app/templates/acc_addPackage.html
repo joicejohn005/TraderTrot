@@ -37,7 +37,10 @@
                             <div class="card-body">
                               <h5 class="card-title"></h5>
                 
-                              <form class="row g-3" method="/addPackage/">
+                              <form class="row g-3" method="post" action="/addPackage/">
+
+                              {% csrf_token %}  <!-- this token takes data -->
+                                
                                 <div class="col-md-12">
                                   <input type="text" class="form-control" placeholder="Package Name" id="" name="pname">
                                 </div> 

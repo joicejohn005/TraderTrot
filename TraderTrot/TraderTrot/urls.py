@@ -32,7 +32,7 @@ urlpatterns = [
     path('register',views.register),
     path('checklogin',views.checklogin),
     path('newindex/',views.newindex),
-    path('logout',views.logout),
+    path('logout/',views.logout),
 
     #admin
     path('ad_ac_reg/',views.ad_ac_reg),
@@ -44,6 +44,7 @@ urlpatterns = [
     path('user_reg',views.user_reg),
     path('tradebook/',views.tradebook),
     path('user_home/',views.user_home),
+    path('addtrade/',views.addtrade),
 
     #accademy
     path('ac_reg/',views.ac_reg),
@@ -52,7 +53,8 @@ urlpatterns = [
     path('acc_home/',views.acc_home),
 
     #testing
-    path('clipboard/',views.clipboard)
+    path('clipboard/',views.clipboard),
+    path('plotly/',views.plot)
 
 
 ]

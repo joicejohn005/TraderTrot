@@ -3,10 +3,14 @@ from asyncio.windows_events import NULL
 from email import message
 from django.shortcuts import redirect, render
 from django.http import *
+from matplotlib import pyplot as plt
+from matplotlib.style import context
 from app.models import *
 from django.core.files.storage import FileSystemStorage
 from django.db.models import Q
 import datetime
+from plotly import express as px
+import plotly.offline as opy
 
 # Create your views here.
 #all user
@@ -70,12 +74,54 @@ def ad_home(request):
     return render(request,'ad_home.html')
  
 #user
+def register(request):
+ 
+    if request.method=="POST":
+        name = request.POST['name'] #to get values by POST method frm form
+        email = request.POST['email']
+        mobile = request.POST['mobile']
+        year = request.POST['year']
+        password = request.POST['pswd']
+        profession = request.POST['profession']
+
+        #import models from app (line 3)
+        data = login_tbl.objects.filter(Unemail=email).count() #to get all rows of data use filter
+        if data == 0:
+            login = login_tbl.objects.create(Unemail=email,password=password,status=1,type=0) #a=b,a->coloumn name of corresponding table,b->variable name
+            login.save() #saving detals
+            userid = login_tbl.objects.get(Unemail=email) #to get id and store to foreignkey values
+
+            user = user_tbl.objects.create(Name=name,ContactNo=mobile,ExperienceYr=year,Profession=profession,login_id=userid.id)
+            user.save()
+            message1="Your registration is successfull... Please Login"
+            return render(request,"user_reg.html",{"message":message1})
+        message2="Email already registered"
+        return render(request, 'user_reg.html',{"message":message2})
+
 def tradebook(request):
     if request.session.is_empty():
         return HttpResponseRedirect('/login')
     return render(request,'tradebook.html')
-def tradereport(request):
-    return render(request,'tradereport.html')
+# def tradereport(request):
+#     return render(request,'tradereport.html')
+def addtrade(request):
+    if request.method=="POST":
+        stock = request.POST['stock']
+        quantity = request.POST['qty']
+        entry = request.POST['entry']
+        edate = request.POST['edate']
+        exit = request.POST['exit']
+        exdate = request.POST['exdate']
+        pnl = request.POST['pl']
+        gain = request.POST['gain']
+        strategy = request.POST['strg']
+        remark = request.POST['remark'] 
+        
+        id = request.session['id']
+        
+        trade = tradebook_tbl.objects.create(stock=stock,qty=quantity,b_date=edate,s_date=exdate,buy=entry,sell=exit,pnl=pnl,gain=gain,strategy=strategy,remark=remark,login_id=id)
+        trade.save()
+    return redirect('/tradebook/')
 def user_home(request):
     return render(request,'user_home.html')
 
@@ -123,29 +169,7 @@ def acc_home(request):
 def clipboard(request):
     return render(request,'clipboard.html')
 
-def register(request):
- 
-    if request.method=="POST":
-        name = request.POST['name'] #to get values by POST method frm form
-        email = request.POST['email']
-        mobile = request.POST['mobile']
-        year = request.POST['year']
-        password = request.POST['pswd']
-        profession = request.POST['profession']
 
-        #import models from app (line 3)
-        data = login_tbl.objects.filter(Unemail=email).count() #to get all rows of data use filter
-        if data == 0:
-            login = login_tbl.objects.create(Unemail=email,password=password,status=1,type=0) #a=b,a->coloumn name of corresponding table,b->variable name
-            login.save() #saving detals
-            userid = login_tbl.objects.get(Unemail=email) #to get id and store to foreignkey values
-
-            user = user_tbl.objects.create(Name=name,ContactNo=mobile,ExperienceYr=year,Profession=profession,login_id=userid.id)
-            user.save()
-            message1="Your registration is successfull... Please Login"
-            return render(request,"user_reg.html",{"message":message1})
-        message2="Email already registered"
-        return render(request, 'user_reg.html',{"message":message2})
      
 def checklogin(request):
     if request.method=="POST":
@@ -198,3 +222,12 @@ def date(request):
     date = datetime.datetime.now().strftime("%b %d %Y")
     datetoday = {'date': date}
     return render(request,"ad_ac_reg.html", {"date":date})
+
+def plot(request):
+    x = [1, 2, 3]
+    y = [2, 4, 1]
+    plt.plot(x,y)
+    fig=px.line(x, y)
+    div=opy.plot(fig,auto_open=False,output_type='div')
+    context={'graph':div}
+    return render(request,'plot.html',context)
