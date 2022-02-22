@@ -3,6 +3,11 @@
 {% include "ad_head.html" %}
 {% load static %}
 {% block content %}
+{% if messages %}
+{% for message in messages %}
+<script>alert('{{message}}');</script>
+{% endfor %}
+{% endif %}
 <main id="main" class="main">
 
     <div class="pagetitle" style="margin-top: -5%;">

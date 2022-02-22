@@ -1,6 +1,7 @@
 from ast import Global
 from asyncio.windows_events import NULL
-from email import message
+from symtable import Symbol
+from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.http import *
 from matplotlib import pyplot as plt
@@ -11,6 +12,9 @@ from django.db.models import Q
 from datetime import *
 from plotly import express as px
 import plotly.offline as opy
+from plotly import graph_objs as go
+import pandas as pd
+from nsepy import get_history
 
 # Create your views here.
 #all user
@@ -134,6 +138,7 @@ def addPackage(request):
         pkg_name=request.POST['pname']
         pkg_duration=request.POST['pmonth']
         Photo=request.FILES['pfile']
+
         fs=FileSystemStorage()
         fn=fs.save(Photo.name,Photo)
         uploaded_file_url=fs.url(fn)
@@ -142,8 +147,11 @@ def addPackage(request):
         pkg_desc=request.POST['info']
 
         id = request.session['id']
-        p = package_tbl.objects.create(pkg_name=pkg_name,pkg_duration=pkg_duration,pkg_price=pkg_price,pkg_desc=pkg_desc,pkg_thumb=uurl,p_acid=id)
+        acid = academy_tbl.objects.get(login_id=id)
+        p = package_tbl.objects.create(pkg_name=pkg_name,pkg_duration=pkg_duration,pkg_price=pkg_price,pkg_desc=pkg_desc,pkg_thumb=uurl,p_acid_id=acid.id)
         p.save()
+
+        return redirect('/acc_addPackage/')
 
 def acc_addTutors(request):
     return render(request,'acc_addTutors.html')
@@ -166,7 +174,9 @@ def addTutors(request):
             e.status = 1
             e.type=3
             e.save()
-
+        else :
+            messages.success(request,"Email Already registered")
+            return render(request,'acc_addTutors.html')
         id = request.session['id'] #to know which academy is adding
         acc = academy_tbl.objects.get(login_id=id)
         tutor = tutor_tbl.objects.create(tu_name=tcname,tu_exp=texp,tu_contact=tmobile,tu_cons=tcity,tu_desc=tinfo,login=e,tu_acid_id=acc.id)
@@ -194,21 +204,20 @@ def addblog(request):
         sub = request.POST['sub']
         content = request.POST['content']
         Photo=request.FILES['logo']
+
         fs=FileSystemStorage()
         fn=fs.save(Photo.name,Photo)
         uploaded_file_url=fs.url(fn)
         url = uploaded_file_url
-        #bdate = date.today()
         status = 1
 
         id = request.session['id']   
-        acc=tutor_tbl.objects.get(login_id=id)
-
-        b = blog_tbl.objects.create(btitle=title,bsub=sub,bdesc=content,bthumb=url,bstatus=status,b_tid=id,b_acid_id=acc.id)
+        tutor=tutor_tbl.objects.get(login_id=id)
+        
+        b = blog_tbl.objects.create(btitle=title,bsub=sub,bdesc=content,bthumb=url,bstatus=status,b_tid_id=tutor.id,b_acid_id=tutor.tu_acid_id)
         b.save()
 
-    return render(request,'tu_home.html')
-
+    return redirect('/tu_addBlog/')
 
 #testing
 def clipboard(request):
@@ -234,6 +243,7 @@ def checklogin(request):
                 elif c.type == 2:
                     id = c.id
                     request.session['id']=id
+
                     acid=academy_tbl.objects.get(login_id=id)
                     request.session['acname']=acid.ac_name
                     return render(request,"acc_home.html")
@@ -266,11 +276,27 @@ def date(request):
     datetoday = {'date': date}
     return render(request,"ad_ac_reg.html", {"date":date})
 
-def plot(request):
-    x = [1, 2, 3]
-    y = [2, 4, 1]
-    plt.plot(x,y)
-    fig=px.line(x, y)
-    div=opy.plot(fig,auto_open=False,output_type='div')
-    context={'graph':div}
-    return render(request,'plot.html',context)
+#pip install plotly
+# def plot(request):
+#     start=datetime.date(2010,1,1)
+#     end=datetime.date.today()
+#     data = get_history(symbol="TCS",start=start,end=end)
+#     data.to_csv("Tcs.csv")
+#     df=pd.read_csv("Tcs.csv")
+#     data=df.filter(['Close'])
+#     fig=go.figure()
+#     fig.add_trace(go.Scatter(x=train.index,y=train))
+
+   
+#     plt.plot(x,y)
+#     fig=px.line(x, y)
+#     div=opy.plot(fig,auto_open=False,output_type='div')
+#     context={'graph':div}
+#     return render(request,'plot.html',context)
+
+# #pip install nsepy
+# #pip install pandas
+# def stocklist():
+#     df = pd.read_csv('equity.csv')
+#     nselist = df['SYMBOL'].tolist()
+#     return nselist
