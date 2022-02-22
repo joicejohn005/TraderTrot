@@ -8,7 +8,7 @@ from matplotlib.style import context
 from app.models import *
 from django.core.files.storage import FileSystemStorage
 from django.db.models import Q
-from datetime import date
+from datetime import *
 from plotly import express as px
 import plotly.offline as opy
 
@@ -130,14 +130,20 @@ def acc_addPackage(request):
     return render(request,'acc_addPackage.html')
 
 def addPackage(request):
-    p=package_tbl()
-    d=academy_tbl()
-    p.pkg_name=request.POST.get('acname')
-    p.pkg_duration=request.POST.get('sdate')
-    p.pkg_price=request.POST.get('mobile')
-    p.pkg_desc=request.POST.get('info')
-    p.pkg_thumb=request.POST.get('logo')
-    p.save()
+    if request.method=="POST":
+        pkg_name=request.POST['pname']
+        pkg_duration=request.POST['pmonth']
+        Photo=request.FILES['pfile']
+        fs=FileSystemStorage()
+        fn=fs.save(Photo.name,Photo)
+        uploaded_file_url=fs.url(fn)
+        uurl=uploaded_file_url
+        pkg_price=request.POST['pprice']
+        pkg_desc=request.POST['info']
+
+        id = request.session['id']
+        p = package_tbl.objects.create(pkg_name=pkg_name,pkg_duration=pkg_duration,pkg_price=pkg_price,pkg_desc=pkg_desc,pkg_thumb=uurl,p_acid=id)
+        p.save()
 
 def acc_addTutors(request):
     return render(request,'acc_addTutors.html')
@@ -175,6 +181,12 @@ def acc_home(request):
     return render(request,'acc_home.html')
 
 #tutor activities
+def tu_addBlog(request):
+    return render(request,'tu_addBlog.html')
+
+def tu_home(request):
+    return render(request,'tu_home.html')
+
 def addblog(request):
 
     if request.method=="POST":
@@ -186,16 +198,16 @@ def addblog(request):
         fn=fs.save(Photo.name,Photo)
         uploaded_file_url=fs.url(fn)
         url = uploaded_file_url
-        bdate = date.today()
+        #bdate = date.today()
         status = 1
 
         id = request.session['id']   
-        acc=tutor_tbl.objects.get(login=id)
+        acc=tutor_tbl.objects.get(login_id=id)
 
-        b = blog_tbl.objects.create(btitle=title,bsub=sub,bdesc=content,bthumb=url,bstatus=status,bdate=bdate,b_tid=id,b_acid=acc)
+        b = blog_tbl.objects.create(btitle=title,bsub=sub,bdesc=content,bthumb=url,bstatus=status,b_tid=id,b_acid_id=acc.id)
         b.save()
 
-    return render(request,'user_home.html')
+    return render(request,'tu_home.html')
 
 
 #testing
@@ -228,7 +240,7 @@ def checklogin(request):
                 elif c.type == 3:
                     id = c.id
                     request.session['id']=id
-                    return render(request,"tu_addBlog.html")
+                    return render(request,"tu_home.html")
             
             return HttpResponseRedirect('/newindex')
         message="Invalid USername or Password"

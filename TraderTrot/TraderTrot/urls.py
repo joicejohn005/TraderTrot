@@ -51,14 +51,16 @@ urlpatterns = [
     path('acc_addPackage/',views.acc_addPackage),
     path('acc_addTutors/',views.acc_addTutors),
     path('addTutors/',views.addTutors),
+    path('addPackage/',views.addPackage),
     path('acc_home/',views.acc_home),
 
     #tutor
+    path('tu_addBlog/',views.tu_addBlog),
+    path('tu_home/',views.tu_home),
     path('addblog/',views.addblog),
 
     #testing
     path('clipboard/',views.clipboard),
     path('plotly/',views.plot)
-
 
 ]

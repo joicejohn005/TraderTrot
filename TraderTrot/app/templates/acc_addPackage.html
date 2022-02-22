@@ -37,32 +37,32 @@
                             <div class="card-body">
                               <h5 class="card-title"></h5>
                 
-                              <form class="row g-3" method="post" action="/addPackage/">
+                              <form class="row g-3" method="post" action="/addPackage/" enctype="multipart/form-data"  onsubmit="return Validate();">
 
                               {% csrf_token %}  <!-- this token takes data -->
                                 
                                 <div class="col-md-12">
-                                  <input type="text" class="form-control" placeholder="Package Name" id="" name="pname">
+                                  <input type="text" class="form-control" placeholder="Package Name" id="aname" name="pname" onclick="return FormClear();">
                                 </div> 
                                 <div class="col-md-6">
                                   <div class="input-group mb-4">
-                                  <input type="number" class="form-control" placeholder="Duration" id="" name="pmonth">
+                                  <input type="number" class="form-control" placeholder="Duration" id="aemail" name="pmonth" onclick="return FormClear();">
                                   <span class="input-group-text">Month</span>
                                   </div>
                                 </div>
                                 <div class="col-md-6">
-                                  <input type="file" class="form-control" placeholder="Logo" id="" name="pfile">
+                                  <input type="file" class="form-control" placeholder="Logo" id="" name="pfile" required>
                                 </div>
                                
                                 <div class="input-group mb-4">
                                   <span class="input-group-text">Rs</span>
-                                  <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="" name="pprice">
+                                  <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)" id="apswd" name="pprice" onclick="return FormClear();">
                                   <span class="input-group-text">.00</span>
                                 </div>
                                 
                                 <div class="row mb-6">
                                   <div class="col-md-12">
-                                    <select class="form-select" aria-label="Default select example">
+                                    <select class="form-select" aria-label="Default select example" id="aweb" onclick="return FormClear();">
                                       <option selected>Choose Tutor</option>
                                       <option value="1">One</option>
                                     </select>
@@ -70,13 +70,13 @@
                                 </div>
             
                                 <div class="col-md-12">
-                                  <!-- <input type="file" class="form-control" placeholder="Logo"> -->
-                                  <textarea name="" id="" cols="50" rows="2" placeholder="Description"></textarea>
+                                  <textarea name="info" id="amobile" cols="50" rows="2" placeholder="Description" onclick="return FormClear();"></textarea>
                                 </div>
+                                <span id="valid" style="color: red;text-align: center;"></span>
                                 <div class="text-center">
-                                  <button type="submit" class="btn btn-primary">Submit</button>
+                                  <input type="submit" class="btn btn-primary" value="Submit" name="submit">
                                   <button type="reset" class="btn btn-secondary">Reset</button>
-                                  <button type="submit" class="btn btn-outline-info"><a href="/#/">Manage</a></button>
+                                  <!-- <button type="submit" class="btn btn-outline-info"><a href="/#/">Manage</a></button> -->
                                 </div>
                               </form>
                 
@@ -110,11 +110,11 @@
                                 <div class="col-md-12">
                                   <input type="text" class="form-control" placeholder="New Feature" id="f1" name="ff1">
                                 </div>
-         
+                                <span id="" style="color: red;text-align: center;"></span>
                                 <div class="text-center">
-                                  <button type="submit" class="btn btn-primary">Submit</button>
+                                  <input type="submit" class="btn btn-primary" value="Submit" name="submit">
                                   <button type="reset" class="btn btn-secondary">Reset</button>
-                                  <button type="submit" class="btn btn-outline-info"><a href="/#/">Manage</a></button>
+                                  <!-- <button type="submit" class="btn btn-outline-info"><a href="/#/">Manage</a></button> -->
                                 </div>
                               </form>
                 
@@ -136,4 +136,45 @@
       </section>
       </div>
 </main>
+<script>
+  function Validate()
+  {
+    var a = document.getElementById('aname').value.trim();
+    var b = document.getElementById('aemail').value.trim();
+    var c = document.getElementById('apswd').value.trim();
+    var d = document.getElementById('aweb').value.trim();
+    var e = document.getElementById('amobile').value.trim();
+    /*var validemail=/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;*/
+
+    if(a=="")
+    {
+      document.getElementById('valid').innerHTML = "Enter Package name";
+      return false;
+    }
+    if(b=="")
+    {
+      document.getElementById('valid').innerHTML = "Enter Duration of Course";
+      return false;
+    }
+    if(c=="")
+    {
+      document.getElementById('valid').innerHTML = "Enter Price";
+      return false;
+    }
+    if(d=="")
+    {
+      document.getElementById('valid').innerHTML = "Enter Tutor";
+      return false;
+    }
+    if(e=="")
+    {
+      document.getElementById('valid').innerHTML = "Enter Description";
+      return false;
+    }
+  }
+  function FormClear(){
+    document.getElementById('valid').innerHTML = "";
+    return false;
+  }
+</script>
 {% endblock %}
