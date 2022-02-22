@@ -1,16 +1,16 @@
-{% include "acc_aside.html" %}
-{% include "acc_header.html" %}
+{% include "user_aside.html" %}
+{% include "user_header.html" %}
 {% include "ad_head.html" %}
 {% load static %}
 {% block content %}
 <main id="main" class="main">
 
-    <div class="pagetitle">
-      <b><h1>Package</h1></b>
+    <div class="pagetitle" style="margin-top: -5%;">
+      <b><h1 style="margin-bottom: 1%;">Post a Doubt</h1></b>
 
-      <section class="section">
+      <section class="section" style="margin-bottom: 1%;">
         <div class="row">
-          <div class="col-xl-8">
+          <div class="col-xl-12">
 
             <div class="card">
               <div class="card-body pt-3">
@@ -18,11 +18,19 @@
                 <ul class="nav nav-tabs nav-tabs-bordered">
   
                   <li class="nav-item">
-                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Add Package</button>
+                    <button class="nav-link active btn btn-outline-success" data-bs-toggle="tab" data-bs-target="#profile-overview">Investing</button>
                   </li>
   
                   <li class="nav-item">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Add Package features</button>
+                    <button class="nav-link btn btn-outline-info" data-bs-toggle="tab" data-bs-target="#profile-edit">Trading</button>
+                  </li>
+
+                  <li class="nav-item">
+                    <button class="nav-link btn btn-outline-warning" data-bs-toggle="tab" data-bs-target="#profile-settings">Tips / Suggestion</button>
+                  </li>
+  
+                  <li class="nav-item">
+                    <button class="nav-link btn btn-outline-danger" data-bs-toggle="tab" data-bs-target="#profile-change-password">Others</button>
                   </li>
   
                 </ul>
@@ -37,46 +45,75 @@
                             <div class="card-body">
                               <h5 class="card-title"></h5>
                 
-                              <form class="row g-3" method="post" action="/addPackage/">
+                              <form class="row g-3" action="#" method="post">
 
                               {% csrf_token %}  <!-- this token takes data -->
-                                
-                                <div class="col-md-12">
-                                  <input type="text" class="form-control" placeholder="Package Name" id="aname" name="pname">
+
+                              <div class="col-md-6">
+                              <div class="form-floating mb-3">
+                                <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                                  <option selected>Stock</option>
+                                  <option value="1">One</option>
+                                  <option value="2">Two</option>
+                                  <option value="3">Three</option>
+                                </select>
+                                <!-- <label for="floatingSelect">Works with selects</label> -->
+                              </div>
+                              </div>
+
+                              <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                  <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                                    <option selected>Stock Exchange</option>
+                                    <option value="1">National Stock Exchange - NSE</option>
+                                    <option value="2">Bombay Stock Exchange - BSE</option>
+                                    
+                                  </select>
+                                  <!-- <label for="floatingSelect">Works with selects</label> -->
+                                </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                  <input type="text" class="form-control" placeholder="Subject" id="" name="qty">
                                 </div> 
+
                                 <div class="col-md-6">
-                                  <div class="input-group mb-4">
-                                  <input type="number" class="form-control" placeholder="Duration" id="aemail" name="pmonth">
-                                  <span class="input-group-text">Month</span>
-                                  </div>
+                                  <textarea name="remark" id="" cols="50" rows="2" placeholder="Describe your queries here..." ></textarea>
                                 </div>
+
                                 <div class="col-md-6">
-                                  <input type="file" class="form-control" placeholder="Logo" id="" name="pfile" required>
+                                  <input type="file" class="form-control" placeholder="Date" id="" name="edate">
                                 </div>
-                               
-                                <div class="input-group mb-4">
-                                  <span class="input-group-text">Rs</span>
-                                  <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="apswd" name="pprice">
-                                  <span class="input-group-text">.00</span>
+
+                                <div class="col-md-6">
+                                  <input type="date" class="form-control" placeholder="Date" id="" name="exdate">
                                 </div>
-                                
-                                <div class="row mb-6">
-                                  <div class="col-md-12">
-                                    <select class="form-select" aria-label="Default select example" id="aweb">
-                                      <option selected>Choose Tutor</option>
-                                      <option value="1">One</option>
-                                    </select>
-                                  </div>
+
+                                <div class="">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" id="gridCheck1">
+                                  <label class="form-check-label" for="gridCheck1">
+                                   Time - Entry & Exit
+                                  </label>
                                 </div>
-            
-                                <div class="col-md-12">
-                                  <!-- <input type="file" class="form-control" placeholder="Logo"> -->
-                                  <textarea name="" id="amobile" cols="50" rows="2" placeholder="Description"></textarea>
+
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" id="gridCheck1">
+                                  <label class="form-check-label" for="gridCheck1">
+                                  CAGR % 
+                                  </label>
+                                </div>
+
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" id="gridCheck2" >
+                                  <label class="form-check-label" for="gridCheck2">
+                                    Target %
+                                  </label>
+                                </div>
                                 </div>
                                 <div class="text-center">
-                                  <button type="submit" class="btn btn-primary">Submit</button>
-                                  <button type="reset" class="btn btn-secondary">Reset</button>
-                                  <button type="submit" class="btn btn-outline-info"><a href="/#/">Manage</a></button>
+                                  <button type="submit" class="btn btn-primary">Save</button>
+                                  <button type="reset" class="btn btn-secondary">Reset</button>        
                                 </div>
                               </form>
                 
@@ -96,26 +133,75 @@
                             <div class="card-body">
                               <h5 class="card-title"></h5>
                 
-                              <form class="row g-3">
+                              <form class="row g-3" action="#" method="post">
 
-                                <div class="row mb-3">
-                                  <div class="col-md-12">
-                                    <select class="form-select" aria-label="Default select example">
-                                      <option selected>Choose Package</option>
-                                      <option value="1">One</option>
-                                    </select>
-                                  </div>
+                              {% csrf_token %}  <!-- this token takes data -->
+
+                              <div class="col-md-6">
+                              <div class="form-floating mb-3">
+                                <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                                  <option selected>Stock</option>
+                                  <option value="1">One</option>
+                                  <option value="2">Two</option>
+                                  <option value="3">Three</option>
+                                </select>
+                                <!-- <label for="floatingSelect">Works with selects</label> -->
+                              </div>
+                              </div>
+
+                              <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                  <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                                    <option selected>Stock Exchange</option>
+                                    <option value="1">National Stock Exchange - NSE</option>
+                                    <option value="2">Bombay Stock Exchange - BSE</option>
+                                    
+                                  </select>
+                                  <!-- <label for="floatingSelect">Works with selects</label> -->
                                 </div>
-            
-                                <div class="col-md-12">
-                                  <input type="text" class="form-control" placeholder="New Feature" id="f1" name="ff1">
                                 </div>
-                                <span id="valid" style="color: red;text-align: center;"></span>
+
+                                <div class="col-md-6">
+                                  <input type="text" class="form-control" placeholder="Subject" id="" name="qty">
+                                </div> 
+
+                                <div class="col-md-6">
+                                  <textarea name="remark" id="" cols="50" rows="2" placeholder="Describe your queries here..." ></textarea>
+                                </div>
+
+                                <div class="col-md-6">
+                                  <input type="file" class="form-control" placeholder="Date" id="" name="edate">
+                                </div>
+
+                                <div class="col-md-6">
+                                  <input type="date" class="form-control" placeholder="Date" id="" name="exdate">
+                                </div>
+
+                                <div class="">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" id="gridCheck1">
+                                  <label class="form-check-label" for="gridCheck1">
+                                   Time - Entry & Exit
+                                  </label>
+                                </div>
+
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" id="gridCheck1">
+                                  <label class="form-check-label" for="gridCheck1">
+                                  CAGR % 
+                                  </label>
+                                </div>
+
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" id="gridCheck2" >
+                                  <label class="form-check-label" for="gridCheck2">
+                                    Target %
+                                  </label>
+                                </div>
+                                </div>
                                 <div class="text-center">
-
-                                  <input type="submit" class="btn btn-primary" value="Submit" name="submit">
-                                  <button type="reset" class="btn btn-secondary">Reset</button>
-                                  <!-- <button type="submit" class="btn btn-outline-info"><a href="/#/">Manage</a></button> -->
+                                  <button type="submit" class="btn btn-primary">Save</button>
+                                  <button type="reset" class="btn btn-secondary">Reset</button>        
                                 </div>
                               </form>
                 
@@ -123,9 +209,166 @@
                           </div>
                         </div>
                     </div>
-                    <!-- End Profile Edit Form -->
-  
+
                   </div>
+                    <!-- End Profile Edit Form -->
+
+                    <div class="tab-pane fade pt-3" id="profile-settings">
+                      <div class="row">
+                        <div class="col-lg-12">
+              
+                          <div class="card">
+                              <div class="card-body">
+                                <h5 class="card-title"></h5>
+                  
+                                <form class="row g-3" action="/addtrade/" method="post">
+  
+                                {% csrf_token %}  <!-- this token takes data -->
+  
+                                <div class="col-md-6">
+                                  <input type="text" class="form-control" placeholder="Subject" id="" name="qty">
+                                </div> 
+
+                                <div class="col-md-6">
+                                  <textarea name="remark" id="" cols="50" rows="2" placeholder="Describe your queries here..." ></textarea>
+                                </div>
+
+                                <div class="col-md-6">
+                                  <div class="form-floating mb-3">
+                                    <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                                      <option selected>Sectors</option>
+                                      <option value="1">Low</option>
+                                      <option value="2">Medium</option>
+                                      <option value="3">High</option>
+                                    </select>
+                                    <!-- <label for="floatingSelect">Works with selects</label> -->
+                                  </div>
+                                </div>
+                                  
+
+                                  <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                      <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                                        <option selected>Risk Profile</option>
+                                        <option value="1" class="btn btn-outline-success">Low</option>
+                                        <option value="2" class="btn btn-outline-info">Medium</option>
+                                        <option value="3" class="btn btn-outline-danger">High</option>
+                                      </select>
+                                      <!-- <label for="floatingSelect">Works with selects</label> -->
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <input type="number" class="form-control" placeholder="My Capital" id="" name="strg">
+                                  </div>
+                                  <div class="">
+                                    
+
+
+                                    <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" id="gridCheck1">
+                                      <label class="form-check-label" for="gridCheck1">
+                                       Time - Entry & Exit
+                                      </label>
+                                    </div>
+    
+                                    <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" id="gridCheck1">
+                                      <label class="form-check-label" for="gridCheck1">
+                                      CAGR % 
+                                      </label>
+                                    </div>
+    
+                                    <div class="form-check">
+                                      <input class="form-check-input" type="checkbox" id="gridCheck2" >
+                                      <label class="form-check-label" for="gridCheck2">
+                                        Target %
+                                      </label>
+                                    </div>
+                                  </div>
+                                  <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                    <button type="reset" class="btn btn-secondary">Reset</button>        
+                                  </div>
+                                </form>
+                  
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+
+                    </div>
+                    
+                    <div class="tab-pane fade pt-3" id="profile-change-password">
+
+                      <div class="row">
+                        <div class="col-lg-12">
+              
+                          <div class="card">
+                              <div class="card-body">
+                                <h5 class="card-title"></h5>
+                  
+                                <form class="row g-3" action="/addtrade/" method="post">
+  
+                                  {% csrf_token %}  <!-- this token takes data -->
+    
+                                  <div class="col-md-6">
+                                    <input type="text" class="form-control" placeholder="Subject" id="" name="qty">
+                                  </div> 
+  
+                                  <div class="col-md-6">
+                                    <textarea name="remark" id="" cols="50" rows="2" placeholder="Describe your queries here..." ></textarea>
+                                  </div>
+  
+                                    <div class="col-md-6">
+                                      <div class="form-floating mb-3">
+                                        <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                                          <option selected>Risk Profile</option>
+                                          <option value="1" class="btn btn-outline-success">Low</option>
+                                          <option value="2" class="btn btn-outline-info">Medium</option>
+                                          <option value="3" class="btn btn-outline-danger">High</option>
+                                        </select>
+                                        <!-- <label for="floatingSelect">Works with selects</label> -->
+                                      </div>
+                                      
+                                    </div>
+                                    
+                                    <div class="">
+                                      
+  
+  
+                                      <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="gridCheck1">
+                                        <label class="form-check-label" for="gridCheck1">
+                                         Time - Entry & Exit
+                                        </label>
+                                      </div>
+      
+                                      <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="gridCheck1">
+                                        <label class="form-check-label" for="gridCheck1">
+                                        CAGR % 
+                                        </label>
+                                      </div>
+      
+                                      <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="gridCheck2" >
+                                        <label class="form-check-label" for="gridCheck2">
+                                          Target %
+                                        </label>
+                                      </div>
+                                    </div>
+                                    <div class="text-center">
+                                      <button type="submit" class="btn btn-primary">Save</button>
+                                      <button type="reset" class="btn btn-secondary">Reset</button>        
+                                    </div>
+                                  </form>
+                  
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+
+                    </div>
                 </div>
                 <!-- End Bordered Tabs -->
   
@@ -137,50 +380,4 @@
       </section>
       </div>
 </main>
-<script>
-  function Validate()
-  {
-    var a = document.getElementById('aname').value.trim();
-    var b = document.getElementById('aemail').value.trim();
-    var c = document.getElementById('apswd').value.trim();
-    var d = document.getElementById('aweb').value.trim();
-    var e = document.getElementById('amobile').value.trim();
-    /*var validemail=/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;*/
-
-    if(a=="")
-    {
-      document.getElementById('valid').innerHTML = "Enter Package name";
-      return false;
-    }
-    if(b=="")
-    {
-      document.getElementById('valid').innerHTML = "Enter Duration of Course";
-      return false;
-    }
-    if(c=="")
-    {
-      document.getElementById('valid').innerHTML = "Enter Password";
-      return false;
-    }
-    if(c.length<8)
-    {
-      document.getElementById('valid').innerHTML = "Password must contain minimum 8 characters";
-      return false;
-    }
-    if(d=="")
-    {
-      document.getElementById('valid').innerHTML = "Enter Website";
-      return false;
-    }
-    if(e=="")
-    {
-      document.getElementById('valid').innerHTML = "Enter Contact No";
-      return false;
-    }
-  }
-  function FormClear(){
-    document.getElementById('valid').innerHTML = "";
-    return false;
-  }
-</script>
 {% endblock %}
