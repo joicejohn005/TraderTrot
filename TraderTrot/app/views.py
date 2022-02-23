@@ -9,7 +9,8 @@ from matplotlib.style import context
 from app.models import *
 from django.core.files.storage import FileSystemStorage
 from django.db.models import Q
-from datetime import *
+#from datetime import *
+import datetime
 from plotly import express as px
 import plotly.offline as opy
 from plotly import graph_objs as go
@@ -28,6 +29,53 @@ def login(request):
     return render (request,'login.html')
 def user_reg(request):
     return render (request,'user_reg.html')
+def checklogin(request):
+    if request.method=="POST":
+        email = request.POST['email']
+        password = request.POST['pswd']
+        data = login_tbl.objects.filter(Unemail=email,password=password)
+        count= data.count()
+        if count==1:
+            for c in data:
+                #id = c.id
+                if c.type == 0:
+                    id = c.id
+                    request.session['id']=id
+                    return redirect("/newindex/")
+                elif c.type == 1:
+                    id = c.id
+                    request.session['id']=id
+                    return render(request,"ad_home.html")
+                elif c.type == 2:
+                    id = c.id
+                    request.session['id']=id
+
+                    acid=academy_tbl.objects.get(login_id=id)
+                    request.session['acname']=acid.ac_name
+                    return render(request,"acc_home.html")
+                elif c.type == 3:
+                    id = c.id
+                    request.session['id']=id
+                    return render(request,"tu_home.html")
+            
+            return HttpResponseRedirect('/newindex')
+        message="Invalid USername or Password"
+        return render(request,"login.html",{"message2":message})
+
+def newindex(request):
+    if request.session.is_empty():
+      return render(request, 'index.html')
+    id = request.session['id']
+    data=login_tbl.objects.get(id=id)
+    userdata = user_tbl.objects.get(id=data.id)
+    request.session['Name']=userdata.Name
+    return render(request,"index.html")   
+
+def logout(request):
+    if request.session.is_empty():
+        return HttpResponseRedirect('/index')
+    request.session.flush()
+    return HttpResponseRedirect('/index')
 
 #admin  
 def ad_ac_reg(request):
@@ -128,6 +176,13 @@ def addtrade(request):
         trade = tradebook_tbl.objects.create(stock=stock,qty=quantity,b_date=edate,s_date=exdate,buy=entry,sell=exit,pnl=pnl,gain=gain,strategy=strategy,remark=remark,login_id=id)
         trade.save()
     return redirect('/tradebook/')
+    
+def user_request(request):
+    context={'list':stocklist()}
+    return render(request,'user_request.html',context)
+
+def user_reqmanage(request):
+    return render(request,'user_reqmanage.html')
 
 #accademy
 def acc_addPackage(request):
@@ -223,80 +278,35 @@ def addblog(request):
 def clipboard(request):
     return render(request,'clipboard.html')
      
-def checklogin(request):
-    if request.method=="POST":
-        email = request.POST['email']
-        password = request.POST['pswd']
-        data = login_tbl.objects.filter(Unemail=email,password=password)
-        count= data.count()
-        if count==1:
-            for c in data:
-                #id = c.id
-                if c.type == 0:
-                    id = c.id
-                    request.session['id']=id
-                    return redirect("/newindex/")
-                elif c.type == 1:
-                    id = c.id
-                    request.session['id']=id
-                    return render(request,"ad_home.html")
-                elif c.type == 2:
-                    id = c.id
-                    request.session['id']=id
-
-                    acid=academy_tbl.objects.get(login_id=id)
-                    request.session['acname']=acid.ac_name
-                    return render(request,"acc_home.html")
-                elif c.type == 3:
-                    id = c.id
-                    request.session['id']=id
-                    return render(request,"tu_home.html")
-            
-            return HttpResponseRedirect('/newindex')
-        message="Invalid USername or Password"
-        return render(request,"login.html",{"message2":message})
-
-def newindex(request):
-    if request.session.is_empty():
-      return render(request, 'index.html')
-    id = request.session['id']
-    data=login_tbl.objects.get(id=id)
-    userdata = user_tbl.objects.get(id=data.id)
-    request.session['Name']=userdata.Name
-    return render(request,"index.html")   
-
-def logout(request):
-    if request.session.is_empty():
-        return HttpResponseRedirect('/index')
-    request.session.flush()
-    return HttpResponseRedirect('/index')
-
 def date(request):
     date = datetime.datetime.now().strftime("%b %d %Y")
     datetoday = {'date': date}
     return render(request,"ad_ac_reg.html", {"date":date})
 
 #pip install plotly
-# def plot(request):
-#     start=datetime.date(2010,1,1)
-#     end=datetime.date.today()
-#     data = get_history(symbol="TCS",start=start,end=end)
-#     data.to_csv("Tcs.csv")
-#     df=pd.read_csv("Tcs.csv")
-#     data=df.filter(['Close'])
-#     fig=go.figure()
-#     fig.add_trace(go.Scatter(x=train.index,y=train))
+def plot(request):
+    if request.method=="POST":
+        symbol = request.POST['stock']
+    else:
+        symbol = "TCS"
+    start=datetime.date(2010,1,1)
+    end=datetime.date.today()
+    data = get_history(symbol = symbol,start=start,end=end)
+    data.to_csv("stock.csv")
+    df=pd.read_csv("stock.csv")
+    data1=df.filter(['Close'])
+    fig = go.Figure(data=[go.Candlestick(x=df['Date'],
+                open=df['Open'],
+                high=df['High'],
+                low=df['Low'],
+                close=df['Close'])])
+    div=opy.plot(fig,auto_open=False,output_type='div')
+    context={'graph':div,'list':stocklist()}
+    return render(request,'plot.html',context)
 
-   
-#     plt.plot(x,y)
-#     fig=px.line(x, y)
-#     div=opy.plot(fig,auto_open=False,output_type='div')
-#     context={'graph':div}
-#     return render(request,'plot.html',context)
-
-# #pip install nsepy
-# #pip install pandas
-# def stocklist():
-#     df = pd.read_csv('equity.csv')
-#     nselist = df['SYMBOL'].tolist()
-#     return nselist
+#pip install nsepy
+#pip install pandas
+def stocklist():
+    df = pd.read_csv('app/equity.csv')
+    nselist = df['SYMBOL'].tolist()
+    return nselist

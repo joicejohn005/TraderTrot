@@ -100,3 +100,20 @@ class blog_tbl(models.Model):
 
     class Meta:
         db_table= "blog_tbl"
+
+class doubt_tbl(models.Model):
+    dtitle=models.CharField(max_length=100) #mandatory
+    ddesc=models.CharField(max_length=500) #mandatory
+    ddate=models.DateField(auto_now_add=True) #mandatory
+    dstatus=models.CharField(max_length=10) #mandatory
+    dthumb=models.CharField(max_length=100)
+    servicetag=models.CharField(max_length=100)
+    stock=models.CharField(max_length=20)
+    exchange=models.CharField(max_length=20)
+    deadline=models.DateField(auto_now_add=False)
+    risk=models.CharField(max_length=20)
+    capital=models.CharField(max_length=20)
+    sector=models.CharField(max_length=50)
+
+    class Meta:
+        db_table= "doubt_tbl"

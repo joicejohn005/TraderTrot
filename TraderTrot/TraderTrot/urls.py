@@ -45,6 +45,8 @@ urlpatterns = [
     path('tradebook/',views.tradebook),
     path('user_home/',views.user_home),
     path('addtrade/',views.addtrade),
+    path('user_request/',views.user_request),
+    path('user_reqmanage/',views.user_reqmanage),
 
     #accademy
     path('ac_reg/',views.ac_reg),
