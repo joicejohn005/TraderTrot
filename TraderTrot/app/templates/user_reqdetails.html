@@ -25,48 +25,54 @@
                             <div class="card-body">
                               <h5 class="card-title"></h5>
                 
-                              <form class="row g-3" action="" method="post">
+                              <form class="row g-3" action="#" method="post">
 
                               {% csrf_token %}  <!-- this token takes data -->
-
-                              <div class="card mb-3">
+                            <div class="card mb-3">
                                 <span class="badge bg-info text-dark">Send</span>       
 
                                 <div class="row g-0">
                                   <div class="col-md-4">
-                                    <img src="{% static 'assets/img/profile-img.jpg' %}" width="250" height="200" class="img-fluid rounded-start" alt="...">
+                                    <img src="{{reqdet.dthumb}}" width="250" height="200" class="img-fluid rounded-start" alt="{{reqdet.dthumb}}">
+                                    
                                   </div>
                                   <div class="col-md-8">
                                     <div class="card-body">
-                                      <h5 class="card-title">Title of Doubt</h5>
-                                      <p class="card-text">Description</p>
-
+                                      <h5 class="card-title">{{reqdet.dtitle}}</h5>
+                                      <p class="card-text">{{reqdet.ddesc}}</p>
                                     </div>
                                   </div>
-                                  <div class="col-md-6">
-                                    <p>Date: dd/mm/yyyy</p>
+                                  <div class="col-md-4">
+                                    <p>Date: {{reqdet.ddate}}</p>
+
                                   </div>
-                                  <div class="col-md-6">
-                                    <p>Stock Exchange: NSE / BSE</p>
+                                  <div class="col-md-4">
+                                    <p>Stock: {{reqdet.stock}}</p>
+
+                                  </div>
+                                  <div class="col-md-4">
+                                    <p>Stock Exchange: {{reqdet.exchange}}</p>
                                   </div>
                                 </div>
                               </div>
 
                                 <div class="col-md-8">
                                     <div class="card-body">
-                                      <h5 class="card-title">Requested Services : s1,s2,s3</h5>
+                                      <h5 class="card-title">Requested Services : {{reqdet.cagr}},{{reqdet.target}},{{reqdet.time}}</h5>
+
                                       <div class="col-md-6">
-                                        <h5 class="card-title">My Risk : low/mid/high</h5>
-                                        <h5 class="card-title">My Capital : 1000</h5>
-                                        <h5 class="card-title">Sector : 1000</h5>
+                                        <h5 class="card-title">My Risk : {{reqdet.risk}}</h5>
+                                        <h5 class="card-title">My Capital : {{reqdet.capital}}</h5>
+                                        <h5 class="card-title">Sector : {{reqdet.sector}}</h5>
                                       </div>
                                   </div>
                                 </div>
                                 </div>
                                
                                 <div class="text-center">
-                                  <button type="submit" class="btn btn-outline-primary">Edit</button>
-                                  <button type="reset" class="btn btn-outline-danger">Cancel</button> 
+                                  <!-- <button type="submit" class="btn btn-outline-primary">Edit</button> -->
+                                  <input type="hidden" value="" name="doubtid">
+                                  <input type="submit" class="btn btn-danger" value="Cancel">
                                   <!-- <span class="badge bg-primary">Primary</span>
                                   <span class="badge bg-secondary">Secondary</span>
                                   <span class="badge bg-success">Success</span>

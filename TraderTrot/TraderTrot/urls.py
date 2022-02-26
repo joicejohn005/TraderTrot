@@ -42,18 +42,21 @@ urlpatterns = [
 
     #user/trader
     path('user_reg',views.user_reg),
-    path('tradebook/',views.tradebook),
     path('user_home/',views.user_home),
+
+    path('tradebook/',views.tradebook),
     path('addtrade/',views.addtrade),
+    
     path('user_request/',views.user_request),
     path('user_reqmanage/',views.user_reqmanage),
-    path('user_reqdetails/',views.user_reqdetails),
+    path('user_reqdetails/<int:id>',views.user_reqdetails),
     path('user_reqsolution/',views.user_reqsolution),
     path('invest_req/',views.invest_req),
     path('trade_req/',views.trade_req),
     path('tips_req/',views.tips_req),
     path('other_req/',views.other_req),
 
+    #path('deletereq/',views.deletereq),
 
     #accademy
     path('ac_reg/',views.ac_reg),
@@ -77,3 +80,6 @@ urlpatterns = [
     path('plotly/',views.plot)
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

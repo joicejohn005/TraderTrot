@@ -32,28 +32,35 @@
                         <div class="card">
                             <div class="card-body">
                               <h5 class="card-title"></h5>
-                
-                              <table class="table table-hover">
-                                <thead>
-                                  <tr>
-                                    <!-- <th scope="col">No</th> -->    
-                                    <th scope="col">User</th>
-                                    <th scope="col">title</th>
-                                    <th scope="col">Deadline</th>
-                                    <th scope="col">Action</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr>  
-                                  
-                                    <td>blah</td>
-                                    <td>blah</td>
-                                    <td>blah</td>
-                                    <td>
-                                      <a href="/user_reqdetails/"><button type="button" class="btn btn-success btn-sm">Open</button></a>
-                                  </tr>
-                                </tbody>
-                              </table>
+                              <form action="/tu_dbtdetails/" method="post">
+                              {% csrf_token %}  <!-- this token takes data -->
+
+                                <table class="table table-hover">
+                                  <thead>
+                                    <tr>
+                                      <!-- <th scope="col">No</th> -->    
+                                      <th scope="col">User</th>
+                                      <th scope="col">title</th>
+                                      <th scope="col">Deadline</th>
+                                      <th scope="col">Action</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>  
+                                    {% for j in dbt %}
+                                      <td>{{j.name}}</td>
+                                      <td>{{j.dtitle}}</td>
+                                      <td>{{j.deadline}}</td>
+                                      <td>
+                                        <input type="hidden" value="{{j.id}}" name="doubtid">
+                                        <input type="submit" class="btn btn-success btn-sm" value="View">
+                                       </tr>
+                                    {% endfor %}
+                                  </tbody>
+                                </table>
+
+                              </form>
+                              
                 
                             </div>
                           </div>

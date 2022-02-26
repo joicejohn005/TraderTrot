@@ -45,29 +45,39 @@
                         <div class="card">
                             <div class="card-body">
                               <h5 class="card-title"></h5>
-                
-                              <table class="table table-hover">
-                                <thead>
-                                  <tr>
-                                    <!-- <th scope="col">No</th> -->    
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Title</th>
-                                    <th scope="col">Type</th>
-                                    <th scope="col">Action</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr>  
-                                  
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>
-                                      <a href="/user_reqdetails/"><button type="button" class="btn btn-success btn-sm">View</button></a>
-                                  </tr>
-                                </tbody>
-                              </table>
-                
+                              <form action="#" method="post">
+                                {% csrf_token %}  <!-- this token takes data -->
+
+                                <table class="table table-hover">
+                                  <thead>
+                                    <tr>
+                                      <!-- <th scope="col">No</th> -->    
+                                      <th scope="col">Date</th>
+                                      <th scope="col">Title</th>
+                                      <th scope="col">Status</th>
+                                      <!-- <th scope="col">Status</th> -->
+                                      <th scope="col">Action</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      {% for j in ureq %}
+                                      <td>{{j.ddate}}</td>
+                                      <td>{{j.dtitle}}</td>
+                                      <!-- <td>{{j.dtype}}</td> -->
+                                      <td>{{j.dstatus}}</td>
+                                      <td>
+
+                                        <!-- <input type="hidden" value="{{j.id}}" name="doubtid">
+                                        {{j.id}}
+                                        <input type="submit" class="btn btn-success btn-sm" value="View"> -->
+                                        <a href="/user_reqdetails/{{j.id}}"><button type="button" class="btn btn-success btn-sm">View</button></a>
+                                    </tr>
+                                    {% endfor %}
+                                  </tbody>
+                                </table>
+                              </form>
+                              
                             </div>
                           </div>
                         </div>
@@ -83,29 +93,35 @@
                         <div class="card">
                             <div class="card-body">
                               <h5 class="card-title"></h5>
-                
+                              <form action="/user_reqdetails/" method="post">
+                              {% csrf_token %}  <!-- this token takes data -->
+
                               <table class="table table-hover">
                                 <thead>
                                   <tr>
                                     <!-- <th scope="col">No</th> -->    
                                     <th scope="col">Date</th>
                                     <th scope="col">Title</th>
-                                    <th scope="col">Type</th>
+                                    <th scope="col">Status</th>
                                     <th scope="col">Action</th>
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr>  
-                                  
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                  <tr>
+                                    {% for j in ureq %}
+                                    <td>{{j.ddate}}</td>
+                                    <td>{{j.dtitle}}</td>
+                                    <!-- <td>{{j.dtype}}</td> -->
+                                    <td>{{j.dstatus}}</td>
                                     <td>
-                                      <a href="/user_reqdetails/"><button type="button" class="btn btn-success btn-sm">View</button></a>
+                                      <input type="hidden" value="{{j.id}}" name="doubtid">
+                                      <input type="submit" class="btn btn-success btn-sm" value="View">
+                                      <!-- <a href="/user_reqdetails/"><button type="button" class="btn btn-success btn-sm">View</button></a> -->
                                   </tr>
+                                  {% endfor %}
                                 </tbody>
                               </table>
-                
+                              </form>
                             </div>
                           </div>
                         </div>
@@ -121,29 +137,35 @@
                           <div class="card">
                               <div class="card-body">
                                 <h5 class="card-title"></h5>
-                  
+                                <form action="/user_reqdetails/" method="post">
+                                {% csrf_token %}  <!-- this token takes data -->
+
                                 <table class="table table-hover">
                                   <thead>
                                     <tr>
                                       <!-- <th scope="col">No</th> -->    
                                       <th scope="col">Date</th>
                                       <th scope="col">Title</th>
-                                      <th scope="col">Type</th>
+                                      <th scope="col">Status</th>
                                       <th scope="col">Action</th>
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <tr>  
-                                    
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
+                                    <tr>
+                                      {% for j in ureq %}
+                                      <td>{{j.ddate}}</td>
+                                      <td>{{j.dtitle}}</td>
+                                      <!-- <td>{{j.dtype}}</td> -->
+                                      <td>{{j.dstatus}}</td>
                                       <td>
-                                        <a href="/user_reqdetails/"><button type="button" class="btn btn-success btn-sm">View</button></a>
+                                        <input type="hidden" value="{{j.id}}" name="doubtid">
+                                        <input type="submit" class="btn btn-success btn-sm" value="View">
+                                        <!-- <a href="/user_reqdetails/"><button type="button" class="btn btn-success btn-sm">View</button></a> -->
                                     </tr>
+                                    {% endfor %}
                                   </tbody>
                                 </table>
-                  
+                                </form>
                               </div>
                             </div>
                           </div>
@@ -159,7 +181,7 @@
                           <div class="card">
                               <div class="card-body">
                                 <h5 class="card-title"></h5>
-                  
+                                <form action="#" method="post">
                                 <table class="table table-hover">
                                   <thead>
                                     <tr>
@@ -171,17 +193,22 @@
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <tr>  
-                                    
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
+                                    <tr>
+                                      {% for i in sol %}
+                                      {% for j in ureq %}
+
+                                      <td>{{i.sdate}}</td>
+                                      <td>{{j.dtitle}}</td>
+                                      <!-- <td>{{j.dtype}}</td> -->
+                                      <td>{{j.dtype}}</td>
                                       <td>
-                                        <a href="/user_reqsolution/"><button type="button" class="btn btn-success btn-sm">View</button></a>
+                                        <input type="submit" class="btn btn-success btn-sm" value="View">
                                     </tr>
+                                    {% endfor %}
+                                    {% endfor %}
                                   </tbody>
                                 </table>
-                  
+                                </form>
                               </div>
                             </div>
                           </div>

@@ -79,10 +79,13 @@ def logout(request):
 
 #admin  
 def ad_ac_reg(request):
+    if request.session.is_empty():
+        return HttpResponseRedirect('login/')
     return render(request,'ad_ac_reg.html')
 
 def ac_reg(request):
-    
+    if request.session.is_empty():
+        return HttpResponseRedirect('login/')
     e=login_tbl()
     mail=request.POST.get('email')   
     e.Unemail=mail
@@ -112,16 +115,22 @@ def ac_reg(request):
     return redirect('/ad_acManage/')
 
 def ad_userManage(request):
+    if request.session.is_empty():
+        return HttpResponseRedirect('login/')
     userdata=user_tbl.objects.all()
     logindata=login_tbl.objects.all()
     return render(request,'ad_userManage.html',{"b":userdata,"c":logindata})
 
 def ad_acManage(request):
+    if request.session.is_empty():
+        return HttpResponseRedirect('login/')
     acdata=academy_tbl.objects.all()
     logindata=login_tbl.objects.all()
     return render(request,'ad_acManage.html',{"a":acdata,"b":logindata})
 
 def ad_home(request):
+    if request.session.is_empty():
+        return HttpResponseRedirect('login/')
     return render(request,'ad_home.html')
  
 #user
@@ -150,6 +159,8 @@ def register(request):
         return render(request, 'user_reg.html',{"message":message2})
 
 def user_home(request):
+    if request.session.is_empty():
+        return HttpResponseRedirect('login/')
     return render(request,'user_home.html')
 
 def tradebook(request):
@@ -178,6 +189,8 @@ def addtrade(request):
     return redirect('/tradebook/')
     
 def user_request(request):
+    if request.session.is_empty():
+        return HttpResponseRedirect('/login')
     context={'list':stocklist()}
     return render(request,'user_request.html',context)
 
@@ -298,16 +311,35 @@ def other_req(request):
         
 
 def user_reqmanage(request):
-    return render(request,'user_reqmanage.html')
+    if request.session.is_empty():
+        return HttpResponseRedirect('/login')
+    id=request.session['id']    
+    requestdata = doubt_tbl.objects.filter(login_id=id)
+    return render(request,'user_reqmanage.html',{"ureq":requestdata})
 
-def user_reqdetails(request):
-    return render(request,'user_reqdetails.html')
+def user_reqdetails(request,id):
+    if request.session.is_empty():
+        return HttpResponseRedirect('/login')
+    reqdetail = doubt_tbl.objects.get(id=id)
+    return render(request,'user_reqdetails.html',{"reqdet":reqdetail})
+
+# def deletereq(request):
+#     if request.method=="POST":
+#         doubtid = request.POST['doubtid']
+#         dltreq = doubt_tbl.objects.filter(id=doubtid)
+#         return render(request,'user_reqmanage.html',{"dltreq":dltreq})
+#         dltreq.delete()
 
 def user_reqsolution(request):
-    return render(request,'user_reqsolution.html')
+    if request.session.is_empty():
+        return HttpResponseRedirect('login/')
+    solution = solution_tbl.objects.all()
+    return render(request,'user_reqsolution.html',{"sol":solution})
 
 #accademy
 def acc_addPackage(request):
+    if request.session.is_empty():
+        return HttpResponseRedirect('login/')
     return render(request,'acc_addPackage.html')
 
 def addPackage(request):
@@ -331,6 +363,8 @@ def addPackage(request):
         return redirect('/acc_addPackage/')
 
 def acc_addTutors(request):
+    if request.session.is_empty():
+        return HttpResponseRedirect('login/')
     return render(request,'acc_addTutors.html')
 
 def addTutors(request):
@@ -365,13 +399,19 @@ def acc_tutorManage(request):
     return render(request,'acc_addTutors.html',{"a":tutordata})
 
 def acc_home(request):
+    if request.session.is_empty():
+        return HttpResponseRedirect('login/')
     return render(request,'acc_home.html')
 
 #tutor activities
 def tu_addBlog(request):
+    if request.session.is_empty():
+        return HttpResponseRedirect('login/')
     return render(request,'tu_addBlog.html')
 
 def tu_home(request):
+    if request.session.is_empty():
+        return HttpResponseRedirect('login/')
     return render(request,'tu_home.html')
 
 def addblog(request):
@@ -397,9 +437,16 @@ def addblog(request):
     return redirect('/tu_addBlog/')
 
 def tu_dbtlist(request):
-    return render(request,'tu_dbtlist.html')
+    if request.session.is_empty():
+        return HttpResponseRedirect('/login')
+    # users = user_tbl.objects.all()
+    # name = users.Name
+    # doubtlist = doubt_tbl.objects.all()
+    return render(request,'tu_dbtlist.html')#{"dbt":doubtlist,"name":name}
 
 def tu_dbtdetails(request):
+    if request.session.is_empty():
+        return HttpResponseRedirect('login/')
     return render(request,'tu_dbtdetails.html')
 
 #testing
