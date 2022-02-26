@@ -403,7 +403,7 @@ def date(request):
 #pip install plotly
 def plot(request):
     if request.method=="POST":
-        symbol = request.POST['stock']
+        symbol = request.POST['stock'] 
     else:
         symbol = "TCS"
     start=datetime.date(2010,1,1)
