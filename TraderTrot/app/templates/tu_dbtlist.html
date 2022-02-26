@@ -32,7 +32,7 @@
                         <div class="card">
                             <div class="card-body">
                               <h5 class="card-title"></h5>
-                              <form action="/tu_dbtdetails/" method="post">
+                              <form>
                               {% csrf_token %}  <!-- this token takes data -->
 
                                 <table class="table table-hover">
@@ -48,13 +48,16 @@
                                   <tbody>
                                     <tr>  
                                     {% for j in dbt %}
-                                      <td>{{j.name}}</td>
+                                    {% for k in user %}
+                                    {% if j.login_id == k.login_id %}
+                                      <td>{{k.Name}}</td>
                                       <td>{{j.dtitle}}</td>
                                       <td>{{j.deadline}}</td>
                                       <td>
-                                        <input type="hidden" value="{{j.id}}" name="doubtid">
-                                        <input type="submit" class="btn btn-success btn-sm" value="View">
+                                        <a href="/tu_dbtdetails/{{j.id}}"><button type="button" class="btn btn-success btn-sm">View</button></a>
                                        </tr>
+                                       {% endif %}
+                                    {% endfor %}
                                     {% endfor %}
                                   </tbody>
                                 </table>

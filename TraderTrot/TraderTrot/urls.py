@@ -56,7 +56,7 @@ urlpatterns = [
     path('tips_req/',views.tips_req),
     path('other_req/',views.other_req),
 
-    #path('deletereq/',views.deletereq),
+    path('deletereq/',views.deletereq),
 
     #accademy
     path('ac_reg/',views.ac_reg),
@@ -71,14 +71,14 @@ urlpatterns = [
     path('tu_home/',views.tu_home),
     path('addblog/',views.addblog),
     path('tu_dbtlist/',views.tu_dbtlist),
-    path('tu_dbtdetails/',views.tu_dbtdetails),
-
-    #
+    path('tu_dbtdetails/<int:id>',views.tu_dbtdetails),
+    path('markview/<int:did>',views.markview),
+    path('markpro/<int:did>',views.markpro),
+    path('solution/',views.solution),
 
     #testing
     path('clipboard/',views.clipboard),
     path('plotly/',views.plot)
-
 ]
 
 if settings.DEBUG:

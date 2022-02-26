@@ -323,12 +323,12 @@ def user_reqdetails(request,id):
     reqdetail = doubt_tbl.objects.get(id=id)
     return render(request,'user_reqdetails.html',{"reqdet":reqdetail})
 
-# def deletereq(request):
-#     if request.method=="POST":
-#         doubtid = request.POST['doubtid']
-#         dltreq = doubt_tbl.objects.filter(id=doubtid)
-#         return render(request,'user_reqmanage.html',{"dltreq":dltreq})
-#         dltreq.delete()
+def deletereq(request):
+    if request.method=="POST":
+        doubtid = request.POST['doubtid']
+        dltreq = doubt_tbl.objects.get(id=doubtid)
+        dltreq.delete()
+        return redirect('/user_reqmanage/')
 
 def user_reqsolution(request):
     if request.session.is_empty():
@@ -439,15 +439,46 @@ def addblog(request):
 def tu_dbtlist(request):
     if request.session.is_empty():
         return HttpResponseRedirect('/login')
-    # users = user_tbl.objects.all()
-    # name = users.Name
-    # doubtlist = doubt_tbl.objects.all()
-    return render(request,'tu_dbtlist.html')#{"dbt":doubtlist,"name":name}
+    users = user_tbl.objects.all()
+    doubtlist = doubt_tbl.objects.all()
+    return render(request,'tu_dbtlist.html',{"dbt":doubtlist,"user":users})
 
-def tu_dbtdetails(request):
+def tu_dbtdetails(request,id):
     if request.session.is_empty():
-        return HttpResponseRedirect('login/')
-    return render(request,'tu_dbtdetails.html')
+        return HttpResponseRedirect('/login')
+ 
+    dbtdetails = doubt_tbl.objects.get(id=id)
+    name = user_tbl.objects.get(login_id=dbtdetails.login_id)
+    return render(request,'tu_dbtdetails.html',{"dbtdetails":dbtdetails,"name":name})
+
+def markview(request,did):
+    sts = doubt_tbl.objects.get(id=did)
+    sts.dstatus='Viewed'
+    sts.save()
+    return redirect(tu_dbtdetails,id=did)
+
+def markpro(request,did):
+    sts = doubt_tbl.objects.get(id=did)
+    sts.dstatus='Processed'
+    sts.save()
+    return redirect(tu_dbtdetails,id=did)
+
+def solution(request):
+    if request.method=="POST":
+        solution = request.POST['remark']
+        website = request.POST['qty']
+        dbtid = request.POST['solid']
+
+        id = request.session['id']   
+        tut = tutor_tbl.objects.get(login_id=id)
+        sol = solution_tbl.objects.create(solution=solution,link=website,doubt_id=dbtid,login_id=tut.id)
+        sol.save()
+    
+        sts = doubt_tbl.objects.get(id=dbtid)
+        sts.dstatus='Finished'
+        sts.save()
+    
+    return redirect('/tu_dbtlist/')
 
 #testing
 def clipboard(request):

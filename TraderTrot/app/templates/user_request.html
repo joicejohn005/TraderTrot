@@ -142,7 +142,7 @@
                             <div class="card-body">
                               <h5 class="card-title"></h5>
                 
-                              <form class="row g-3" action="/trade_req/" method="post">
+                              <form class="row g-3" action="/trade_req/" method="post" enctype="multipart/form-data">
 
                               {% csrf_token %}  <!-- this token takes data -->
 
@@ -238,7 +238,7 @@
                               <div class="card-body">
                                 <h5 class="card-title"></h5>
                   
-                                <form class="row g-3" action="/tips_req/" method="post">
+                                <form class="row g-3" action="/tips_req/" method="post" enctype="multipart/form-data">
   
                                 {% csrf_token %}  <!-- this token takes data -->
   

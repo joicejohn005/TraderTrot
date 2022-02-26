@@ -43,42 +43,43 @@
                               {% csrf_token %}  <!-- this token takes data -->
 
                               <div class="card mb-3">
-                                <span class="badge bg-info text-dark card-title">User Name</span>       
+                                <span class="badge bg-info text-dark card-title">{{name.Name}}</span>       
 
                                 <div class="row g-0">
                                   <div class="col-md-4">
-                                    <img src="{% static 'assets/img/profile-img.jpg' %}" width="250" height="200" class="img-fluid rounded-start" alt="...">
+                                    <img src="{{dbtdetails.dthumb}}" width="250" height="200" class="img-fluid rounded-start" alt="{{dbtdetails.dthumb}}">
                                   </div>
                                   <div class="col-md-8">
                                     <div class="card-body">
-                                      <h5 class="card-title">Title of Doubt</h5>
-                                      <p class="card-text">Description</p>
-
+                                      <h5 class="card-title">{{dbtdetails.dtitle}}</h5>
+                                      <p class="card-text">{{dbtdetails.ddesc}}</p>
                                     </div>
                                   </div>
                                   <div class="col-md-6">
-                                    <h5 class="card-title">Date: dd/mm/yyyy</h5>
+                                    <h5 class="card-title">Date: {{dbtdetails.ddate}}</h5>
                                   </div>
                                   <div class="col-md-6">
-                                    <h5 class="card-title">Stock Exchange: NSE / BSE</h5>
+                                    <h5 class="card-title">Stock Exchange: {{dbtdetails.exchange}}</h5>
                                   </div>
                                 </div>
                               </div>
 
                                 <div class="col-md-8">
                                     <div class="card-body">
-                                      <h5 class="card-title">Requested Services : s1,s2,s3</h5>
+                                      <h5 class="card-title">Requested Services : {{dbtdetails.cagr}},{{dbtdetails.target}},{{dbtdetails.time}}</h5>
                                       <div class="col-md-6">
-                                        <h5 class="card-title">Risk Details: low/mid/high</h5>
-                                        <h5 class="card-title">Capital : 1000</h5>
-                                        <h5 class="card-title">Sector : ##sector</h5>
+                                        <h5 class="card-title">Risk Details: {{dbtdetails.risk}}</h5>
+                                        <h5 class="card-title">Capital : {{dbtdetails.capital}}</h5>
+                                        <h5 class="card-title">Sector : {{dbtdetails.sector}}</h5>
                                       </div>
                                   </div>
                                 </div>
                                 </div>
                                
                                 <div class="text-center">
-                                  <button type="submit" class="btn btn-outline-success">Mark as <span class="badge bg-success">Viewed</span></button>
+                                  <a href="/markview/{{dbtdetails.id}}" class="btn btn-outline-success">
+                                 Mark as <span class="badge bg-success">Viewed</span>
+                                  </a>
                                 </div>
                               </form>
                 
@@ -95,12 +96,12 @@
                                   <div class="card-body">
                                     <h5 class="card-title"></h5>
                       
-                                    <form class="row g-3" action="#" method="post">
+                                    <form class="row g-3" action="/solution/" method="post">
 
                                         {% csrf_token %}  <!-- this token takes data -->
-          
+                                        <input type="hidden" name="solid" value="{{dbtdetails.id}}">
                                         <div class="col-md-6">
-                                            <textarea name="remark" id="desc" cols="65" rows="2" placeholder="Solution Description" ></textarea>
+                                            <textarea name="remark" id="desc" cols="50" rows="2" placeholder="Solution Description" ></textarea>
                                         </div>
           
                                         <div class="col-md-6">
@@ -108,7 +109,11 @@
                                         </div> 
           
                                           <div class="text-center">
-                                            <button class="btn btn-outline-info" data-bs-toggle="tab" data-bs-target="#profile-edit">Mark as<span class="badge bg-primary">Processed</span></button> 
+                                            <a href="/markpro/{{dbtdetails.id}}" class="btn btn-outline-info" >
+                                              Mark as<span class="badge bg-primary">Processed</span>
+                                            </a>
+                                           
+                                            <!-- <button  data-bs-toggle="tab" data-bs-target="#profile-edit"></button>  -->
                                             <button class="btn btn-outline-success" data-bs-toggle="tab" data-bs-target="#profile-edit">Send<span class="badge bg-success">Solution</span></button> 
                                         </div>
                                         </form>
