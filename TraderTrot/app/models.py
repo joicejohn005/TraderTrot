@@ -105,7 +105,7 @@ class blog_tbl(models.Model):
 class doubt_tbl(models.Model):
     dtitle=models.CharField(max_length=100) #mandatory
     ddesc=models.CharField(max_length=500) #mandatory
-    dtype=models.CharField(max_length=10,default=NULL) #mandatory
+    dtype=models.CharField(max_length=20,default=NULL) #mandatory
     ddate=models.DateField(auto_now_add=True) #mandatory
     dstatus=models.CharField(max_length=10) #mandatory
     dthumb=models.CharField(max_length=100,null=True)

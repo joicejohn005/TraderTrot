@@ -9,8 +9,8 @@ from matplotlib.style import context
 from app.models import *
 from django.core.files.storage import FileSystemStorage
 from django.db.models import Q
-#from datetime import *
-import datetime
+from datetime import datetime
+#import datetime
 from plotly import express as px
 import plotly.offline as opy
 from plotly import graph_objs as go
@@ -198,6 +198,12 @@ def invest_req(request):
             uurl=uploaded_file_url
               
         deadline=request.POST.get('deadline')
+        try:
+            datetime.strptime(deadline, '%Y-%m-%d')
+            deadline = deadline
+        except ValueError:
+            deadline = None
+
         time = request.POST['time']
         cagr = request.POST['cagr']
         target = request.POST['target']
@@ -229,6 +235,12 @@ def trade_req(request):
             uurl=uploaded_file_url
               
         deadline=request.POST.get('deadline')
+        try:
+            datetime.strptime(deadline, '%Y-%m-%d')
+            deadline = deadline
+        except ValueError:
+            deadline = None
+
         time = request.POST['time']
         cagr = request.POST['cagr']
         target = request.POST['target']
@@ -255,7 +267,7 @@ def tips_req(request):
         cagr = request.POST['cagr']
         target = request.POST['target']
 
-        dtype = "Trading"
+        dtype = "Tips"
         dstatus = "send"
 
         id = request.session['id']
@@ -266,17 +278,16 @@ def tips_req(request):
     return redirect('/user_request/')
 
 def other_req(request):
-    if request.mrthod=="POST":
+    if request.method=="POST":
         risk = request.POST['risk']
         subject = request.POST['sub']
         desc = request.POST['remark']
-        risk = request.POST['risk']
 
         time = request.POST['time']
         cagr = request.POST['cagr']
         target = request.POST['target']
 
-        dtype = "Trading"
+        dtype = "General Doubt"
         dstatus = "send"
 
         id = request.session['id']
