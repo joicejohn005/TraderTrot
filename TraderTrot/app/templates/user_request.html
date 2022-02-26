@@ -44,33 +44,34 @@
                         <div class="card">
                             <div class="card-body">
                               <h5 class="card-title"></h5>
-                
-                              <form class="row g-3" action="#" method="post">
+
+                              <!-- investing request -->
+                              <form class="row g-3" action="/invest_req/" method="post" enctype="multipart/form-data">
 
                               {% csrf_token %}  <!-- this token takes data -->
 
                               <div class="col-md-6">
-                              <div class="form-floating mb-3">
-                                <input list="stock" class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                                <datalist id="stock">  
-                                <option selected>Stock</option>
-                                  {% if list %}
-                                  {% for i in list %}
+                                <div class="form-floating mb-3">
+                                  <input list="stock" class="form-select" name="stock" id="floatingSelect" aria-label="Floating label select example" placeholder="Stock" required>
+                              <datalist id="stock">  
+                                <option selected disabled>Stock</option>
+                                {% if list %}
+                                {% for i in list %}
                                   <option value={{i}}>{{i}}</option>
-                                  {% endfor %}
-                                 {% endif %}
-                                </datalist>
-                              </input>
-                                <!-- <label for="floatingSelect">Works with selects</label> -->
-                              </div>
+                                {% endfor %}
+                               {% endif %}
+                              </datalist>
+                            </input>
+                                  <!-- <label for="floatingSelect">Works with selects</label> -->
+                                </div>
                               </div>
 
                               <div class="col-md-6">
                                 <div class="form-floating mb-3">
-                                  <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                                    <option selected>Stock Exchange</option>
-                                    <option value="1">National Stock Exchange - NSE</option>
-                                    <option value="2">Bombay Stock Exchange - BSE</option>
+                                  <select class="form-select" id="floatingSelect" aria-label="Floating label select example" name="stkex">
+                                    <option value="">Stock Exchange</option>
+                                    <option value="NSE">National Stock Exchange - NSE</option>
+                                    <option value="BSE">Bombay Stock Exchange - BSE</option>
                                     
                                   </select>
                                   <!-- <label for="floatingSelect">Works with selects</label> -->
@@ -78,45 +79,49 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                  <input type="text" class="form-control" placeholder="Subject" id="" name="qty">
+                                  <input type="text" class="form-control" placeholder="Subject" id="" name="sub" required>
                                 </div> 
 
                                 <div class="col-md-6">
-                                  <textarea name="remark" id="" cols="50" rows="2" placeholder="Describe your queries here..." ></textarea>
+                                  <textarea name="remark" id="" cols="68" rows="2" placeholder="Describe your queries here..." required></textarea>
                                 </div>
 
                                 <div class="col-md-6">
-                                  <input type="file" class="form-control" placeholder="Date" id="" name="edate">
+                                  <input class="form-check-input" type="hidden" id="gridCheck1" name="pic" value="">
+                                  <input type="file" class="form-control" placeholder="Date" id="" name="pic">
                                 </div>
 
                                 <div class="col-md-6">
-                                  <input type="date" class="form-control" placeholder="Date" id="" name="exdate">
+                                  <input type="date" class="form-control" placeholder="Date" id="" name="deadline" required>
                                 </div>
 
                                 <div class="">
                                 <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" id="gridCheck1">
+                                  <input class="form-check-input" type="hidden" id="gridCheck1" name="time" value="">
+                                  <input class="form-check-input" type="checkbox" id="gridCheck1" name="time" value="TIME">
                                   <label class="form-check-label" for="gridCheck1">
                                    Time - Entry & Exit
                                   </label>
                                 </div>
 
                                 <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" id="gridCheck1">
+                                  <input class="form-check-input" type="hidden" id="gridCheck1" name="cagr" value="">
+                                  <input class="form-check-input" type="checkbox" id="gridCheck1" name="cagr" value="CAGR">
                                   <label class="form-check-label" for="gridCheck1">
                                   CAGR % 
                                   </label>
                                 </div>
 
                                 <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" id="gridCheck2" >
+                                  <input class="form-check-input" type="hidden" id="gridCheck1" name="target" value="">
+                                  <input class="form-check-input" type="checkbox" id="gridCheck2" name="target" value="TARGET">
                                   <label class="form-check-label" for="gridCheck2">
                                     Target %
                                   </label>
                                 </div>
                                 </div>
                                 <div class="text-center">
-                                  <button type="submit" class="btn btn-primary">Save</button>
+                                  <input type="submit" class="btn btn-primary" value="Request">
                                   <button type="reset" class="btn btn-secondary">Reset</button>        
                                 </div>
                               </form>
@@ -137,32 +142,32 @@
                             <div class="card-body">
                               <h5 class="card-title"></h5>
                 
-                              <form class="row g-3" action="#" method="post">
+                              <form class="row g-3" action="/trade_req/" method="post">
 
                               {% csrf_token %}  <!-- this token takes data -->
 
                               <div class="col-md-6">
-                              <div class="form-floating mb-3">
-                                <input list="stock" class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                                <datalist id="stock">  
+                                <div class="form-floating mb-3">
+                                  <input list="stock" name="stock" class="form-select" id="floatingSelect" aria-label="Floating label select example" placeholder="Stock" required>
+                              <datalist id="stock">  
                                 <option selected>Stock</option>
-                                  {% if list %}
-                                  {% for i in list %}
-                                  <option value={{i}}>{{i}}</option>
-                                  {% endfor %}
-                                 {% endif %}
-                                </datalist>
-                              </input>
-                                <!-- <label for="floatingSelect">Works with selects</label> -->
-                              </div>
+                                {% if list %}
+                                {% for i in list %}
+                                <option value={{i}}>{{i}}</option>
+                                {% endfor %}
+                               {% endif %}
+                              </datalist>
+                            </input>
+                                  <!-- <label for="floatingSelect">Works with selects</label> -->
+                                </div>
                               </div>
 
                               <div class="col-md-6">
                                 <div class="form-floating mb-3">
-                                  <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                                    <option selected>Stock Exchange</option>
-                                    <option value="1">National Stock Exchange - NSE</option>
-                                    <option value="2">Bombay Stock Exchange - BSE</option>
+                                  <select class="form-select" name="stkex" id="floatingSelect" aria-label="Floating label select example">
+                                    <option selected value="">Stock Exchange</option>
+                                    <option value="NSE">National Stock Exchange - NSE</option>
+                                    <option value="BSE">Bombay Stock Exchange - BSE</option>
                                     
                                   </select>
                                   <!-- <label for="floatingSelect">Works with selects</label> -->
@@ -170,45 +175,49 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                  <input type="text" class="form-control" placeholder="Subject" id="" name="qty">
+                                  <input type="text" class="form-control" placeholder="Subject" id="" name="sub" required>
                                 </div> 
 
                                 <div class="col-md-6">
-                                  <textarea name="remark" id="" cols="50" rows="2" placeholder="Describe your queries here..." ></textarea>
+                                  <textarea name="remark" id="" cols="68" rows="2" placeholder="Describe your queries here..." required></textarea>
                                 </div>
 
                                 <div class="col-md-6">
-                                  <input type="file" class="form-control" placeholder="Date" id="" name="edate">
+                                  <input type="file" class="form-control" placeholder="Choose relevent picture" id="" name="pic" >
                                 </div>
 
                                 <div class="col-md-6">
-                                  <input type="date" class="form-control" placeholder="Date" id="" name="exdate">
+                                  <input type="date" class="form-control" placeholder="Date" id="" name="deadline" required>
                                 </div>
 
                                 <div class="">
                                 <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" id="gridCheck1">
+                                  <input class="form-check-input" type="hidden" id="gridCheck1" name="time" value="">
+                                  <input class="form-check-input" type="checkbox" id="gridCheck1" name="time" value="TIME">
                                   <label class="form-check-label" for="gridCheck1">
                                    Time - Entry & Exit
                                   </label>
                                 </div>
 
                                 <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" id="gridCheck1">
+                                  <input class="form-check-input" type="hidden" id="gridCheck1" name="cagr" value="">
+                                  <input class="form-check-input" type="checkbox" id="gridCheck1" name="cagr" value="CAGR">
                                   <label class="form-check-label" for="gridCheck1">
                                   CAGR % 
                                   </label>
                                 </div>
 
                                 <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" id="gridCheck2" >
+                                  <input class="form-check-input" type="hidden" id="gridCheck1" name="target" value="">
+                                  <input class="form-check-input" type="checkbox" id="gridCheck1" name="target" value="TARGET">
                                   <label class="form-check-label" for="gridCheck2">
                                     Target %
                                   </label>
                                 </div>
                                 </div>
                                 <div class="text-center">
-                                  <button type="submit" class="btn btn-primary">Save</button>
+                                  <input type="submit" class="btn btn-primary" value="Request">
+
                                   <button type="reset" class="btn btn-secondary">Reset</button>        
                                 </div>
                               </form>
@@ -229,23 +238,23 @@
                               <div class="card-body">
                                 <h5 class="card-title"></h5>
                   
-                                <form class="row g-3" action="/addtrade/" method="post">
+                                <form class="row g-3" action="/tips_req/" method="post">
   
                                 {% csrf_token %}  <!-- this token takes data -->
   
                                 <div class="col-md-6">
-                                  <input type="text" class="form-control" placeholder="Subject" id="" name="qty">
+                                  <input type="text" class="form-control" placeholder="Subject" id="" name="sub" required>
                                 </div> 
 
                                 <div class="col-md-6">
-                                  <textarea name="remark" id="" cols="50" rows="2" placeholder="Describe your queries here..." ></textarea>
+                                  <textarea name="remark" id="" cols="68" rows="2" placeholder="Describe your queries here..." required></textarea>
                                 </div>
 
                                 <div class="col-md-6">
                                   <div class="form-floating mb-3">
-                                    <input list="stock" class="form-select" id="floatingSelect" aria-label="Floating label select example" placeholder="Stock">
+                                    <input list="stock" class="form-select" id="floatingSelect" aria-label="Floating label select example" placeholder="Stock" name="stock">
                                 <datalist id="stock">  
-                                <option selected>Stock</option>
+                                  <option selected>Stock</option>
                                   {% if list %}
                                   {% for i in list %}
                                   <option value={{i}}>{{i}}</option>
@@ -260,45 +269,49 @@
 
                                   <div class="col-md-6">
                                     <div class="form-floating mb-3">
-                                      <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                                      <select class="form-select" id="floatingSelect" aria-label="Floating label select example" required name="risk">
                                         <option selected>Risk Profile</option>
-                                        <option value="1" class="btn btn-outline-success">Low</option>
-                                        <option value="2" class="btn btn-outline-info">Medium</option>
-                                        <option value="3" class="btn btn-outline-danger">High</option>
+                                        <option value="LOW" class="btn btn-outline-success">Low</option>
+                                        <option value="MEDIUM" class="btn btn-outline-info">Medium</option>
+                                        <option value="HIGH" class="btn btn-outline-danger">High</option>
                                       </select>
                                       <!-- <label for="floatingSelect">Works with selects</label> -->
                                     </div>
                                   </div>
                                   <div class="col-md-6">
-                                    <input type="number" class="form-control" placeholder="My Capital" id="" name="strg">
+                                    <input type="number" class="form-control" placeholder="My Capital" id="" name="cap">
                                   </div>
                                   <div class="">
                                     
 
 
                                     <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" id="gridCheck1">
+                                      <input class="form-check-input" type="hidden" id="gridCheck1" name="time" value="">
+                                      <input class="form-check-input" type="checkbox" id="gridCheck1" name="time" value="TIME">
                                       <label class="form-check-label" for="gridCheck1">
                                        Time - Entry & Exit
                                       </label>
                                     </div>
     
                                     <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" id="gridCheck1">
+                                      <input class="form-check-input" type="hidden" id="gridCheck1" name="cagr" value="">
+                                      <input class="form-check-input" type="checkbox" id="gridCheck1" name="cagr" value="CAGR">
                                       <label class="form-check-label" for="gridCheck1">
                                       CAGR % 
                                       </label>
                                     </div>
     
                                     <div class="form-check">
-                                      <input class="form-check-input" type="checkbox" id="gridCheck2" >
+                                      <input class="form-check-input" type="hidden" id="gridCheck1" name="target" value="">
+                                      <input class="form-check-input" type="checkbox" id="gridCheck1" name="target" value="TARGET">
                                       <label class="form-check-label" for="gridCheck2">
                                         Target %
                                       </label>
                                     </div>
                                   </div>
                                   <div class="text-center">
-                                    <button type="submit" class="btn btn-primary">Save</button>
+                                    <input type="submit" class="btn btn-primary" value="Request">
+
                                     <button type="reset" class="btn btn-secondary">Reset</button>        
                                   </div>
                                 </form>
@@ -319,25 +332,25 @@
                               <div class="card-body">
                                 <h5 class="card-title"></h5>
                   
-                                <form class="row g-3" action="/addtrade/" method="post">
+                                <form class="row g-3" action="/other_req/" method="post">
   
                                   {% csrf_token %}  <!-- this token takes data -->
     
                                   <div class="col-md-6">
-                                    <input type="text" class="form-control" placeholder="Subject" id="" name="qty">
+                                    <input type="text" class="form-control" placeholder="Subject" id="" name="sub" required>
                                   </div> 
   
                                   <div class="col-md-6">
-                                    <textarea name="remark" id="" cols="50" rows="2" placeholder="Describe your queries here..." ></textarea>
+                                    <textarea name="remark" id="" cols="68" rows="2" placeholder="Describe your queries here..." required ></textarea>
                                   </div>
   
                                     <div class="col-md-6">
                                       <div class="form-floating mb-3">
                                         <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
                                           <option selected>Risk Profile</option>
-                                          <option value="1" class="btn btn-outline-success">Low</option>
-                                          <option value="2" class="btn btn-outline-info">Medium</option>
-                                          <option value="3" class="btn btn-outline-danger">High</option>
+                                          <option value="LOW class="btn btn-outline-success">Low</option>
+                                          <option value="MEDIUM" class="btn btn-outline-info">Medium</option>
+                                          <option value="HIGH" class="btn btn-outline-danger">High</option>
                                         </select>
                                         <!-- <label for="floatingSelect">Works with selects</label> -->
                                       </div>
@@ -349,28 +362,31 @@
   
   
                                       <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="gridCheck1">
+                                        <input class="form-check-input" type="hidden" id="gridCheck1" name="time" value="">
+                                        <input class="form-check-input" type="checkbox" id="gridCheck1" name="time" value="TIME">
                                         <label class="form-check-label" for="gridCheck1">
                                          Time - Entry & Exit
                                         </label>
                                       </div>
       
                                       <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="gridCheck1">
+                                        <input class="form-check-input" type="hidden" id="gridCheck1" name="cagr" value="">
+                                        <input class="form-check-input" type="checkbox" id="gridCheck1" name="cagr" value="CAGR">
                                         <label class="form-check-label" for="gridCheck1">
                                         CAGR % 
                                         </label>
                                       </div>
       
                                       <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="gridCheck2" >
+                                        <input class="form-check-input" type="hidden" id="gridCheck1" name="target" value="">
+                                        <input class="form-check-input" type="checkbox" id="gridCheck1" name="target" value="TARGET">
                                         <label class="form-check-label" for="gridCheck2">
                                           Target %
                                         </label>
                                       </div>
                                     </div>
                                     <div class="text-center">
-                                      <button type="submit" class="btn btn-primary">Save</button>
+                                      <input type="submit" class="btn btn-primary" value="Request">
                                       <button type="reset" class="btn btn-secondary">Reset</button>        
                                     </div>
                                   </form>
@@ -383,7 +399,6 @@
                     </div>
                 </div>
                 <!-- End Bordered Tabs -->
-  
               </div>
             </div>
   

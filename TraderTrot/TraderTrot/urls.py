@@ -47,6 +47,13 @@ urlpatterns = [
     path('addtrade/',views.addtrade),
     path('user_request/',views.user_request),
     path('user_reqmanage/',views.user_reqmanage),
+    path('user_reqdetails/',views.user_reqdetails),
+    path('user_reqsolution/',views.user_reqsolution),
+    path('invest_req/',views.invest_req),
+    path('trade_req/',views.trade_req),
+    path('tips_req/',views.tips_req),
+    path('other_req/',views.other_req),
+
 
     #accademy
     path('ac_reg/',views.ac_reg),
@@ -60,6 +67,10 @@ urlpatterns = [
     path('tu_addBlog/',views.tu_addBlog),
     path('tu_home/',views.tu_home),
     path('addblog/',views.addblog),
+    path('tu_dbtlist/',views.tu_dbtlist),
+    path('tu_dbtdetails/',views.tu_dbtdetails),
+
+    #
 
     #testing
     path('clipboard/',views.clipboard),

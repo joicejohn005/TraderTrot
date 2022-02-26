@@ -181,8 +181,119 @@ def user_request(request):
     context={'list':stocklist()}
     return render(request,'user_request.html',context)
 
+def invest_req(request):
+    if request.method=="POST":
+        stock = request.POST['stock']
+        exchange = request.POST['stkex']
+        subject = request.POST['sub']
+        desc = request.POST['remark']     
+        
+        Photo = request.FILES.get('pic', False)
+        if Photo == False:
+            uurl=None
+        else:    
+            fs=FileSystemStorage()
+            fn=fs.save(Photo.name,Photo)
+            uploaded_file_url=fs.url(fn)
+            uurl=uploaded_file_url
+              
+        deadline=request.POST.get('deadline')
+        time = request.POST['time']
+        cagr = request.POST['cagr']
+        target = request.POST['target']
+
+        dtype = "Investing"
+        dstatus = "send"
+
+        id = request.session['id']
+
+        doubt = doubt_tbl.objects.create(dtitle=subject,ddesc=desc,dtype=dtype,dstatus=dstatus,dthumb=uurl,time=time,cagr=cagr,target=target,stock=stock,exchange=exchange,deadline=deadline,login_id=id)
+        doubt.save()
+
+    return redirect('/user_request/')
+
+def trade_req(request):
+    if request.method=="POST":
+        stock = request.POST['stock']
+        exchange = request.POST['stkex']
+        subject = request.POST['sub']
+        desc = request.POST['remark']     
+        
+        Photo = request.FILES.get('pic', False)
+        if Photo == False:
+            uurl=None
+        else:    
+            fs=FileSystemStorage()
+            fn=fs.save(Photo.name,Photo)
+            uploaded_file_url=fs.url(fn)
+            uurl=uploaded_file_url
+              
+        deadline=request.POST.get('deadline')
+        time = request.POST['time']
+        cagr = request.POST['cagr']
+        target = request.POST['target']
+
+        dtype = "Trading"
+        dstatus = "send"
+
+        id = request.session['id']
+
+        doubt = doubt_tbl.objects.create(dtitle=subject,ddesc=desc,dtype=dtype,dstatus=dstatus,dthumb=uurl,time=time,cagr=cagr,target=target,stock=stock,exchange=exchange,deadline=deadline,login_id=id)
+        doubt.save()
+
+    return redirect('/user_request/')
+
+def tips_req(request):
+    if request.method=="POST":
+        stock = request.POST['stock']
+        risk = request.POST['risk']
+        subject = request.POST['sub']
+        desc = request.POST['remark']
+        cap = request.POST['cap']
+
+        time = request.POST['time']
+        cagr = request.POST['cagr']
+        target = request.POST['target']
+
+        dtype = "Trading"
+        dstatus = "send"
+
+        id = request.session['id']
+
+        doubt = doubt_tbl.objects.create(dtitle=subject,ddesc=desc,dtype=dtype,dstatus=dstatus,stock=stock,time=time,cagr=cagr,target=target,risk=risk,capital=cap,login_id=id)
+        doubt.save()
+
+    return redirect('/user_request/')
+
+def other_req(request):
+    if request.mrthod=="POST":
+        risk = request.POST['risk']
+        subject = request.POST['sub']
+        desc = request.POST['remark']
+        risk = request.POST['risk']
+
+        time = request.POST['time']
+        cagr = request.POST['cagr']
+        target = request.POST['target']
+
+        dtype = "Trading"
+        dstatus = "send"
+
+        id = request.session['id']
+
+        doubt = doubt_tbl.objects.create(dtitle=subject,ddesc=desc,dtype=dtype,dstatus=dstatus,risk=risk,time=time,cagr=cagr,target=target,login_id=id)
+        doubt.save()
+    return redirect('/user_request/')
+        
+
 def user_reqmanage(request):
     return render(request,'user_reqmanage.html')
+
+def user_reqdetails(request):
+    return render(request,'user_reqdetails.html')
+
+def user_reqsolution(request):
+    return render(request,'user_reqsolution.html')
 
 #accademy
 def acc_addPackage(request):
@@ -273,6 +384,12 @@ def addblog(request):
         b.save()
 
     return redirect('/tu_addBlog/')
+
+def tu_dbtlist(request):
+    return render(request,'tu_dbtlist.html')
+
+def tu_dbtdetails(request):
+    return render(request,'tu_dbtdetails.html')
 
 #testing
 def clipboard(request):

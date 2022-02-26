@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from tkinter import CASCADE
 from unicodedata import decimal
 from django.db import models
@@ -104,16 +105,30 @@ class blog_tbl(models.Model):
 class doubt_tbl(models.Model):
     dtitle=models.CharField(max_length=100) #mandatory
     ddesc=models.CharField(max_length=500) #mandatory
+    dtype=models.CharField(max_length=10,default=NULL) #mandatory
     ddate=models.DateField(auto_now_add=True) #mandatory
     dstatus=models.CharField(max_length=10) #mandatory
-    dthumb=models.CharField(max_length=100)
-    servicetag=models.CharField(max_length=100)
-    stock=models.CharField(max_length=20)
-    exchange=models.CharField(max_length=20)
-    deadline=models.DateField(auto_now_add=False)
-    risk=models.CharField(max_length=20)
-    capital=models.CharField(max_length=20)
-    sector=models.CharField(max_length=50)
+    dthumb=models.CharField(max_length=100,null=True)
+    time=models.CharField(max_length=20, null=True)
+    cagr=models.CharField(max_length=20, null=True)
+    target=models.CharField(max_length=20, null=True)
+    stock=models.CharField(max_length=20,null=True)
+    exchange=models.CharField(max_length=20,null=True)
+    deadline=models.DateField(null=True,auto_now_add=False,default=None)
+    risk=models.CharField(max_length=20,null=True)
+    capital=models.CharField(max_length=20,null=True)
+    sector=models.CharField(max_length=50,null=True)
+    login=models.ForeignKey(login_tbl, on_delete=models.CASCADE, null=True) #user
 
     class Meta:
         db_table= "doubt_tbl"
+
+class solution_tbl(models.Model):
+    solution=models.CharField(max_length=500)
+    sdate=models.DateField(auto_now_add=True)
+    link=models.CharField(max_length=30)
+    doubt=models.ForeignKey(doubt_tbl, on_delete=models.CASCADE, null=True)
+    login=models.ForeignKey(tutor_tbl, on_delete=models.CASCADE, null=True) #tutor
+
+    class Meta:
+        db_table= "solution_tbl"

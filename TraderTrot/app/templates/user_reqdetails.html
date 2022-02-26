@@ -1,0 +1,93 @@
+{% include "user_aside.html" %}
+{% include "user_header.html" %}
+{% include "ad_head.html" %}
+{% load static %}
+{% block content %}
+<main id="main" class="main">
+
+    <div class="pagetitle" style="margin-top: -5%;">
+      <center><b><h1>Doubt Details</h1></b></center>
+
+      <section class="section">
+        <div class="row">
+          <div class="col-xl-12">
+
+            <div class="card">
+              <div class="card-body pt-3">
+                <!-- Bordered Tabs -->
+                
+                <div class="tab-content pt-2">
+  
+                    <div class="row">
+                      <div class="col-lg-12">
+            
+                        <div class="card">
+                            <div class="card-body">
+                              <h5 class="card-title"></h5>
+                
+                              <form class="row g-3" action="" method="post">
+
+                              {% csrf_token %}  <!-- this token takes data -->
+
+                              <div class="card mb-3">
+                                <span class="badge bg-info text-dark">Send</span>       
+
+                                <div class="row g-0">
+                                  <div class="col-md-4">
+                                    <img src="{% static 'assets/img/profile-img.jpg' %}" width="250" height="200" class="img-fluid rounded-start" alt="...">
+                                  </div>
+                                  <div class="col-md-8">
+                                    <div class="card-body">
+                                      <h5 class="card-title">Title of Doubt</h5>
+                                      <p class="card-text">Description</p>
+
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <p>Date: dd/mm/yyyy</p>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <p>Stock Exchange: NSE / BSE</p>
+                                  </div>
+                                </div>
+                              </div>
+
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                      <h5 class="card-title">Requested Services : s1,s2,s3</h5>
+                                      <div class="col-md-6">
+                                        <h5 class="card-title">My Risk : low/mid/high</h5>
+                                        <h5 class="card-title">My Capital : 1000</h5>
+                                        <h5 class="card-title">Sector : 1000</h5>
+                                      </div>
+                                  </div>
+                                </div>
+                                </div>
+                               
+                                <div class="text-center">
+                                  <button type="submit" class="btn btn-outline-primary">Edit</button>
+                                  <button type="reset" class="btn btn-outline-danger">Cancel</button> 
+                                  <!-- <span class="badge bg-primary">Primary</span>
+                                  <span class="badge bg-secondary">Secondary</span>
+                                  <span class="badge bg-success">Success</span>
+                                  <span class="badge bg-danger">Danger</span>
+                                  <span class="badge bg-warning text-dark">Warning</span> -->
+                                </div>
+                              </form>
+                
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+  
+                <!-- End Bordered Tabs -->
+  
+              </div>
+            </div>
+  
+          </div>
+        </div>
+      </section>
+      </div>
+</main>
+{% endblock %}

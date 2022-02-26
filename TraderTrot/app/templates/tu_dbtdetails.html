@@ -1,0 +1,132 @@
+{% include "tu_aside.html" %}
+{% include "tu_header.html" %}
+{% include "ad_head.html" %}
+{% load static %}
+{% block content %}
+<main id="main" class="main">
+
+    <div class="pagetitle" style="margin-top: -5%;">
+      <center><b><h1>Doubt Details</h1></b></center>
+
+      <section class="section">
+        <div class="row">
+          <div class="col-xl-12">
+
+            <div class="card">
+              <div class="card-body pt-3">
+
+                <ul class="nav nav-tabs nav-tabs-bordered">
+  
+                    <li class="nav-item">
+                      <button class="nav-link active btn btn-outline-success" data-bs-toggle="tab" data-bs-target="#profile-overview">Doubt Details</button>
+                    </li>
+    
+                    <li class="nav-item">
+                      <button class="nav-link btn btn-outline-info" data-bs-toggle="tab" data-bs-target="#profile-edit">Solution</button>
+                    </li>
+    
+                  </ul>
+
+                <!-- Bordered Tabs -->
+                
+                <div class="tab-content pt-2">
+                    <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                    <div class="row">
+                      <div class="col-lg-12">
+            
+                        <div class="card">
+                            <div class="card-body">
+                              <h5 class="card-title"></h5>
+                
+                              <form class="row g-3" action="" method="post">
+
+                              {% csrf_token %}  <!-- this token takes data -->
+
+                              <div class="card mb-3">
+                                <span class="badge bg-info text-dark card-title">User Name</span>       
+
+                                <div class="row g-0">
+                                  <div class="col-md-4">
+                                    <img src="{% static 'assets/img/profile-img.jpg' %}" width="250" height="200" class="img-fluid rounded-start" alt="...">
+                                  </div>
+                                  <div class="col-md-8">
+                                    <div class="card-body">
+                                      <h5 class="card-title">Title of Doubt</h5>
+                                      <p class="card-text">Description</p>
+
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <h5 class="card-title">Date: dd/mm/yyyy</h5>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <h5 class="card-title">Stock Exchange: NSE / BSE</h5>
+                                  </div>
+                                </div>
+                              </div>
+
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                      <h5 class="card-title">Requested Services : s1,s2,s3</h5>
+                                      <div class="col-md-6">
+                                        <h5 class="card-title">Risk Details: low/mid/high</h5>
+                                        <h5 class="card-title">Capital : 1000</h5>
+                                        <h5 class="card-title">Sector : ##sector</h5>
+                                      </div>
+                                  </div>
+                                </div>
+                                </div>
+                               
+                                <div class="text-center">
+                                  <button type="submit" class="btn btn-outline-success">Mark as <span class="badge bg-success">Viewed</span></button>
+                                </div>
+                              </form>
+                
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                  
+                              <div class="card">
+                                  <div class="card-body">
+                                    <h5 class="card-title"></h5>
+                      
+                                    <form class="row g-3" action="#" method="post">
+
+                                        {% csrf_token %}  <!-- this token takes data -->
+          
+                                        <div class="col-md-6">
+                                            <textarea name="remark" id="desc" cols="65" rows="2" placeholder="Solution Description" ></textarea>
+                                        </div>
+          
+                                        <div class="col-md-6">
+                                            <input type="text" class="form-control" placeholder="Useful Website suggestion" id="qty" name="qty">
+                                        </div> 
+          
+                                          <div class="text-center">
+                                            <button class="btn btn-outline-info" data-bs-toggle="tab" data-bs-target="#profile-edit">Mark as<span class="badge bg-primary">Processed</span></button> 
+                                            <button class="btn btn-outline-success" data-bs-toggle="tab" data-bs-target="#profile-edit">Send<span class="badge bg-success">Solution</span></button> 
+                                        </div>
+                                        </form>
+                      
+                                  </div>
+                                </div>
+                              </div>
+                          </div>
+
+                    </div>
+                </div>
+                <!-- End Bordered Tabs -->
+              </div>
+            </div>
+  
+          </div>
+        </div>
+      </section>
+      </div>
+</main>
+{% endblock %}

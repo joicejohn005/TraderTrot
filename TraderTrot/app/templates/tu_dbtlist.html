@@ -1,0 +1,77 @@
+{% include "tu_aside.html" %}
+{% include "tu_header.html" %}
+{% include "ad_head.html" %}
+{% load static %}
+{% block content %}
+<main id="main" class="main">
+
+    <div class="pagetitle" style="margin-top: -5%;">
+      <b><h1 style="margin-bottom: 1%;">Doubt List</h1></b>
+
+      <section class="section" style="margin-bottom: 1%;">
+        <div class="row">
+          <div class="col-xl-12">
+
+            <div class="card">
+              <div class="card-body pt-3">
+                <!-- Bordered Tabs -->
+                <ul class="nav nav-tabs nav-tabs-bordered">
+  
+                  <li class="nav-item">
+                    <button class="nav-link active btn btn-outline-success" data-bs-toggle="tab" data-bs-target="#profile-overview">Recent Requests</button>
+                  </li>
+  
+                </ul>
+                <div class="tab-content pt-2">
+  
+                  <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                    
+                    <div class="row">
+                      <div class="col-lg-12">
+            
+                        <div class="card">
+                            <div class="card-body">
+                              <h5 class="card-title"></h5>
+                
+                              <table class="table table-hover">
+                                <thead>
+                                  <tr>
+                                    <!-- <th scope="col">No</th> -->    
+                                    <th scope="col">User</th>
+                                    <th scope="col">title</th>
+                                    <th scope="col">Deadline</th>
+                                    <th scope="col">Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>  
+                                  
+                                    <td>blah</td>
+                                    <td>blah</td>
+                                    <td>blah</td>
+                                    <td>
+                                      <a href="/user_reqdetails/"><button type="button" class="btn btn-success btn-sm">Open</button></a>
+                                  </tr>
+                                </tbody>
+                              </table>
+                
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+  
+                  </div>
+  
+                  
+                </div>
+                <!-- End Bordered Tabs -->
+  
+              </div>
+            </div>
+  
+          </div>
+        </div>
+      </section>
+      </div>
+</main>
+{% endblock %}
