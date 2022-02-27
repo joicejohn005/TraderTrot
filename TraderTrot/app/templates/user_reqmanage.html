@@ -30,7 +30,7 @@
                   </li>
   
                   <li class="nav-item">
-                    <button class="nav-link btn btn-outline-danger" data-bs-toggle="tab" data-bs-target="#profile-change-password">Solution</button>
+                    <button class="nav-link btn btn-outline-danger" data-bs-toggle="tab" data-bs-target="#profile-change-password">Solutions</button>
                   </li>
 
   
@@ -54,7 +54,7 @@
                                       <!-- <th scope="col">No</th> -->    
                                       <th scope="col">Date</th>
                                       <th scope="col">Title</th>
-                                      <th scope="col">Status</th>
+                                      <th scope="col">Type</th>
                                       <!-- <th scope="col">Status</th> -->
                                       <th scope="col">Action</th>
                                     </tr>
@@ -62,10 +62,11 @@
                                   <tbody>
                                     <tr>
                                       {% for j in ureq %}
+                                      {% if j.dstatus == "send" %}
                                       <td>{{j.ddate}}</td>
                                       <td>{{j.dtitle}}</td>
                                       <!-- <td>{{j.dtype}}</td> -->
-                                      <td>{{j.dstatus}}</td>
+                                      <td>{{j.dtype}}</td>
                                       <td>
 
                                         <!-- <input type="hidden" value="{{j.id}}" name="doubtid">
@@ -73,6 +74,7 @@
                                         <input type="submit" class="btn btn-success btn-sm" value="View"> -->
                                         <a href="/user_reqdetails/{{j.id}}"><button type="button" class="btn btn-success btn-sm">View</button></a>
                                     </tr>
+                                    {% endif %}
                                     {% endfor %}
                                   </tbody>
                                 </table>
@@ -102,22 +104,24 @@
                                     <!-- <th scope="col">No</th> -->    
                                     <th scope="col">Date</th>
                                     <th scope="col">Title</th>
-                                    <th scope="col">Status</th>
+                                    <th scope="col">Type</th>
                                     <th scope="col">Action</th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                   <tr>
                                     {% for j in ureq %}
+                                    {% if j.dstatus == "Viewed" %}
                                     <td>{{j.ddate}}</td>
                                     <td>{{j.dtitle}}</td>
                                     <!-- <td>{{j.dtype}}</td> -->
-                                    <td>{{j.dstatus}}</td>
+                                    <td>{{j.dtype}}</td>
                                     <td>
                                       <input type="hidden" value="{{j.id}}" name="doubtid">
                                       <input type="submit" class="btn btn-success btn-sm" value="View">
                                       <!-- <a href="/user_reqdetails/"><button type="button" class="btn btn-success btn-sm">View</button></a> -->
                                   </tr>
+                                  {% endif %}
                                   {% endfor %}
                                 </tbody>
                               </table>
@@ -146,22 +150,24 @@
                                       <!-- <th scope="col">No</th> -->    
                                       <th scope="col">Date</th>
                                       <th scope="col">Title</th>
-                                      <th scope="col">Status</th>
+                                      <th scope="col">Type</th>
                                       <th scope="col">Action</th>
                                     </tr>
                                   </thead>
                                   <tbody>
                                     <tr>
                                       {% for j in ureq %}
+                                      {% if j.dstatus == "Processed" %}
                                       <td>{{j.ddate}}</td>
                                       <td>{{j.dtitle}}</td>
                                       <!-- <td>{{j.dtype}}</td> -->
-                                      <td>{{j.dstatus}}</td>
+                                      <td>{{j.dtype}}</td>
                                       <td>
                                         <input type="hidden" value="{{j.id}}" name="doubtid">
                                         <input type="submit" class="btn btn-success btn-sm" value="View">
                                         <!-- <a href="/user_reqdetails/"><button type="button" class="btn btn-success btn-sm">View</button></a> -->
                                     </tr>
+                                    {% endif %}
                                     {% endfor %}
                                   </tbody>
                                 </table>
@@ -181,7 +187,9 @@
                           <div class="card">
                               <div class="card-body">
                                 <h5 class="card-title"></h5>
-                                <form action="#" method="post">
+                                <form action="/user_reqsolution/" method="post">
+                                {% csrf_token %}  <!-- this token takes data -->
+
                                 <table class="table table-hover">
                                   <thead>
                                     <tr>
@@ -195,16 +203,17 @@
                                   <tbody>
                                     <tr>
                                       {% for i in sol %}
-                                      {% for j in ureq %}
-
+                                      {% if i.doubt.dstatus == "Finished" %}
+                                      <!-- <input type="hidden" value="{{i.id}}" name="soli"> -->
                                       <td>{{i.sdate}}</td>
-                                      <td>{{j.dtitle}}</td>
+                                      <td>{{i.doubt.dtitle}}</td>
                                       <!-- <td>{{j.dtype}}</td> -->
-                                      <td>{{j.dtype}}</td>
+                                      <td>{{i.doubt.dstatus}}</td>
                                       <td>
-                                        <input type="submit" class="btn btn-success btn-sm" value="View">
+                                        <a href="/user_reqsolution/{{i.id}}"><button type="button" class="btn btn-success btn-sm">View</button></a>
+                                        <!-- <input type="submit" name="v"class="btn btn-success btn-sm" value="View"> -->
                                     </tr>
-                                    {% endfor %}
+                                    {% endif %}
                                     {% endfor %}
                                   </tbody>
                                 </table>
@@ -217,10 +226,8 @@
                     </div>
                 </div>
                 <!-- End Bordered Tabs -->
-  
               </div>
             </div>
-  
           </div>
         </div>
       </section>

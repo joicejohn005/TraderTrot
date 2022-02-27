@@ -19,10 +19,14 @@ from nsepy import get_history
 
 # Create your views here.
 #all user
-def index(request):  
-    return render (request,'index.html')
+def index(request):
+    blogdata=blog_tbl.objects.select_related("b_tid").order_by('-id')[:3]
+    return render (request,'index.html',{"blogdata":blogdata})
+
 def blogs(request):
-    return render (request,'blogs.html')
+    blogdata=blog_tbl.objects.select_related("b_tid").order_by('-id')
+    return render (request,'blogs.html',{"blogdata":blogdata})
+    
 def blog(request):
     return render (request,'blog-details.html') 
 def login(request):
@@ -45,18 +49,20 @@ def checklogin(request):
                 elif c.type == 1:
                     id = c.id
                     request.session['id']=id
-                    return render(request,"ad_home.html")
+                    return redirect("/ad_home/")
                 elif c.type == 2:
                     id = c.id
                     request.session['id']=id
 
                     acid=academy_tbl.objects.get(login_id=id)
                     request.session['acname']=acid.ac_name
-                    return render(request,"acc_home.html")
+                    return redirect("/acc_home/")
+
                 elif c.type == 3:
                     id = c.id
                     request.session['id']=id
-                    return render(request,"tu_home.html")
+                    # return render(request,"tu_home.html")
+                    return redirect("/tu_home/")
             
             return HttpResponseRedirect('/newindex')
         message="Invalid USername or Password"
@@ -69,7 +75,8 @@ def newindex(request):
     data=login_tbl.objects.get(id=id)
     userdata = user_tbl.objects.get(id=data.id)
     request.session['Name']=userdata.Name
-    return render(request,"index.html")   
+    blogdata=blog_tbl.objects.select_related("b_tid").order_by('-id')[:3]
+    return render (request,'index.html',{"blogdata":blogdata})
 
 def logout(request):
     if request.session.is_empty():
@@ -315,7 +322,9 @@ def user_reqmanage(request):
         return HttpResponseRedirect('/login')
     id=request.session['id']    
     requestdata = doubt_tbl.objects.filter(login_id=id)
-    return render(request,'user_reqmanage.html',{"ureq":requestdata})
+    solution = solution_tbl.objects.select_related('doubt').filter(ulogin_id=id)
+    
+    return render(request,'user_reqmanage.html',{"ureq":requestdata,"sol":solution})
 
 def user_reqdetails(request,id):
     if request.session.is_empty():
@@ -330,11 +339,15 @@ def deletereq(request):
         dltreq.delete()
         return redirect('/user_reqmanage/')
 
-def user_reqsolution(request):
+def user_reqsolution(request,id):
     if request.session.is_empty():
-        return HttpResponseRedirect('login/')
-    solution = solution_tbl.objects.all()
-    return render(request,'user_reqsolution.html',{"sol":solution})
+        return HttpResponseRedirect('/login')
+
+    solution = solution_tbl.objects.select_related('doubt','login','ulogin').filter(id=id)
+    for s in solution:
+        break
+    userdet = user_tbl.objects.filter(login_id=s.ulogin.id)
+    return render(request,'user_reqsolution.html',{"sol":solution,"name":userdet})
 
 #accademy
 def acc_addPackage(request):
@@ -400,7 +413,7 @@ def acc_tutorManage(request):
 
 def acc_home(request):
     if request.session.is_empty():
-        return HttpResponseRedirect('login/')
+        return HttpResponseRedirect('/login')
     return render(request,'acc_home.html')
 
 #tutor activities
@@ -412,7 +425,10 @@ def tu_addBlog(request):
 def tu_home(request):
     if request.session.is_empty():
         return HttpResponseRedirect('login/')
-    return render(request,'tu_home.html')
+    count = doubt_tbl.objects.filter(dstatus='send').count()
+    count2 = doubt_tbl.objects.filter(dstatus='Viewed').count()
+    blogcount = blog_tbl.objects.all().count()
+    return render(request,'tu_home.html',{"count":count,"view":count2,"blogc":blogcount})
 
 def addblog(request):
 
@@ -435,6 +451,7 @@ def addblog(request):
         b.save()
 
     return redirect('/tu_addBlog/')
+
 
 def tu_dbtlist(request):
     if request.session.is_empty():
@@ -471,7 +488,8 @@ def solution(request):
 
         id = request.session['id']   
         tut = tutor_tbl.objects.get(login_id=id)
-        sol = solution_tbl.objects.create(solution=solution,link=website,doubt_id=dbtid,login_id=tut.id)
+        ulogin = doubt_tbl.objects.get(id=dbtid)
+        sol = solution_tbl.objects.create(solution=solution,link=website,doubt_id=dbtid,login_id=tut.id,ulogin_id=ulogin.login_id)
         sol.save()
     
         sts = doubt_tbl.objects.get(id=dbtid)

@@ -129,6 +129,8 @@ class solution_tbl(models.Model):
     link=models.CharField(max_length=30)
     doubt=models.ForeignKey(doubt_tbl, on_delete=models.CASCADE, null=True)
     login=models.ForeignKey(tutor_tbl, on_delete=models.CASCADE, null=True) #tutor
+    ulogin=models.ForeignKey(login_tbl, on_delete=models.CASCADE, null=True) #tutor
+
 
     class Meta:
         db_table= "solution_tbl"

@@ -50,7 +50,7 @@ urlpatterns = [
     path('user_request/',views.user_request),
     path('user_reqmanage/',views.user_reqmanage),
     path('user_reqdetails/<int:id>',views.user_reqdetails),
-    path('user_reqsolution/',views.user_reqsolution),
+    path('user_reqsolution/<int:id>',views.user_reqsolution),
     path('invest_req/',views.invest_req),
     path('trade_req/',views.trade_req),
     path('tips_req/',views.tips_req),

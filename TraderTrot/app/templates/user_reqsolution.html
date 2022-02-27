@@ -26,31 +26,34 @@
                               <h5 class="card-title"></h5>
                 
                               <form class="row g-3" action="" method="post">
-
+                                {% for n in name %}
+                                <span class="badge bg-success">{{n.Name}}</span>
+                                {% endfor %}
                               {% csrf_token %}  <!-- this token takes data -->
-
+                              {% for i in sol%}
                               <div class="card mb-3">
-                                <span class="badge bg-success">Solution</span>
+
+                                <span class="badge bg-success">{{name.Name}}</span>
 
 
                                 <div class="row g-0">
                                   <div class="col-md-4">
-                                    <img src="{% static 'assets/img/profile-img.jpg' %}" width="250" height="200" class="img-fluid rounded-start" alt="...">
+                                    <img src="{{i.doubt.dthumb}}" width="250" height="200" class="img-fluid rounded-start" alt="{{i.doubt.dthumb}}">
                                   </div>
                                   <div class="col-md-8">
                                     <div class="card-body">
                                       <h5 class="card-title">Doubt</h5>
-                                      <p class="card-text">Django is a high-level Python web framework that encourages rapid development and clean, pragmatic design. Built by experienced developers, it takes care of much of the hassle of web development, so you can focus on writing your app without needing to reinvent the wheel. It’s free and open source. </p>
+                                      <p class="card-text">Dj {{i.doubt.ddesc}}</p>
                                       <p class="card-title">Solution </p>
-                                      <p class="card-text">Django is a high-level Python web framework that encourages rapid development and clean, pragmatic design. Built by experienced developers, it takes care of much of the hassle of web development, so you can focus on writing your app without needing to reinvent the wheel. It’s free and open source. </p>
+                                      <p class="card-text">{{i.solution}} </p>
 
                                     </div>
                                   </div>
                                   <div class="col-md-6">
-                                    <p class="card-title">Date : dd/mm/yyyy </p>
+                                    <p class="card-title">Date : {{i.sdate}}  </p>
                                   </div>
                                   <div class="col-md-6">
-                                    <p class="card-title">Tutor : Tutor name </p>
+                                    <p class="card-title">Tutor : {{i.login.tu_name}} </p>
                                   </div>
                                   
                                 </div>
@@ -60,7 +63,7 @@
                                     <div class="card-body">
                                       
                                       <div class="col-md-6">
-                                        <h5 class="card-title">Useful Link :</h5> <a href=" www.website.com"> www.website.com</a>
+                                        <h5 class="card-title">Useful Link :</h5> <a href="{{i.link}} "> {{i.link}} </a>
                                       </div>
                                   </div>
                                 </div>
@@ -75,6 +78,7 @@
                                   <span class="badge bg-danger">Danger</span>
                                   <span class="badge bg-warning text-dark">Warning</span> -->
                                 </div>
+                                {% endfor %}
                               </form>
                 
                             </div>
