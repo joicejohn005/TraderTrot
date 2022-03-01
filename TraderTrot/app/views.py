@@ -9,8 +9,8 @@ from matplotlib.style import context
 from app.models import *
 from django.core.files.storage import FileSystemStorage
 from django.db.models import Q
-from datetime import datetime
-#import datetime
+from datetime import datetime #service request
+# import datetime as dt #plotly
 from plotly import express as px
 import plotly.offline as opy
 from plotly import graph_objs as go
@@ -53,7 +53,7 @@ def checklogin(request):
     if request.method=="POST":
         email = request.POST['email']
         password = request.POST['pswd']
-        data = login_tbl.objects.filter(Unemail=email,password=password)
+        data = login_tbl.objects.filter(Unemail=email,password=password,status=1)
         count= data.count()
         if count==1:
             for c in data:
@@ -61,6 +61,8 @@ def checklogin(request):
                 if c.type == 0:
                     id = c.id
                     request.session['id']=id
+                    uid=user_tbl.objects.get(login_id=id)
+                    request.session['uname']=uid.Name
                     return redirect("/user_home/")
                 elif c.type == 1:
                     id = c.id
@@ -77,11 +79,13 @@ def checklogin(request):
                 elif c.type == 3:
                     id = c.id
                     request.session['id']=id
-                    # return render(request,"tu_home.html")
+                    tid=tutor_tbl.objects.get(login_id=id)
+                    request.session['tname']=tid.tu_name
+                   
                     return redirect("/tu_home/")
             
             return HttpResponseRedirect('/newindex')
-        message="Invalid USername or Password"
+        message="Invalid USername or Password Or Inactive user"
         return render(request,"login.html",{"message2":message})
 
 def newindex(request):
@@ -106,6 +110,23 @@ def ad_ac_reg(request):
         return HttpResponseRedirect('login/')
     return render(request,'ad_ac_reg.html')
 
+def status(request,sid):
+    if request.session.is_empty():
+        return HttpResponseRedirect('login/')
+    status = login_tbl.objects.get(id=sid)
+    status.status = 0
+    status.save()
+    return redirect('/ad_userManage')
+
+def status2(request,sid):
+    if request.session.is_empty():
+        return HttpResponseRedirect('login/')
+    status = login_tbl.objects.get(id=sid)
+    status.status = 1
+    status.save()
+    return redirect('/ad_userManage')
+
+
 def ac_reg(request):
     if request.session.is_empty():
         return HttpResponseRedirect('login/')
@@ -120,6 +141,7 @@ def ac_reg(request):
     acinfo=request.POST.get('info')
     accity=request.POST.get('city')
     acweb=request.POST.get('web')
+    pkgcount = 0
     if data == 0:
         e.password=request.POST.get('pswd')
         e.status=1
@@ -130,31 +152,36 @@ def ac_reg(request):
         fn=fs.save(Photo.name,Photo)
         uploaded_file_url=fs.url(fn)
         uurl=uploaded_file_url
-        d = academy_tbl.objects.create(ac_name=acname,ac_yr=acyr,ac_contact=accont,ac_info=acinfo,ac_city=accity,ac_website=acweb,ac_logo=uurl,login=e)
+        d = academy_tbl.objects.create(ac_name=acname,ac_yr=acyr,ac_contact=accont,ac_info=acinfo,ac_city=accity,ac_website=acweb,ac_logo=uurl,login=e,ac_packagecount=pkgcount)
         d.save()
 
     else:
         return redirect('/ad_ac_reg/')
     return redirect('/ad_acManage/')
 
+def ad_acManage(request):
+    return redirect('/ad_userManage')
+
 def ad_userManage(request):
     if request.session.is_empty():
         return HttpResponseRedirect('login/')
-    userdata=user_tbl.objects.all()
     logindata=login_tbl.objects.all()
-    return render(request,'ad_userManage.html',{"b":userdata,"c":logindata})
 
-def ad_acManage(request):
-    if request.session.is_empty():
-        return HttpResponseRedirect('login/')
+    userdata=user_tbl.objects.all()
+
     acdata=academy_tbl.objects.all()
-    logindata=login_tbl.objects.all()
-    return render(request,'ad_acManage.html',{"a":acdata,"b":logindata})
+
+    tudata=tutor_tbl.objects.all()
+
+    return render(request,'ad_userManage.html',{"a":acdata,"b":userdata,"c":logindata,"t":tudata})
 
 def ad_home(request):
     if request.session.is_empty():
         return HttpResponseRedirect('login/')
-    return render(request,'ad_home.html')
+
+    blogcount = blog_tbl.objects.all().count()
+    
+    return render(request,'ad_home.html',{"blogc":blogcount})
  
 #user
 def register(request):
@@ -426,6 +453,12 @@ def acc_addPackage(request):
         return HttpResponseRedirect('login/')
     return render(request,'acc_addPackage.html')
 
+def accheader(request):
+
+    id = request.session['id']
+    name = academy_tbl.objects.get(ac_name=id)
+    return render(request,'acc_header.html',{"name":name})
+
 def addPackage(request):
     if request.method=="POST":
         pkg_name=request.POST['pname']
@@ -485,7 +518,9 @@ def acc_tutorManage(request):
 def acc_home(request):
     if request.session.is_empty():
         return HttpResponseRedirect('/login')
-    return render(request,'acc_home.html')
+
+    blogcount = blog_tbl.objects.all().count()
+    return render(request,'acc_home.html',{"blogc":blogcount})
 
 #tutor activities
 def tu_addBlog(request):
@@ -584,8 +619,8 @@ def plot(request):
         symbol = request.POST['stock'] 
     else:
         symbol = "TCS"
-    start=datetime.date(2010,1,1)
-    end=datetime.date.today()
+    start=dt.date(2015,1,1)
+    end=dt.date.today()
     data = get_history(symbol = symbol,start=start,end=end)
     data.to_csv("stock.csv")
     df=pd.read_csv("stock.csv")

@@ -41,6 +41,8 @@ urlpatterns = [
     path('ad_userManage/', views.ad_userManage),
     path('ad_acManage/', views.ad_acManage),
     path('ad_home/',views.ad_home),
+    path('status/<int:sid>',views.status),
+    path('status2/<int:sid>',views.status2),
 
     #user/trader
     path('user_reg',views.user_reg),

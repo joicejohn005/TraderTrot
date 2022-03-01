@@ -6,7 +6,7 @@
 <main id="main" class="main">
 
     <div class="pagetitle" style="margin-top: -5%;">
-      <b><h1 style="margin-bottom: 1%;">Doubt List</h1></b>
+      <b><h1 style="margin-bottom: 1%;">Track Requests</h1></b>
 
       <section class="section" style="margin-bottom: 1%;">
         <div class="row">
@@ -21,6 +21,19 @@
                     <button class="nav-link active btn btn-outline-success" data-bs-toggle="tab" data-bs-target="#profile-overview">Recent Requests</button>
                   </li>
   
+                  <li class="nav-item">
+                    <button class="nav-link btn btn-outline-info" data-bs-toggle="tab" data-bs-target="#profile-edit">Viewed</button>
+                  </li>
+
+                  <li class="nav-item">
+                    <button class="nav-link btn btn-outline-warning" data-bs-toggle="tab" data-bs-target="#profile-settings">Processed</button>
+                  </li>
+  
+                  <li class="nav-item">
+                    <button class="nav-link btn btn-outline-danger" data-bs-toggle="tab" data-bs-target="#profile-change-password">Solved</button>
+                  </li>
+
+  
                 </ul>
                 <div class="tab-content pt-2">
   
@@ -32,8 +45,8 @@
                         <div class="card">
                             <div class="card-body">
                               <h5 class="card-title"></h5>
-                              <form>
-                              {% csrf_token %}  <!-- this token takes data -->
+                              <form action="#" method="post">
+                                {% csrf_token %}  <!-- this token takes data -->
 
                                 <table class="table table-hover">
                                   <thead>
@@ -50,6 +63,7 @@
                                     {% for j in dbt %}
                                     {% for k in user %}
                                     {% if j.login_id == k.login_id %}
+                                    {% if j.dstatus == "send" %}
                                       <td>{{k.Name}}</td>
                                       <td>{{j.dtitle}}</td>
                                       <td>{{j.deadline}}</td>
@@ -57,14 +71,14 @@
                                         <a href="/tu_dbtdetails/{{j.id}}"><button type="button" class="btn btn-success btn-sm">View</button></a>
                                        </tr>
                                        {% endif %}
+
+                                       {% endif %}
                                     {% endfor %}
                                     {% endfor %}
                                   </tbody>
                                 </table>
-
                               </form>
                               
-                
                             </div>
                           </div>
                         </div>
@@ -72,13 +86,153 @@
   
                   </div>
   
-                  
+                  <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+  
+                    <div class="row">
+                      <div class="col-lg-12">
+            
+                        <div class="card">
+                            <div class="card-body">
+                              <h5 class="card-title"></h5>
+                              <form action="/user_reqdetails/" method="post">
+                              {% csrf_token %}  <!-- this token takes data -->
+
+                              <table class="table table-hover">
+                                <thead>
+                                  <tr>
+                                    <!-- <th scope="col">No</th> -->    
+                                    <th scope="col">User</th>
+                                    <th scope="col">title</th>
+                                    <th scope="col">Deadline</th>
+                                    <th scope="col">Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>  
+                                  {% for j in dbt %}
+                                  {% for k in user %}
+                                  {% if j.login_id == k.login_id %}
+                                  {% if j.dstatus == "Viewed" %}
+                                    <td>{{k.Name}}</td>
+                                    <td>{{j.dtitle}}</td>
+                                    <td>{{j.deadline}}</td>
+                                    <td>
+                                      <a href="/tu_dbtdetails/{{j.id}}"><button type="button" class="btn btn-success btn-sm">View</button></a>
+                                     </tr>
+                                     {% endif %}
+
+                                     {% endif %}
+                                  {% endfor %}
+                                  {% endfor %}
+                                </tbody>
+                              </table>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+
+                  </div>
+                    <!-- End Profile Edit Form -->
+
+                    <div class="tab-pane fade pt-3" id="profile-settings">
+                      <div class="row">
+                        <div class="col-lg-12">
+              
+                          <div class="card">
+                              <div class="card-body">
+                                <h5 class="card-title"></h5>
+                                <form action="/user_reqdetails/" method="post">
+                                {% csrf_token %}  <!-- this token takes data -->
+
+                                <table class="table table-hover">
+                                  <thead>
+                                    <tr>
+                                      <!-- <th scope="col">No</th> -->    
+                                      <th scope="col">User</th>
+                                      <th scope="col">title</th>
+                                      <th scope="col">Deadline</th>
+                                      <th scope="col">Action</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>  
+                                    {% for j in dbt %}
+                                    {% for k in user %}
+                                    {% if j.login_id == k.login_id %}
+                                    {% if j.dstatus == "Processed" %}
+                                      <td>{{k.Name}}</td>
+                                      <td>{{j.dtitle}}</td>
+                                      <td>{{j.deadline}}</td>
+                                      <td>
+                                        <a href="/tu_dbtdetails/{{j.id}}"><button type="button" class="btn btn-success btn-sm">View</button></a>
+                                       </tr>
+                                       {% endif %}
+  
+                                       {% endif %}
+                                    {% endfor %}
+                                    {% endfor %}
+                                  </tbody>
+                                </table>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+
+                    </div>
+                    
+                    <div class="tab-pane fade pt-3" id="profile-change-password">
+
+                      <div class="row">
+                        <div class="col-lg-12">
+              
+                          <div class="card">
+                              <div class="card-body">
+                                <h5 class="card-title"></h5>
+                                <form action="/user_reqsolution/" method="post">
+                                {% csrf_token %}  <!-- this token takes data -->
+
+                                <table class="table table-hover">
+                                  <thead>
+                                    <tr>
+                                      <!-- <th scope="col">No</th> -->    
+                                      <th scope="col">User</th>
+                                      <th scope="col">title</th>
+                                      <th scope="col">Deadline</th>
+                                      <th scope="col">Action</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>  
+                                    {% for j in dbt %}
+                                    {% for k in user %}
+                                    {% if j.login_id == k.login_id %}
+                                    {% if j.dstatus == "Finished" %}
+                                      <td>{{k.Name}}</td>
+                                      <td>{{j.dtitle}}</td>
+                                      <td>{{j.deadline}}</td>
+                                      <td>
+                                        <a href="/tu_dbtdetails/{{j.id}}"><button type="button" class="btn btn-success btn-sm">View</button></a>
+                                       </tr>
+                                       {% endif %}
+  
+                                       {% endif %}
+                                    {% endfor %}
+                                    {% endfor %}
+                                  </tbody>
+                                </table>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+
+                    </div>
                 </div>
                 <!-- End Bordered Tabs -->
-  
               </div>
             </div>
-  
           </div>
         </div>
       </section>

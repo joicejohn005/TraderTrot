@@ -117,10 +117,10 @@
                                     <!-- <td>{{j.dtype}}</td> -->
                                     <td>{{j.dtype}}</td>
                                     <td>
-                                      <input type="hidden" value="{{j.id}}" name="doubtid">
-                                      <input type="submit" class="btn btn-success btn-sm" value="View">
-                                      <!-- <a href="/user_reqdetails/"><button type="button" class="btn btn-success btn-sm">View</button></a> -->
-                                  </tr>
+                                      <!-- <input type="hidden" value="{{j.id}}" name="doubtid">
+                                      <input type="submit" class="btn btn-success btn-sm" value="View"> -->
+                                      <a href="/user_reqdetails/{{j.id}}"><button type="button" class="btn btn-success btn-sm">View</button></a>
+                                    </tr>
                                   {% endif %}
                                   {% endfor %}
                                 </tbody>
@@ -163,9 +163,9 @@
                                       <!-- <td>{{j.dtype}}</td> -->
                                       <td>{{j.dtype}}</td>
                                       <td>
-                                        <input type="hidden" value="{{j.id}}" name="doubtid">
-                                        <input type="submit" class="btn btn-success btn-sm" value="View">
-                                        <!-- <a href="/user_reqdetails/"><button type="button" class="btn btn-success btn-sm">View</button></a> -->
+                                        <!-- <input type="hidden" value="{{j.id}}" name="doubtid">
+                                        <input type="submit" class="btn btn-success btn-sm" value="View"> -->
+                                        <a href="/user_reqdetails/{{j.id}}"><button type="button" class="btn btn-success btn-sm">View</button></a>
                                     </tr>
                                     {% endif %}
                                     {% endfor %}

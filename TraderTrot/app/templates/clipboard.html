@@ -1,1 +1,232 @@
-{{time}}
+{% include "user_aside.html" %}
+{% include "user_header.html" %}
+{% include "ad_head.html" %}
+{% load static %}
+{% block content %}
+<main id="main" class="main">
+
+    <div class="pagetitle" style="margin-top: -5%;">
+      <b><h1 style="margin-bottom: 1%;">Track My Requests</h1></b>
+
+      <section class="section" style="margin-bottom: 1%;">
+        <div class="row">
+          <div class="col-xl-12">
+
+            <div class="card">
+              <div class="card-body pt-3">
+                <!-- Bordered Tabs -->
+                <ul class="nav nav-tabs nav-tabs-bordered">
+  
+                  <li class="nav-item">
+                    <button class="nav-link active btn btn-outline-success" data-bs-toggle="tab" data-bs-target="#profile-overview">Recent Requests</button>
+                  </li>
+  
+                  <li class="nav-item">
+                    <button class="nav-link btn btn-outline-info" data-bs-toggle="tab" data-bs-target="#profile-edit">Viewed</button>
+                  </li>
+
+                  <li class="nav-item">
+                    <button class="nav-link btn btn-outline-warning" data-bs-toggle="tab" data-bs-target="#profile-settings">Processed</button>
+                  </li>
+  
+                  <li class="nav-item">
+                    <button class="nav-link btn btn-outline-danger" data-bs-toggle="tab" data-bs-target="#profile-change-password">Solutions</button>
+                  </li>
+
+  
+                </ul>
+                <div class="tab-content pt-2">
+  
+                  <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                    
+                    <div class="row">
+                      <div class="col-lg-12">
+            
+                        <div class="card">
+                            <div class="card-body">
+                              <h5 class="card-title"></h5>
+                              <form action="#" method="post">
+                                {% csrf_token %}  <!-- this token takes data -->
+
+                                <table class="table table-hover">
+                                  <thead>
+                                    <tr>
+                                      <!-- <th scope="col">No</th> -->    
+                                      <th scope="col">User</th>
+                                      <th scope="col">title</th>
+                                      <th scope="col">Deadline</th>
+                                      <th scope="col">Action</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>  
+                                    {% for j in dbt %}
+                                    {% for k in user %}
+                                    {% if j.login_id == k.login_id %}
+                                      <td>{{k.Name}}</td>
+                                      <td>{{j.dtitle}}</td>
+                                      <td>{{j.deadline}}</td>
+                                      <td>
+                                        <a href="/tu_dbtdetails/{{j.id}}"><button type="button" class="btn btn-success btn-sm">View</button></a>
+                                       </tr>
+                                       {% endif %}
+                                    {% endfor %}
+                                    {% endfor %}
+                                  </tbody>
+                                </table>
+                              </form>
+                              
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+  
+                  </div>
+  
+                  <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+  
+                    <div class="row">
+                      <div class="col-lg-12">
+            
+                        <div class="card">
+                            <div class="card-body">
+                              <h5 class="card-title"></h5>
+                              <form action="/user_reqdetails/" method="post">
+                              {% csrf_token %}  <!-- this token takes data -->
+
+                              <table class="table table-hover">
+                                <thead>
+                                  <tr>
+                                    <!-- <th scope="col">No</th> -->    
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Title</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    {% for j in ureq %}
+                                    {% if j.dstatus == "Viewed" %}
+                                    <td>{{j.ddate}}</td>
+                                    <td>{{j.dtitle}}</td>
+                                    <!-- <td>{{j.dtype}}</td> -->
+                                    <td>{{j.dtype}}</td>
+                                    <td>
+                                      <!-- <input type="hidden" value="{{j.id}}" name="doubtid">
+                                      <input type="submit" class="btn btn-success btn-sm" value="View"> -->
+                                      <a href="/user_reqdetails/{{j.id}}"><button type="button" class="btn btn-success btn-sm">View</button></a>
+                                    </tr>
+                                  {% endif %}
+                                  {% endfor %}
+                                </tbody>
+                              </table>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+
+                  </div>
+                    <!-- End Profile Edit Form -->
+
+                    <div class="tab-pane fade pt-3" id="profile-settings">
+                      <div class="row">
+                        <div class="col-lg-12">
+              
+                          <div class="card">
+                              <div class="card-body">
+                                <h5 class="card-title"></h5>
+                                <form action="/user_reqdetails/" method="post">
+                                {% csrf_token %}  <!-- this token takes data -->
+
+                                <table class="table table-hover">
+                                  <thead>
+                                    <tr>
+                                      <!-- <th scope="col">No</th> -->    
+                                      <th scope="col">Date</th>
+                                      <th scope="col">Title</th>
+                                      <th scope="col">Type</th>
+                                      <th scope="col">Action</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      {% for j in ureq %}
+                                      {% if j.dstatus == "Processed" %}
+                                      <td>{{j.ddate}}</td>
+                                      <td>{{j.dtitle}}</td>
+                                      <!-- <td>{{j.dtype}}</td> -->
+                                      <td>{{j.dtype}}</td>
+                                      <td>
+                                        <!-- <input type="hidden" value="{{j.id}}" name="doubtid">
+                                        <input type="submit" class="btn btn-success btn-sm" value="View"> -->
+                                        <a href="/user_reqdetails/{{j.id}}"><button type="button" class="btn btn-success btn-sm">View</button></a>
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                                  </tbody>
+                                </table>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+
+                    </div>
+                    
+                    <div class="tab-pane fade pt-3" id="profile-change-password">
+
+                      <div class="row">
+                        <div class="col-lg-12">
+              
+                          <div class="card">
+                              <div class="card-body">
+                                <h5 class="card-title"></h5>
+                                <form action="/user_reqsolution/" method="post">
+                                {% csrf_token %}  <!-- this token takes data -->
+
+                                <table class="table table-hover">
+                                  <thead>
+                                    <tr>
+                                      <!-- <th scope="col">No</th> -->    
+                                      <th scope="col">Date</th>
+                                      <th scope="col">Title</th>
+                                      <th scope="col">Type</th>
+                                      <th scope="col">Action</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      {% for i in sol %}
+                                      {% if i.doubt.dstatus == "Finished" %}
+                                      <!-- <input type="hidden" value="{{i.id}}" name="soli"> -->
+                                      <td>{{i.sdate}}</td>
+                                      <td>{{i.doubt.dtitle}}</td>
+                                      <!-- <td>{{j.dtype}}</td> -->
+                                      <td>{{i.doubt.dstatus}}</td>
+                                      <td>
+                                        <a href="/user_reqsolution/{{i.id}}"><button type="button" class="btn btn-success btn-sm">View</button></a>
+                                        <!-- <input type="submit" name="v"class="btn btn-success btn-sm" value="View"> -->
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                                  </tbody>
+                                </table>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+
+                    </div>
+                </div>
+                <!-- End Bordered Tabs -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      </div>
+</main>
+{% endblock %}

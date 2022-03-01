@@ -143,13 +143,13 @@
                             <div class="card-body">
                               <h5 class="card-title"></h5>
                 
-                              <form class="row g-3" action="/trade_req/" method="post" onsubmit="return Valida2();" enctype="multipart/form-data">
+                              <form class="row g-3" action="/trade_req/" method="post" enctype="multipart/form-data">
 
                               {% csrf_token %}  <!-- this token takes data -->
 
                               <div class="col-md-6">
                                 <div class="form-floating mb-3">
-                                  <input list="stock" name="stock" class="form-select" id="floatingSelect" aria-label="Floating label select example" placeholder="Stock">
+                                  <input list="stock" name="stock" class="form-select" id="floatingSelect" aria-label="Floating label select example" placeholder="Stock" required>
                               <datalist id="stock">  
                                 <option selected>Stock</option>
                                 {% if list %}
@@ -176,11 +176,11 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                  <input type="text" class="form-control" placeholder="Subject" id="sub" name="sub" >
+                                  <input type="text" class="form-control" placeholder="Subject" id="sub" name="sub" required>
                                 </div> 
 
                                 <div class="col-md-6">
-                                  <textarea name="remark" id="des" cols="68" rows="2" placeholder="Describe your queries here..."></textarea>
+                                  <textarea name="remark" id="des" cols="68" rows="2" placeholder="Describe your queries here..." required></textarea>
                                 </div>
 
                                 <div class="col-md-6">
@@ -219,7 +219,6 @@
                                 <span id="valid" style="color: red;text-align: center;"></span><br>
                                 <div class="text-center">
                                   <input type="submit" class="btn btn-primary" value="Request">
-
                                   <button type="reset" class="btn btn-secondary">Reset</button>        
                                 </div>
                               </form>
@@ -230,9 +229,9 @@
                     </div>
 
                   </div>
-                  <script>
-                    function Valida2(){
-             var a = document.getElementById('floatingSelect').value.trim();
+<!-- <script>
+    function Valida2(){
+  var a = document.getElementById('floatingSelect').value.trim();
  var b = document.getElementById('floatingSelect1').value.trim();
  var c = document.getElementById('sub').value.trim();
  var d = document.getElementById('des').value.trim();
@@ -260,7 +259,7 @@
      return true;
    }
 }
-                 </script>
+</script> -->
                     <!-- End Profile Edit Form -->
 
                     <div class="tab-pane fade pt-3" id="profile-settings">
@@ -271,7 +270,7 @@
                               <div class="card-body">
                                 <h5 class="card-title"></h5>
                   
-                                <form class="row g-3" action="/tips_req/" method="post" onsubmit="return Valida3();" enctype="multipart/form-data">
+                                <form class="row g-3" action="/tips_req/" method="post" enctype="multipart/form-data">
   
                                 {% csrf_token %}  <!-- this token takes data -->
   
