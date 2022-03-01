@@ -26,7 +26,9 @@ urlpatterns = [
     path('index/', views.index),
     path('blog/',views.blog),
     path('blogs/',views.blogs),
+    path('blogdetails/<int:bid>',views.blogdetails),
     path('login',views.login),
+    path('user_profile/',views.user_profile),
     
     
     path('register',views.register),
@@ -45,6 +47,8 @@ urlpatterns = [
     path('user_home/',views.user_home),
 
     path('tradebook/',views.tradebook),
+    path('csvd/',views.csvd),
+    path('pdf/',views.pdf),
     path('addtrade/',views.addtrade),
     
     path('user_request/',views.user_request),

@@ -56,8 +56,13 @@
           <li><a href="blog.html">Blog</a></li>
          
           <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
-          <li><a class="nav-link scrollto" href="/login/">Login</a></li>
-          <li><a class="nav-link scrollto" href="/user_reg/">Register</a></li>
+          {% if request.session.id == NULL %}
+          <li><a class="nav-link scrollto" href="/login">Login</a></li>
+          <li><a class="nav-link scrollto" href="/user_reg">Register</a></li>
+          {% else %}
+          <li><a class="nav-link scrollto" href="">{{request.session.Name}}</a></li>
+          <li><a class="nav-link scrollto"  onclick="return logout()"href="/logout">Logout</a></li>
+          {% endif %}
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
@@ -123,16 +128,7 @@
                       </div>
                     </div>
                     {% endfor %}
-                    <!-- End single post -->
-                    <!-- start single post -->
-                    
-                    <!-- End single post -->
-                    <!-- start single post -->
-                    
-                    <!-- End single post -->
-                    <!-- start single post -->
-                    
-                    <!-- End single post -->
+                  
                   </div>
                   </div>
                 <!-- recent end -->
@@ -169,20 +165,12 @@
                     </p>
                   </div>
                   <span>
-                    <a href="blog-details.html" class="ready-btn">Read more</a>
+                    <a href="/blogdetails/{{bd.id}}" class="ready-btn">Read more</a>
                   </span>
                 </div>
               </div>
               {% endfor %}
-              <!-- End single blog -->
               
-              <!-- Start single blog -->
-              
-              <!-- End single blog -->
-              
-              <!-- Start single blog -->
-              
-              <!-- End single blog -->
               <div class="blog-pagination">
                 <ul class="pagination">
                   <li class="page-item"><a href="#" class="page-link">&lt;</a></li>

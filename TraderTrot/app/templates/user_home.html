@@ -5,7 +5,7 @@
 {% block content %}
 <main id="main" class="main">
 
-  <div class="pagetitle">
+  <div class="pagetitle" style="margin-top: -5%;">
     <h1>Welcome to Trader Trot</h1>
     <nav>
       <ol class="breadcrumb">
@@ -27,15 +27,15 @@
             <div class="card info-card sales-card">
 
               <div class="card-body">
-                <h5 class="card-title">All Course<a href="#"><span>| Today</span></a></h5>
+                <h5 class="card-title"><a href="/blogs/">Blog Repository<span>| Explore</span></h5></a>
 
                 <div class="d-flex align-items-center">
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <i class="bi bi-cart"></i>
                   </div>
                   <div class="ps-3">
-                    <h6>145</h6>
-                    <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+                  <h6>{{ blogc }}</h6>
+                    <!-- <span class="text-success small pt-1 fw-bold"></span> <span class="text-muted small pt-2 ps-1">increase</span> -->
 
                   </div>
                 </div>
@@ -49,15 +49,18 @@
             <div class="card info-card revenue-card">
 
               <div class="card-body">
-                <h5 class="card-title">Accademy <a href="#"><span>| Today</span></a></h5>
+                <a href="/tradebook/"><h5 class="card-title">Digital Tradelog <span>| Explore</span></h5></a>
 
                 <div class="d-flex align-items-center">
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <i class="bi bi-currency-dollar"></i>
+                    <i class="bi bi-cash"></i>
                   </div>
                   <div class="ps-3">
-                    <h6>$3,264</h6>
-                    <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+                    {% if profit >= 0%}
+                    <b><p >My Profit: <span style="color: rgb(10, 104, 5);">{{ profit }}</span></p></b>
+                    {% else %}
+                    <b><p >My Profit: <span style="color: rgb(143, 6, 6);">{{ profit }}</span></p></b>
+                    {% endif %}
 
                   </div>
                 </div>
@@ -67,20 +70,20 @@
           </div><!-- End Revenue Card -->
 
           <!-- Customers Card -->
-          <div class="col-xxl-4 col-xl-12">
+          <div class="col-xxl-4 col-xl-6">
 
             <div class="card info-card customers-card">
 
               <div class="card-body">
-                <h5 class="card-title">My Courses <a href="#"><span>| Today</span></a></h5>
+                <a href="/user_reqmanage/"><h5 class="card-title">Doubt Clearence Service <span>| Explore</span></h5></a>
 
                 <div class="d-flex align-items-center">
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <i class="bi bi-people"></i>
                   </div>
                   <div class="ps-3">
-                    <h6>1244</h6>
-                    <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span>
+                    <h6>My Request : {{doubt}}</h6>
+                    <span class="text-danger small pt-1 fw-bold">{{sc}}</span> <span class="text-muted small pt-2 ps-1">Solved</span>
 
                   </div>
                 </div>
@@ -88,14 +91,39 @@
               </div>
             </div>
 
-          </div><!-- End Customers Card -->
+          </div>
 
-          <!-- Reports -->
-         
-          <!-- End Reports -->
 
-          <!-- Recent Sales -->
-          <div class="col-12">
+          <div class="col-xxl-4 col-xl-6">
+
+            <div class="card info-card revenue-card">
+
+              <div class="card-body">
+                <a href="/plotly/"><h5 class="card-title">Stock Screener <span>| View</span></h5></a>
+
+                <div class="d-flex align-items-center">
+
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-graph-down"></i>
+                  </div>
+
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-graph-up"> </i>
+                  </div>
+
+                  <!-- <div class="ps-3">
+                    <h6>My Request : {{doubt}}</h6>
+                    <span class="text-danger small pt-1 fw-bold">{{sc}}</span> <span class="text-muted small pt-2 ps-1">Solved</span>
+
+                  </div> -->
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+          <!-- <div class="col-12">
             <div class="card recent-sales">
 
               <div class="filter">
@@ -138,17 +166,17 @@
               </div>
 
             </div>
-          </div><!-- End Recent Sales -->
+          </div>End Recent Sales -->
 
 
         </div>
       </div>
 
-      </div><!-- End Right side columns -->
+      </div>
 
     </div>
   </section>
 
-</main><!-- End #main -->
+</main>
 
 {% endblock %}

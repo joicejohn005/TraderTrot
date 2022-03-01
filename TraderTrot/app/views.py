@@ -16,9 +16,12 @@ import plotly.offline as opy
 from plotly import graph_objs as go
 import pandas as pd
 from nsepy import get_history
-
-# Create your views here.
+import csv
+import pdfkit
+import pandas as pd
 #all user
+
+
 def index(request):
     blogdata=blog_tbl.objects.select_related("b_tid").order_by('-id')[:3]
     return render (request,'index.html',{"blogdata":blogdata})
@@ -26,11 +29,24 @@ def index(request):
 def blogs(request):
     blogdata=blog_tbl.objects.select_related("b_tid").order_by('-id')
     return render (request,'blogs.html',{"blogdata":blogdata})
-    
+
 def blog(request):
-    return render (request,'blog-details.html') 
+    blogdata=blog_tbl.objects.select_related("b_tid").order_by('-id')
+    return render (request,'blog-details.html',{"blogdata":blogdata})
+
+def blogdetails(request,bid):
+    bd = blog_tbl.objects.get(id=bid)
+    tname = tutor_tbl.objects.get(id=bd.b_tid_id)
+    aname = academy_tbl.objects.get(id=bd.b_acid_id)
+    return render(request,'blog-details.html',{"blogdata":bd,"tn":tname,"an":aname})
+
 def login(request):
     return render (request,'login.html')
+
+def user_profile(request):
+    return render (request,'user_profile.html')
+
+
 def user_reg(request):
     return render (request,'user_reg.html')
 def checklogin(request):
@@ -45,7 +61,7 @@ def checklogin(request):
                 if c.type == 0:
                     id = c.id
                     request.session['id']=id
-                    return redirect("/newindex/")
+                    return redirect("/user_home/")
                 elif c.type == 1:
                     id = c.id
                     request.session['id']=id
@@ -168,13 +184,68 @@ def register(request):
 def user_home(request):
     if request.session.is_empty():
         return HttpResponseRedirect('login/')
-    return render(request,'user_home.html')
+    blogcount = blog_tbl.objects.all().count()
+
+    id = request.session['id']
+    tradedata = tradebook_tbl.objects.filter(login_id=id)
+    profit = 0
+    for t in tradedata:
+        profit = profit + t.pnl
+
+    requestdata = doubt_tbl.objects.filter(login_id=id).count()
+    solutioncount= doubt_tbl.objects.filter(login_id=id,dstatus="Finished").count()
+
+    return render(request,'user_home.html',{"blogc":blogcount,"profit":profit,"doubt":requestdata,"sc":solutioncount})
 
 def tradebook(request):
     if request.session.is_empty():
         return HttpResponseRedirect('/login')
-    tradedata = tradebook_tbl.objects.all()
-    return render(request,'tradebook.html',{"td":tradedata})
+    id = request.session['id']
+    tradedata = tradebook_tbl.objects.select_related('login').filter(login_id=id)
+    profit = 0
+    for t in tradedata:
+        profit = profit + t.pnl
+    context={'list':stocklist(),"td":tradedata,"pnl":profit}
+    return render(request,'tradebook.html',context)
+
+#pip install nsepy
+#pip install pandas
+def stocklist():
+    df = pd.read_csv('app/equity.csv')
+    nselist = df['SYMBOL'].tolist()
+    return nselist
+
+#pip install wkhtmltopdf
+#pip  install csv
+def csvd(request):
+    id = request.session['id']
+    tradedata = tradebook_tbl.objects.filter(login_id=id).order_by('id')
+    list = []
+
+    trcolm = ['Stock Name','Quantity','Buy Price','Buy Date','Sell price','Sell Date','Profit n Loss','Remark','Strategy']
+    for i in tradedata:
+        list1 = [i.stock,i.qty,i.buy,i.b_date,i.sell,i.s_date,i.pnl,i.remark,i.strategy]
+        list.append(list1)
+        print(list)
+        
+    with open('tradebook.csv', 'w',newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(trcolm)
+        writer.writerows(list)
+    return redirect('/tradebook/')
+
+#pip install pdfkit
+#pip  install pandas
+
+def pdf(request):
+    csvfile = pd.read_csv("tradebook.csv")
+    csvfile.to_html("tradebook.html")
+    # https://wkhtmltopdf.org/downloads.html
+    path_wkhtmltopdf = r'C:\Users\Joice John\wkhtmltopdf\bin\wkhtmltopdf.exe'
+    config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
+    pdfkit.from_url("tradebook.html","tradebook.pdf",configuration=config)
+    return redirect('/tradebook/')
+
 
 def addtrade(request):
     if request.method=="POST":
@@ -527,10 +598,3 @@ def plot(request):
     div=opy.plot(fig,auto_open=False,output_type='div')
     context={'graph':div,'list':stocklist()}
     return render(request,'plot.html',context)
-
-#pip install nsepy
-#pip install pandas
-def stocklist():
-    df = pd.read_csv('app/equity.csv')
-    nselist = df['SYMBOL'].tolist()
-    return nselist

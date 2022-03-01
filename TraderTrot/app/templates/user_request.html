@@ -46,13 +46,13 @@
                               <h5 class="card-title"></h5>
 
                               <!-- investing request -->
-                              <form class="row g-3" action="/invest_req/" method="post" enctype="multipart/form-data">
+                              <form class="row g-3" action="/invest_req/" method="post" onsubmit="return Valida1();"  enctype="multipart/form-data">
 
                               {% csrf_token %}  <!-- this token takes data -->
 
                               <div class="col-md-6">
                                 <div class="form-floating mb-3">
-                                  <input list="stock" class="form-select" name="stock" id="floatingSelect" aria-label="Floating label select example" placeholder="Stock" required>
+                                  <input list="stock" class="form-select" name="stock" id="floatingSelect" aria-label="Floating label select example" placeholder="Stock">
                               <datalist id="stock">  
                                 <option selected disabled>Stock</option>
                                 {% if list %}
@@ -68,7 +68,7 @@
 
                               <div class="col-md-6">
                                 <div class="form-floating mb-3">
-                                  <select class="form-select" id="floatingSelect" aria-label="Floating label select example" name="stkex">
+                                  <select class="form-select" id="floatingSelect1" aria-label="Floating label select example" name="stkex">
                                     <option value="">Stock Exchange</option>
                                     <option value="NSE">National Stock Exchange - NSE</option>
                                     <option value="BSE">Bombay Stock Exchange - BSE</option>
@@ -79,11 +79,11 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                  <input type="text" class="form-control" placeholder="Subject" id="" name="sub" required>
+                                  <input type="text" class="form-control" placeholder="Subject" id="sub" name="sub">
                                 </div> 
 
                                 <div class="col-md-6">
-                                  <textarea name="remark" id="" cols="68" rows="2" placeholder="Describe your queries here..." required></textarea>
+                                  <textarea name="remark" id="des" cols="68" rows="2" placeholder="Describe your queries here..."></textarea>
                                 </div>
 
                                 <div class="col-md-6">
@@ -120,6 +120,7 @@
                                   </label>
                                 </div>
                                 </div>
+                                <span id="valid" style="color: red;text-align: center;"></span><br>
                                 <div class="text-center">
                                   <input type="submit" class="btn btn-primary" value="Request">
                                   <button type="reset" class="btn btn-secondary">Reset</button>        
@@ -142,13 +143,13 @@
                             <div class="card-body">
                               <h5 class="card-title"></h5>
                 
-                              <form class="row g-3" action="/trade_req/" method="post" enctype="multipart/form-data">
+                              <form class="row g-3" action="/trade_req/" method="post" onsubmit="return Valida2();" enctype="multipart/form-data">
 
                               {% csrf_token %}  <!-- this token takes data -->
 
                               <div class="col-md-6">
                                 <div class="form-floating mb-3">
-                                  <input list="stock" name="stock" class="form-select" id="floatingSelect" aria-label="Floating label select example" placeholder="Stock" required>
+                                  <input list="stock" name="stock" class="form-select" id="floatingSelect" aria-label="Floating label select example" placeholder="Stock">
                               <datalist id="stock">  
                                 <option selected>Stock</option>
                                 {% if list %}
@@ -164,7 +165,7 @@
 
                               <div class="col-md-6">
                                 <div class="form-floating mb-3">
-                                  <select class="form-select" name="stkex" id="floatingSelect" aria-label="Floating label select example">
+                                  <select class="form-select" name="stkex" id="floatingSelect1" aria-label="Floating label select example">
                                     <option selected value="">Stock Exchange</option>
                                     <option value="NSE">National Stock Exchange - NSE</option>
                                     <option value="BSE">Bombay Stock Exchange - BSE</option>
@@ -175,11 +176,11 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                  <input type="text" class="form-control" placeholder="Subject" id="" name="sub" required>
+                                  <input type="text" class="form-control" placeholder="Subject" id="sub" name="sub" >
                                 </div> 
 
                                 <div class="col-md-6">
-                                  <textarea name="remark" id="" cols="68" rows="2" placeholder="Describe your queries here..." required></textarea>
+                                  <textarea name="remark" id="des" cols="68" rows="2" placeholder="Describe your queries here..."></textarea>
                                 </div>
 
                                 <div class="col-md-6">
@@ -187,7 +188,7 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                  <input type="date" class="form-control" placeholder="Date" id="" name="deadline" required>
+                                  <input type="date" class="form-control" placeholder="Date" id="" name="deadline">
                                 </div>
 
                                 <div class="">
@@ -215,6 +216,7 @@
                                   </label>
                                 </div>
                                 </div>
+                                <span id="valid" style="color: red;text-align: center;"></span><br>
                                 <div class="text-center">
                                   <input type="submit" class="btn btn-primary" value="Request">
 
@@ -228,6 +230,37 @@
                     </div>
 
                   </div>
+                  <script>
+                    function Valida2(){
+             var a = document.getElementById('floatingSelect').value.trim();
+ var b = document.getElementById('floatingSelect1').value.trim();
+ var c = document.getElementById('sub').value.trim();
+ var d = document.getElementById('des').value.trim();
+ if(a=="")
+   {
+     document.getElementById('valid').innerHTML = "Choose Stock";
+     return false;
+   }
+   if(b=="")
+   {
+     document.getElementById('valid').innerHTML = "Enter Stock exchange";
+     return false;
+   }
+   if(c=="")
+   {
+     document.getElementById('valid').innerHTML = "Enter Subject";
+     return false;
+   }
+   if(d=="")
+   {
+     document.getElementById('valid').innerHTML = "Enter Description";
+     return false;
+   }
+   else{
+     return true;
+   }
+}
+                 </script>
                     <!-- End Profile Edit Form -->
 
                     <div class="tab-pane fade pt-3" id="profile-settings">
@@ -238,16 +271,16 @@
                               <div class="card-body">
                                 <h5 class="card-title"></h5>
                   
-                                <form class="row g-3" action="/tips_req/" method="post" enctype="multipart/form-data">
+                                <form class="row g-3" action="/tips_req/" method="post" onsubmit="return Valida3();" enctype="multipart/form-data">
   
                                 {% csrf_token %}  <!-- this token takes data -->
   
                                 <div class="col-md-6">
-                                  <input type="text" class="form-control" placeholder="Subject" id="" name="sub" required>
+                                  <input type="text" class="form-control" placeholder="Subject" id="s1" name="sub">
                                 </div> 
 
                                 <div class="col-md-6">
-                                  <textarea name="remark" id="" cols="68" rows="2" placeholder="Describe your queries here..." required></textarea>
+                                  <textarea name="remark" id="s2" cols="68" rows="2" placeholder="Describe your queries here..." ></textarea>
                                 </div>
 
                                 <div class="col-md-6">
@@ -269,7 +302,7 @@
 
                                   <div class="col-md-6">
                                     <div class="form-floating mb-3">
-                                      <select class="form-select" id="floatingSelect" aria-label="Floating label select example" name="risk" required>
+                                      <select class="form-select" id="floatingSelect" aria-label="Floating label select example" name="risk">
                                         <option selected value="">Risk Profile</option>
                                         <option value="LOW" class="btn btn-outline-success">Low</option>
                                         <option value="MEDIUM" class="btn btn-outline-info">Medium</option>
@@ -308,6 +341,7 @@
                                         Target %
                                       </label>
                                     </div>
+                                    <span id="valid" style="color: red;text-align: center;"></span><br>
                                   </div>
                                   <div class="text-center">
                                     <input type="submit" class="btn btn-primary" value="Request">
@@ -322,6 +356,7 @@
                       </div>
 
                     </div>
+                   
                     
                     <div class="tab-pane fade pt-3" id="profile-change-password">
 
@@ -407,3 +442,63 @@
       </div>
 </main>
 {% endblock %}
+<script>
+ 
+  function Valida1(){
+    var a = document.getElementById('floatingSelect').value.trim();
+    var b = document.getElementById('floatingSelect1').value.trim();
+    var c = document.getElementById('sub').value.trim();
+    var d = document.getElementById('des').value.trim();
+    if(a=="")
+      {
+        document.getElementById('valid').innerHTML = "Enter Stock";
+        return false;
+      }
+      if(b=="")
+      {
+        document.getElementById('valid').innerHTML = "Enter Stock Stock exchane";
+        return false;
+      }
+      if(c=="")
+      {
+        document.getElementById('valid').innerHTML = "Enter Subject";
+        return false;
+      }
+      if(d=="")
+      {
+        document.getElementById('valid').innerHTML = "Enter Description";
+        return false;
+      }
+      else{
+        return true;
+      }
+  }
+
+ 
+  function Valida3(){
+    var a = document.getElementById('s1').value.trim();
+    var b = document.getElementById('s2').value.trim();
+    var c = document.getElementById('floatingSelect').value.trim();
+   
+    if(a=="")
+      {
+        document.getElementById('valid').innerHTML = "Enter Subject";
+        return false;
+      }
+      if(b=="")
+      {
+        document.getElementById('valid').innerHTML = "Enter Description";
+        return false;
+      }
+      if(c=="")
+      {
+        document.getElementById('valid').innerHTML = "Enter risk profile";
+        return false;
+      }
+     
+      else{
+        return true;
+      }
+  }
+
+</script>

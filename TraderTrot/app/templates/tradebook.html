@@ -37,42 +37,62 @@
                             <div class="card-body">
                               <h5 class="card-title"></h5>
                 
-                              <form class="row g-3" action="/addtrade/" method="post">
+                              <form class="row g-3" action="/addtrade/" onsubmit="return Valida();" method="post">
 
                               {% csrf_token %}  <!-- this token takes data -->
 
+                                <!-- <div class="col-md-6">
+                                  <input type="text" class="form-control" placeholder="Stock" id="a1" name="stock">
+                                </div> -->
+
                                 <div class="col-md-6">
-                                  <input type="text" class="form-control" placeholder="Stock" id="" name="stock">
+                                  <div class="form-floating mb-3">
+                                    <input list="stock" class="form-select" name="stock" id="floatingSelect" aria-label="Floating label select example" placeholder="Stock">
+                                <datalist id="stock">  
+                                  <option selected disabled>Stock</option>
+                                  {% if list %}
+                                  {% for i in list %}
+                                    <option value={{i}}>{{i}}</option>
+                                  {% endfor %}
+                                 {% endif %}
+                                </datalist>
+                              </input>
+                                    <!-- <label for="floatingSelect">Works with selects</label> -->
+                                  </div>
                                 </div>
+
                                 <div class="col-md-6">
-                                  <input type="number" class="form-control" placeholder="Quantity" id="" name="qty">
+                                  <input type="number" class="form-control" placeholder="Quantity" id="a2" name="qty">
                                 </div>                      
                                 <div class="col-md-6">
                                   <div class="input-group mb-4">
-                                  <input type="number" class="form-control" placeholder="Entry" id="" name="entry">
+                                  <input type="number" class="form-control" placeholder="Entry" id="a3" name="entry">
                                   <span class="input-group-text">Rs</span>
                                   </div>
                                 </div>
                                 <div class="col-md-6">
-                                  <input type="date" class="form-control" placeholder="Date" id="" name="edate">
+                                  <input type="date" class="form-control" placeholder="Date" id="a4" name="edate">
                                 </div>
                                 <div class="col-6">
                                   <div class="input-group mb-4">
-                                  <input type="number" class="form-control" placeholder="Exit" id="" name="exit">
+                                  <input type="number" class="form-control" placeholder="Exit" id="a5" name="exit">
                                   <span class="input-group-text">Rs</span>
                                   </div>
                                 </div>
                                 <div class="col-md-6">
-                                  <input type="date" class="form-control" placeholder="Date" id="" name="exdate">
+                                  <input type="date" class="form-control" placeholder="Date" id="a6" name="exdate">
                                 </div>
                                 
                                 <div class="col-md-6">
-                                  <input type="text" class="form-control" placeholder="Strategy" id="" name="strg">
+                                  <input type="text" class="form-control" placeholder="Strategy" id="a7" name="strg">
                                 </div>
                                 <div class="col-md-6">
-                                  <textarea name="remark" id="" cols="50" rows="2" placeholder="Mistake / Remarks" ></textarea>
+                                  <textarea name="remark" id="a8" cols="50" rows="2" placeholder="Mistake / Remarks" ></textarea>
                                 </div>
+                                <span id="valid" style="color: red;text-align: center;"></span><br>
+
                                 <div class="text-center">
+
                                   <button type="submit" class="btn btn-primary">Save</button>
                                   <button type="reset" class="btn btn-secondary">Reset</button>        
                                 </div>
@@ -124,7 +144,18 @@
                                 {% endfor %}
                               </tbody>
                             </table>
-                          </div>
+                             {% if pnl >= 0%}
+                            <b><p >Total Profit: <span style="color: rgb(10, 104, 5);">{{ pnl }}</span></p></b>
+                            {% else %}
+                            <b><p >Total Profit: <span style="color: rgb(143, 6, 6);">{{ pnl }}</span></p></b>
+                            {% endif %}
+                            <a href="/csvd/" class="btn btn-outline-success" >
+                              CSV<span class="badge bg-success">Convert</span>
+                            </a>
+                            <a href="/pdf/" class="btn btn-outline-danger" >
+                              PDF<span class="badge bg-danger">Convert</span>
+                            </a>
+                          </div>  
                         </div>
                         
                     </div>
@@ -142,4 +173,52 @@
       </section>
       </div>
 </main>
+<script>
+  function Valida(){
+    var a1 = document.getElementById('floatingSelect').value.trim();
+    var a = document.getElementById('a2').value.trim();
+    var b = document.getElementById('a3').value.trim();
+    var c = document.getElementById('a4').value.trim();
+    var d = document.getElementById('a5').value.trim();
+    var e = document.getElementById('a6').value.trim();
+
+      if(a1=="")
+      {
+        document.getElementById('valid').innerHTML = "Choose Stock";
+        return false;
+      }
+      if(a=="")
+      {
+        document.getElementById('valid').innerHTML = "Enter Quantity";
+        return false;
+      }
+      if(a<=0)
+      {
+        document.getElementById('valid').innerHTML = "Add atleast 1 Quantity";
+        return false;
+      }
+      if(b=="")
+      {
+        document.getElementById('valid').innerHTML = "Enter entry price";
+        return false;
+      }
+      if(c=="")
+      {
+        document.getElementById('valid').innerHTML = "Enter the date";
+        return false;
+      }
+      if(d=="")
+      {
+        document.getElementById('valid').innerHTML = "Enter the exit price";
+        return false;
+      }
+     
+    
+      if(e=="")
+      {
+        document.getElementById('valid').innerHTML = "enter the date";
+        return false;
+      }
+  }
+</script>
 {% endblock %}
