@@ -10,7 +10,7 @@ from app.models import *
 from django.core.files.storage import FileSystemStorage
 from django.db.models import Q
 from datetime import datetime #service request
-# import datetime as dt #plotly
+import datetime as dt #plotly
 from plotly import express as px
 import plotly.offline as opy
 from plotly import graph_objs as go
@@ -235,11 +235,10 @@ def tradebook(request):
     context={'list':stocklist(),"td":tradedata,"pnl":profit}
     return render(request,'tradebook.html',context)
 
-#pip install nsepy
 #pip install pandas
 def stocklist():
     df = pd.read_csv('app/equity.csv')
-    nselist = df['SYMBOL'].tolist()
+    nselist = df['SYMBOL'].tolist()  #coloumn name :SYMBOL
     return nselist
 
 #pip install wkhtmltopdf
@@ -278,9 +277,9 @@ def addtrade(request):
     if request.method=="POST":
         stock = request.POST['stock']
         quantity = int(request.POST['qty'])
-        entry = int( request.POST['entry'])
+        entry = float( request.POST['entry'])
         edate = request.POST['edate']
-        exit = int(request.POST['exit'])
+        exit = float( request.POST['exit'])
         exdate = request.POST['exdate']
         pnl = (exit-entry)*quantity
         gain = (pnl / (quantity*entry)) * 100
@@ -614,6 +613,8 @@ def date(request):
     return render(request,"ad_ac_reg.html", {"date":date})
 
 #pip install plotly
+#pip install nsepy - to get the function get_history
+
 def plot(request):
     if request.method=="POST":
         symbol = request.POST['stock'] 
@@ -621,15 +622,16 @@ def plot(request):
         symbol = "TCS"
     start=dt.date(2015,1,1)
     end=dt.date.today()
-    data = get_history(symbol = symbol,start=start,end=end)
+    data = get_history(symbol = symbol,start=start,end=end) #fn in nsepy; library
     data.to_csv("stock.csv")
     df=pd.read_csv("stock.csv")
-    data1=df.filter(['Close'])
+    #data1=df.filter(['Close'])
     fig = go.Figure(data=[go.Candlestick(x=df['Date'],
                 open=df['Open'],
                 high=df['High'],
                 low=df['Low'],
                 close=df['Close'])])
-    div=opy.plot(fig,auto_open=False,output_type='div')
+    div=opy.plot(fig,auto_open=False,output_type='div') #to convert to offline candlestick chart
     context={'graph':div,'list':stocklist()}
     return render(request,'plot.html',context)
+    
