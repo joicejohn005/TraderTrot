@@ -1,0 +1,9 @@
+Stock Name,Quantity,Buy Price,Buy Date,Sell price,Sell Date,Profit n Loss,Remark,Strategy
+mm,20,800.00,2022-02-16,801.00,2022-02-20,2000.00,joice teck,macd
+tatamotors,500,500.00,2022-02-18,506.00,2022-02-22,10000.00,nothing,pivot
+hello,2,123.00,2022-02-25,123.00,2022-02-21,0.00,blah,blah22
+ANKITMETAL,30,10000.00,2022-03-18,9080.00,2022-03-30,-27600.00,nothing,pivot points
+AGARIND,100,200.00,2022-03-02,225.00,2022-03-09,2500.00,good trade,pivot points support
+ZOMATO,300,81.00,2022-02-25,82.00,2022-03-02,300.00,,pivot points support
+ABB,30,100.20,2022-03-18,200.12,2022-03-09,2997.60,,
+AMDIND,20,1000.00,2022-03-01,1150.00,2022-03-23,3000.00,Early exit,MACD
