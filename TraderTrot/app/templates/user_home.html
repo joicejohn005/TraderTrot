@@ -36,7 +36,6 @@
                   <div class="ps-3">
                   <h6>{{ blogc }}</h6>
                     <!-- <span class="text-success small pt-1 fw-bold"></span> <span class="text-muted small pt-2 ps-1">increase</span> -->
-
                   </div>
                 </div>
               </div>
@@ -49,40 +48,42 @@
             <div class="card info-card revenue-card">
 
               <div class="card-body">
-                <a href="/tradebook/"><h5 class="card-title">Digital Tradelog <span>| Explore</span></h5></a>
+                <h5 class="card-title"><a href="/tradebook/">Digital Tradelog<span>| Explore</span></h5></a>
 
                 <div class="d-flex align-items-center">
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <i class="bi bi-cash"></i>
                   </div>
                   <div class="ps-3">
+
                     {% if profit >= 0%}
                     <b><p >My Profit: <span style="color: rgb(10, 104, 5);">{{ profit }}</span></p></b>
                     {% else %}
                     <b><p >My Profit: <span style="color: rgb(143, 6, 6);">{{ profit }}</span></p></b>
                     {% endif %}
-
+                  
                   </div>
                 </div>
               </div>
 
             </div>
-          </div><!-- End Revenue Card -->
-
+          </div>
+                  
+        <!-- End Revenue Card -->
+        
           <!-- Customers Card -->
-          <div class="col-xxl-4 col-xl-6">
-
+          <div class="col-xxl-4 col-md-6">
             <div class="card info-card customers-card">
 
               <div class="card-body">
-                <a href="/user_reqmanage/"><h5 class="card-title">Doubt Clearence Service <span>| Explore</span></h5></a>
+                <h5 class="card-title"><a href="/user_reqmanage/">Doubt Clearence<span>|Explore</span></a></h5>
 
                 <div class="d-flex align-items-center">
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <i class="bi bi-people"></i>
                   </div>
                   <div class="ps-3">
-                    <h6>My Request : {{doubt}}</h6>
+                    <p><b>My Request : {{doubt}}</b></p>
                     <span class="text-danger small pt-1 fw-bold">{{sc}}</span> <span class="text-muted small pt-2 ps-1">Solved</span>
 
                   </div>
@@ -93,6 +94,32 @@
 
           </div>
 
+           <!-- Revenue Card -->
+           <div class="col-xxl-4 col-md-6">
+            <div class="card info-card revenue-card">
+
+              <div class="card-body">
+                <h5 class="card-title"><a href="/stockinfo/">Stock Analysis<span>| Analyse</span></h5></a>
+
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-graph-down"></i>
+                  </div>
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-graph-up"></i>
+                  </div>
+                  <div class="ps-3">
+
+                  
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+                  
+        <!-- End Revenue Card -->
+        
 
           <div class="col-xxl-4 col-xl-6">
 
@@ -109,6 +136,7 @@
 
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <i class="bi bi-graph-up"> </i>
+                    
                   </div>
 
                   <!-- <div class="ps-3">

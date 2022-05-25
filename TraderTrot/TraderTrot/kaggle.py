@@ -15,11 +15,15 @@ for market in index_ind:
         ticker.remove(market)
 symbols = ticker + index_ind
 
-#print(stock_info)
+print(stock_info)
 #print(symbols) #market index + stocks
 
-yf_period = ['1d','5d','1m','3m','6m','ytd','1y','5y','max']
-yf_interval = ['1m','5m','15m','30m','1h','4h','1d','1w','1mh']
+# yf_period = ['1d','5d','1m','3m','6m','1y','5y']
+# yf_interval = ['1m','5m','15m','30m','1h','4h','1d','1w','1mh']
+
+yf_period   = "20y"   # 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max
+yf_interval = "1d"    # 1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo
+
 
 #**********************************************************************************************#
 
@@ -30,22 +34,22 @@ yf_info = pd.DataFrame(index = fin_info, columns=symbols)
 
 #**********************************************************************************************#
 
-for i in symbols:
-    l = []             # initialize
-    x = yf.Ticker(i)   # get ticker info
-    for j in fin_info:
-        if 'date' in j.lower():
-            d = pd.to_datetime(x.info[j])
-            print(d)
-            if d is not None:
-                l.append(d.strftime("%Y-%m-%d"))  # format date
-        else:
-            try:      # some parameters error
-                l.append(x.info[j])
-            except:   # ignore error and continue
-                l.append("")
-    yf_info[i] = l
-#print(yf_info) # print details of symbols in a table
+# for i in symbols:
+#     l = []             # initialize
+#     x = yf.Ticker(i)   # get ticker info
+#     for j in fin_info:
+#         if 'date' in j.lower():
+#             d = pd.to_datetime(x.info[j])
+#             print(d)
+#             if d is not None:
+#                 l.append(d.strftime("%Y-%m-%d"))  # format date
+#         else:
+#             try:      # some parameters error
+#                 l.append(x.info[j])
+#             except:   # ignore error and continue
+#                 l.append("")
+#     yf_info[i] = l
+# print(yf_info) # print details of symbols in a table
 
 #**********************************************************************************************#
 #to see list of parameters 
@@ -71,13 +75,131 @@ yf_returns = yf.download(
         prepost = True,          # download market hours data
         threads = True,          # threads for mass downloading
         proxy = None)            # proxy
+
 yf_returns = yf_returns.iloc[:, yf_returns.columns.get_level_values(1)=='Close']
-# yf_returns = yf_returns.iloc[:, yf_returns.columns.get_level_values(1)=='Close']
-# yf_returns.columns = yf_returns.columns.droplevel(1)  # multi-index
-# yf_returns.tail(10)
-# print('shape: ', yf_returns.shape)
+yf_returns.columns = yf_returns.columns.droplevel(1)  # multi-index
+print(yf_returns.tail(10))
+print('shape: ', yf_returns.shape)
 
 #**********************************************************************************************#
+#percentage change
+
+yf_returns = round(yf_returns.pct_change()*100, 2)
+print(yf_returns.tail(10))
+
+#**********************************************************************************************#
+#Dividend Percentages
+yf_divdend = pd.DataFrame()   # initialize dataframe
+
+for i in ticker:
+    if i != index_ind:
+        x = pd.DataFrame(yf.Ticker(i).dividends)
+        x = x.rename(columns={"Dividends":i})
+        yf_divdend = pd.concat([yf_divdend,x], axis=1)
+        if len(x) > 0:
+            print('{:>8}\t- dividends'.format(i))
+        else:
+            print('{:>8}\t- no dividends'.format(i))             
+
+
+#  match dates in yf_returns (first return data to now)
+yf_divdend = yf_divdend[yf_divdend.index >= yf_returns.index[0]]
+#  print out dividends
+print("\n",yf_divdend.tail(10))
+
+#**********************************************************************************************#
+#Calculate Percentage Returns
+#yf_returns = yf_returns + yf_divdend    // - Equation | not code
+
+yf_returns = yf_returns.add(yf_divdend, fill_value = 0)
+#print(yf_returns.tail(5))
+#**********************************************************************************************#
+
+#Performance Analysis:
+perf_dy = yf_returns
+perf_dy['YEAR']  = perf_dy.index.strftime("%Y")     # YEAR
+perf_dy['MONTH'] = perf_dy.index.strftime("%Y-%m")  # YEAR-MONTH
+perf_dy['WEEK']  = perf_dy.index.strftime("%Y-%U")  # YEAR-WEEK
+
+#  create time dataframes using GROUPBY
+perf_yr = perf_dy.groupby('YEAR').sum()
+perf_mh = perf_dy.groupby('MONTH').sum()
+perf_wk = perf_dy.groupby('WEEK').sum()
+
+
+#  print index and column names
+
+# print("\nperf_dy:\n", perf_dy.index.name, perf_dy.columns.values)
+# print("\nperf_yr:\n", perf_yr.index.name, perf_yr.columns.values)
+# print("\nperf_mh:\n", perf_mh.index.name, perf_mh.columns.values)
+# print("\nperf_wk:\n", perf_wk.index.name, perf_wk.columns.values)
+
+#**********************************************************************************************#
+
+#  create function to plot market and indexes
+def plotPerformance(arg):
+    df = arg
+    
+    plt.figure(figsize=(10,8))
+
+    #  subplot #1
+    plt.subplot(221)
+    df[index_ind].boxplot()
+    plt.title('market indexes')
+    plt.ylabel('percent change')
+    plt.xticks(rotation = 90)
+    plt.grid(False)
+
+    #  subplot #2
+    plt.subplot(222)
+    plt.plot(df[index_ind])
+    plt.title('market indexes')
+    plt.legend(df[index_ind], loc="upper left", bbox_to_anchor=(1,1))
+    plt.xticks(rotation = 90)
+    
+    plt.show()  # plot subplots
+    
+    #  plot #3
+    plt.figure(figsize=(10,6))
+    df[ticker].boxplot()
+    plt.title('SYMBOLS', fontsize = 14)
+    plt.ylabel('percent change', fontsize = 14)
+    plt.xticks(rotation = 90)
+    plt.grid(False)
+    plt.show()
+    
+    #  plot #4
+    plt.figure(figsize=(10,6))
+    plt.plot(df[ticker])
+    plt.title('SYMBOLS', fontsize = 14)
+    plt.ylabel('percent change', fontsize = 14)
+    plt.legend(df[ticker], loc="upper left", bbox_to_anchor=(1,1))
+    plt.xticks(rotation = 90)
+    plt.show()
+    
+
+    #  print returns
+    print('\nRETURNS FROM {} TO {}:'.format(df.index[0], df.index[-1]))
+    for i in index_ind + ticker:
+        print('{:>10}{:>10.2f}%'.format(i,df[i].sum()))
+
+    return
+
+print('function plotPerformance created')
+
+#**********************************************************************************************#
+#Plot and analyze the yearly performance for the past 10 years (past decade).
+plotPerformance(perf_yr.tail(10))  # past 10 years
+
+#**********************************************************************************************#
+#plotPerformance(perf_mh.tail(24))  # past 24 months
+plotPerformance(perf_mh.tail(24))  # past 24 months
+#**********************************************************************************************#
+#Plot and analyze the yearly performance for the past 26 weeks (6 months).
+plotPerformance(perf_wk.tail(26))  # past 26 weeks
+#**********************************************************************************************#
+#Plot and analyze the yearly performance for the past 31 days (1 month).
+plotPerformance(perf_dy.tail(31))  # past 31 days
 
 #yf_dividend = yf.Ticker(ticker[1]).dividends
 # print(dividends)

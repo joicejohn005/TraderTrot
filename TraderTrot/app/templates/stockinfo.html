@@ -1,0 +1,180 @@
+{% include "user_aside.html" %}
+{% include "user_header.html" %}
+{% include "ad_head.html" %}
+{% load static %}
+{% block content %}
+<main id="main" class="main">
+
+    <div class="pagetitle" style="margin-top: -5%;">
+      <b><h1 style="margin-bottom: 1%;">Stock Performance Monitoring</h1></b>
+
+      <section class="section" style="margin-bottom: 1%;">
+        <div class="row">
+          <div class="col-xl-12">
+
+            <div class="card">
+              <div class="card-body pt-3">
+                <!-- Bordered Tabs -->
+                <ul class="nav nav-tabs nav-tabs-bordered">
+  
+                  <li class="nav-item">
+                    <button class="nav-link active btn btn-outline-success" data-bs-toggle="tab" data-bs-target="#profile-overview">Stock Analysis</button>
+                  </li>
+  
+                  <!-- <li class="nav-item">
+                    <button class="nav-link btn btn-outline-info" data-bs-toggle="tab" data-bs-target="#profile-edit">Trading</button>
+                  </li> -->
+
+                 
+  
+                </ul>
+                <div class="tab-content pt-2">
+  
+                  <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                    
+                    <div class="row">
+                      <div class="col-lg-12">
+            
+                        <div class="card">
+                            <div class="card-body">
+                              <h5 class="card-title"></h5>
+
+                              <!-- investing request -->
+                              <form class="row g-3" action="/stockanalysis/" method="post" onsubmit="return Valida1();"  enctype="multipart/form-data">
+
+                              {% csrf_token %}  <!-- this token takes data -->
+
+                              <div class="row 6">
+                                <input name="stock" list="stock" class="form-select" id="floatingSelect" aria-label="Floating label select example" placeholder="Stock">
+                                <datalist id="stock">  
+                                    <option selected>Stock</option>
+                                      {% if list %}
+                                      {% for i in list %}
+                                      <option value={{i}}>{{i}}</option>
+                                      {% endfor %}
+                                     {% endif %}
+                                    </datalist>
+                                  </input>
+                              </div>
+                              <div class="">               
+                              
+                              </div>
+                                <span id="valid" style="color: red;text-align: center;"></span><br>
+                                <div class="text-center">
+                                  <input type="submit" class="btn btn-primary" value="Request">
+                                  <button type="reset" class="btn btn-secondary">Reset</button>
+                                  <button class="btn btn-outline-primary" onclick="return Valida1();"><a href="#">Prediction</a></button>
+                                  <!-- <button class="btn btn-primary" type="button" disabled>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    Loading...
+                                  </button>   -->
+                                </div>
+                              </form>
+                
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+  
+                  </div>
+                    <!-- End Profile Edit Form -->
+
+                </div>
+                <!-- End Bordered Tabs -->
+              </div>
+
+              <div class="card text-center">
+                <div class="card-header">
+                  <ul class="nav nav-pills card-header-pills">
+                    <li class="nav-item">
+                      <b class="nav-link active">NSE</b>
+                    </li>&nbsp;&nbsp;
+                    <li class="nav-item">
+                      <b class="nav-link active">Sector: {{sector}}</b> 
+                    </li>&nbsp;&nbsp;
+                    <li class="nav-item">
+                        <b class="nav-link active">Industry :{{industry}}</b> 
+                    </li>
+                  </ul>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">{{longName}}</h5>
+                  <p class="card-text">{{LTP}}</p>
+                  <a href="{{website}}" class="btn btn-primary">Go Company Website</a>
+                </div>
+              </div>
+
+<div>
+    <div class="card mb-3">
+        <div class="row g-0">
+          <div class="col-md-2">
+            <img src="{{logo_url}}" class="img-fluid rounded-start" alt="...">
+          </div>
+          <div class="col-md-10">
+            <div class="card-body">
+              <h5 class="card-title">Company Description</h5>
+              <p class="card-text">{{longBusinessSummary}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+
+<div class="row">
+    <div class="col-xxl-6 col-md-6">
+        <div class="card-body">
+          <h5 class="card-title">Pros</h5>
+          {% for i in a %}
+          <ul>
+            <li>
+              {{i}} 
+            </li>
+          </ul>
+          {% endfor %}
+        </div>
+    </div>
+    <div class="col-xxl-6 col-md-6">
+        <div class="card-body">
+          <h5 class="card-title">Cons</h5>
+          {% for i in b %}
+          <ul>
+            <li>
+              {{i}} 
+            </li>
+          </ul>
+          {% endfor %}
+        </div>
+    </div>
+</div>
+
+  
+            <div class="row">
+
+
+                
+
+            </div>
+        </div>
+  
+    </div>
+</div>
+</section>
+</div>
+</main>
+{% endblock %}
+<script>
+ 
+  function Valida1(){
+    var a = document.getElementById('floatingSelect').value.trim();
+   
+    if(a=="")
+      {
+        document.getElementById('valid').innerHTML = "Enter Stock";
+        return false;
+      }
+     
+      else{
+        return true;
+      }
+  }
+</script>

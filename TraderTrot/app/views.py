@@ -1,24 +1,40 @@
 from ast import Global
+from app.models import *
 from asyncio.windows_events import NULL
-from symtable import Symbol
+
+from bs4 import BeautifulSoup
+
+import csv
+
 from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.http import *
-from matplotlib import pyplot as plt
-from matplotlib.style import context
-from app.models import *
-from django.core.files.storage import FileSystemStorage
 from django.db.models import Q
+from django.core.files.storage import FileSystemStorage
 from datetime import datetime #service request
 import datetime as dt #plotly
+
+from matplotlib import pyplot as plt
+from matplotlib.style import context
+from matplotlib import ticker
+
+from nsepy import get_history
+
+import pandas as pd
 from plotly import express as px
 import plotly.offline as opy
 from plotly import graph_objs as go
-import pandas as pd
-from nsepy import get_history
-import csv
 import pdfkit
-import pandas as pd
+
+import requests
+from requests.exceptions import ConnectionError
+
+import seaborn as sns
+from symtable import Symbol
+
+import urllib.request
+
+import yfinance as yf
 #all user
 
 
@@ -49,6 +65,12 @@ def user_profile(request):
 
 def user_reg(request):
     return render (request,'user_reg.html')
+
+def stockinfo(request):
+    context={'list':stocklist()}
+
+    return render (request,'stockinfo.html',context)
+
 def checklogin(request):
     if request.method=="POST":
         email = request.POST['email']
@@ -634,4 +656,54 @@ def plot(request):
     div=opy.plot(fig,auto_open=False,output_type='div') #to convert to offline candlestick chart
     context={'graph':div,'list':stocklist()}
     return render(request,'plot.html',context)
+
+
+def scrap_procon(ticker2):
+    url = 'https://www.screener.in/company/' +ticker2+ '/consolidated/'
+    webpage = requests.get(url) #Request to webpage
+    soup = BeautifulSoup(webpage.text,'html.parser') #parse text frm website
+
+    proslist = []
+    conslist = []
+
+    prosText = soup.find_all('div',attrs={'class':'pros'})
+    for i in prosText:
+        pros = i.text.split('. ')
     
+    for j in pros: 
+        j = j.replace("Pros","")
+        proslist.append(j)
+
+    consText = soup.find_all('div',attrs={'class':'cons'})
+    for i in consText:
+        cons = i.text.split('. ')
+
+    for k in cons: 
+        k = k.replace("Cons","")
+        conslist.append(k)
+    
+    return proslist,conslist
+
+def stockanalysis(request):
+    if request.method=="POST":
+
+        ticker = request.POST['stock']+".NS"
+        ticker2 = request.POST['stock']
+
+        longName = yf.Ticker(ticker).info['longName']
+        sector = yf.Ticker(ticker).info['sector']
+        industry = yf.Ticker(ticker).info['industry']
+        website = yf.Ticker(ticker).info['website']
+        logo_url = yf.Ticker(ticker).info['logo_url']
+        longBusinessSummary = yf.Ticker(ticker).info['longBusinessSummary']
+
+        a, b = scrap_procon(ticker2)
+        l=a[0].split("\n")
+        l=[i for i in l if i]
+
+        m=b[0].split("\n")
+        m=[j for j in m if j]
+
+
+    context={'list':stocklist(),'a':l,'b':m,'shortName':longName,'sector':sector,'industry':industry,'website':website,'logo_url':logo_url,'longBusinessSummary':longBusinessSummary}
+    return render(request,'stockinfo.html',context)

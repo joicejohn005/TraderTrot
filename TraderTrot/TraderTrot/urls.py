@@ -84,7 +84,9 @@ urlpatterns = [
 
     #testing
     path('clipboard/',views.clipboard),
-    path('plotly/',views.plot)
+    path('plotly/',views.plot),
+    path('stockinfo/',views.stockinfo),
+    path('stockanalysis/',views.stockanalysis)
 ]
 
 if settings.DEBUG:
