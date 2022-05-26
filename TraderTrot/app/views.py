@@ -682,7 +682,25 @@ def scrap_procon(ticker2):
         k = k.replace("Cons","")
         conslist.append(k)
     
-    return proslist,conslist
+    url2 = 'https://www.screener.in/company/'+ticker2+'/consolidated/'
+    webpage2 = requests.get(url2) #Request to webpage
+    soup2 = BeautifulSoup(webpage2.text,'html.parser') #parse text frm website
+
+    cmp = []
+    chgp = []
+
+    LTPData = soup2.find_all('div',attrs={'class':'flex flex-align-center'})
+    for i in LTPData:
+        x = i.text.split()
+        cmp.append(x[0])
+        cmp.append(x[1])
+        cmp.append(x[2])
+
+        rs = cmp[0]
+        ltp = cmp[1]
+        chgp = cmp[2]
+
+    return proslist,conslist,rs,ltp,chgp
 
 def stockanalysis(request):
     if request.method=="POST":
@@ -697,7 +715,7 @@ def stockanalysis(request):
         logo_url = yf.Ticker(ticker).info['logo_url']
         longBusinessSummary = yf.Ticker(ticker).info['longBusinessSummary']
 
-        a, b = scrap_procon(ticker2)
+        a, b, c, d, e = scrap_procon(ticker2)
         l=a[0].split("\n")
         l=[i for i in l if i]
 
@@ -705,5 +723,7 @@ def stockanalysis(request):
         m=[j for j in m if j]
 
 
-    context={'list':stocklist(),'a':l,'b':m,'shortName':longName,'sector':sector,'industry':industry,'website':website,'logo_url':logo_url,'longBusinessSummary':longBusinessSummary}
+    context={'list':stocklist(),'a':l,'b':m,'c':c,'d':d,'e':e,'longName':longName,'sector':sector,'industry':industry,
+                'website':website,'logo_url':logo_url,'longBusinessSummary':longBusinessSummary
+            }
     return render(request,'stockinfo.html',context)

@@ -98,8 +98,14 @@
                   </ul>
                 </div>
                 <div class="card-body">
-                  <h5 class="card-title">{{longName}}</h5>
-                  <p class="card-text">{{LTP}}</p>
+                  <b><h5 class="card-title">{{longName}}</h5></b><br>
+                  {% if e >= 0%}                  
+                    <h2 class="card-title" style="color:rgba(6, 136, 8, 0.853);">{{c}} {{d}} <h4>{{e}}</h4> <i class="bx bxs-up-arrow"></i></h2>
+                    <h3 class="card-title" style="color:rgba(6, 136, 8, 0.853);"></h3>
+                  {% else %}
+                    <h3 class="card-title" style="color:rgba(199, 17, 17, 0.853);">{{c}} {{d}} <h4>{{e}}</h4> <i class="bx bxs-down-arrow"></i></h3>
+                    <h3 class="card-title" style="color:rgba(199, 17, 15, 0.853);"></h3>
+                  {% endif %}
                   <a href="{{website}}" class="btn btn-primary">Go Company Website</a>
                 </div>
               </div>
@@ -108,7 +114,7 @@
     <div class="card mb-3">
         <div class="row g-0">
           <div class="col-md-2">
-            <img src="{{logo_url}}" class="img-fluid rounded-start" alt="...">
+            <img src="{{logo_url}}" class="img-fluid rounded-start" alt="Logo Unavailable">
           </div>
           <div class="col-md-10">
             <div class="card-body">
@@ -121,7 +127,7 @@
 </div>
 
 <div class="row">
-    <div class="col-xxl-6 col-md-6">
+    <div class="col-xxl-6 col-md-6" style="color:rgba(6, 136, 8, 0.853);">
         <div class="card-body">
           <h5 class="card-title">Pros</h5>
           {% for i in a %}
@@ -133,9 +139,9 @@
           {% endfor %}
         </div>
     </div>
-    <div class="col-xxl-6 col-md-6">
+    <div class="col-xxl-6 col-md-6" style="color:rgba(240, 11, 11, 0.853);">
         <div class="card-body">
-          <h5 class="card-title">Cons</h5>
+          <h5 class="card-title" >Cons</h5>
           {% for i in b %}
           <ul>
             <li>
@@ -145,6 +151,28 @@
           {% endfor %}
         </div>
     </div>
+</div>
+<hr>
+<div class="row">
+  <div id="donutChart">
+<h4><b>Divident</b></h4>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      new ApexCharts(document.querySelector("#donutChart"), {
+        series: [44, 55, 13, 43, 22],
+        chart: {
+          height: 200,
+          type: 'donut',
+          toolbar: {
+            show: true
+          }
+        },
+        labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+      }).render();
+    });
+  </script>
+  <!-- End Donut Chart -->
+</div>
 </div>
 
   

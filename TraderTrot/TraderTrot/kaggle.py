@@ -4,7 +4,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import yfinance as yf
 
-ticker = ['ZOMATO.NS','TCS.NS','WIpRO.NS'] # code to select stock
+ticker = ['ZOMATO.NS','TCS.NS','WIPRO.NS'] # code to select stock
 stock_info = yf.Ticker(ticker[0]).info
 ticker = [i.upper() for i in ticker] # avoid if choosing from list of companies
 ticker.sort()
