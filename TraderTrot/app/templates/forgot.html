@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
-  <title>Trader Trot - Sign in</title>
+  <title>Trader Trot - Forgot password</title>
 </head>
 <header class="header">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -47,21 +47,17 @@
     
   <div class="main"  align ="center">
     <p class="sign" align="center">Sign in</p>  
-    <form class="form1" action="checklogin" method="post" onclick="return validate()">
+    <form class="form1" action="/pswdreset/" method="post" onclick="return validate()">
 
       {% csrf_token %} 
       
-      <span id="un" style="color:rgb(255, 64, 0);"></span><br>
+      <span id="un" style="color:red;"></span><br>
       <input class="un " type="text" name="email" align="center" placeholder="Email" id="uname" onclick="return clearValid()"><br>
-
-      <span id="psd" style="color:red;"></span><br>
-      <input class="un" type="password" name="pswd" align="center" placeholder="Password" id="pswd" onclick="return clearValid()"><br>
       
-      <span id="un" style="color:red;">{{message2}}</span><br>
+      <span id="un" style="color:red;">{{message}}</span><br>
       <input type="submit" name="submit" value="submit" class="submit" align="center" > 
-      
+
     </form>    
-    <p class="forgot" align="center"><a  style="margin-left: 38px; " href="/forgot/">Forgot Password?</p> 
     <p class="forgot" align="center"><a  style="margin-left: 38px; " href="/user_reg">New User?</p>      
   </div>
 </section>
@@ -70,16 +66,9 @@
   function validate()
   {
     var uname=document.getElementById('uname').value.trim();
-    var pswd=document.getElementById('pswd').value.trim();
-
     if (uname=="")
     {
-      document.getElementById('un').innerHTML="**Enter Username";
-      return false;
-    }
-    if(pswd=="")
-    {
-      document.getElementById('psd').innerHTML="**Enter Password";
+      document.getElementById('un').innerHTML="**Enter Email";
       return false;
     }
     else
@@ -89,7 +78,6 @@
   }
   function clearValid(){
     document.getElementById('un').innerHTML="";
-    document.getElementById('psd').innerHTML="";
     return false;
   }
 </script>

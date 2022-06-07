@@ -15,7 +15,6 @@ for market in index_ind:
         ticker.remove(market)
 symbols = ticker + index_ind
 
-print(stock_info)
 #print(symbols) #market index + stocks
 
 # yf_period = ['1d','5d','1m','3m','6m','1y','5y']
@@ -62,9 +61,9 @@ yf_info = pd.DataFrame(index = fin_info, columns=symbols)
 # print(ticker_parameter)
 
 #**********************************************************************************************#
-print('SYMBOLS:\n{}\n'.format(symbols))
-print('PERIOD:\t\t{}'.format(yf_period))
-print('INTERVAL:\t{}'.format(yf_interval))
+# print('SYMBOLS:\n{}\n'.format(symbols))
+# print('PERIOD:\t\t{}'.format(yf_period))
+# print('INTERVAL:\t{}'.format(yf_interval))
 
 yf_returns = yf.download(
         tickers = symbols,       # tickers list or string as well

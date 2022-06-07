@@ -20,6 +20,7 @@ class user_tbl(models.Model):
     ContactNo=models.CharField(max_length=12)
     ExperienceYr=models.CharField(max_length=2)
     Profession=models.CharField(max_length=30)
+    trdr_type=models.CharField(max_length=30)
     login=models.ForeignKey(login_tbl, on_delete=models.CASCADE) #setting foreign key
 
     class Meta:
@@ -85,6 +86,7 @@ class tradebook_tbl(models.Model):
     strategy=models.CharField(max_length=100, null=True)
     remark=models.CharField(max_length=100, null=True)
     login=models.ForeignKey(login_tbl, on_delete=models.CASCADE) #setting foreign key
+    nodays = models.IntegerField()
 
     class Meta:
         db_table= "tradebook_tbl"
@@ -134,3 +136,29 @@ class solution_tbl(models.Model):
 
     class Meta:
         db_table= "solution_tbl"
+
+class stockdata(models.Model):        
+    symbol=models.CharField(max_length=12)
+    date=models.DateField(null=False)
+
+    class Meta:
+        db_table="stockdata"
+
+class loginactivity(models.Model):
+    logintime = models.DateTimeField(auto_now_add=True)
+    login=models.ForeignKey(login_tbl, on_delete=models.CASCADE, null=True) #setting foreign key
+
+    class Meta:
+        db_table="loginactivity"
+
+class useractivity(models.Model):
+    login=models.ForeignKey(login_tbl, on_delete=models.CASCADE, null=True) #setting foreign key
+    stock=models.CharField(max_length=20)
+    date=models.DateField(auto_now_add=True)
+    sector=models.CharField(max_length=20)
+    industry=models.CharField(max_length=20)
+    revenueGrowth=models.DecimalField(max_digits=5, decimal_places=2)
+    recommendationKey=models.CharField(max_length=20)
+
+    class Meta:
+        db_table="useractivity"

@@ -46,13 +46,14 @@
                               <h5 class="card-title"></h5>
 
                               <!-- investing request -->
-                              {% for i in volstock %}
+                              
                                 <ul>
                                   <li>
-                                    <i><b>{{i}}</b></i>
+                                    <i><b>{{volstock}}</b></i>
+                                    <b></b>
                                   </li>
                                 </ul>
-                              {% endfor %}a
+                            
                 
                             </div>
                           </div>
@@ -70,85 +71,7 @@
                             <div class="card-body">
                               <h5 class="card-title"></h5>
                 
-                              <form class="row g-3" action="/trade_req/" method="post" enctype="multipart/form-data">
-
-                              {% csrf_token %}  <!-- this token takes data -->
-
-                              <div class="col-md-6">
-                                <div class="form-floating mb-3">
-                                  <input list="stock" name="stock" class="form-select" id="floatingSelect" aria-label="Floating label select example" placeholder="Stock" required>
-                              <datalist id="stock">  
-                                <option selected>Stock</option>
-                                {% if list %}
-                                {% for i in list %}
-                                <option value={{i}}>{{i}}</option>
-                                {% endfor %}
-                               {% endif %}
-                              </datalist>
-                            </input>
-                                  <!-- <label for="floatingSelect">Works with selects</label> -->
-                                </div>
-                              </div>
-
-                              <div class="col-md-6">
-                                <div class="form-floating mb-3">
-                                  <select class="form-select" name="stkex" id="floatingSelect1" aria-label="Floating label select example">
-                                    <option selected value="">Stock Exchange</option>
-                                    <option value="NSE">National Stock Exchange - NSE</option>
-                                    <option value="BSE">Bombay Stock Exchange - BSE</option>
-                                    
-                                  </select>
-                                  <!-- <label for="floatingSelect">Works with selects</label> -->
-                                </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                  <input type="text" class="form-control" placeholder="Subject" id="sub" name="sub" required>
-                                </div> 
-
-                                <div class="col-md-6">
-                                  <textarea name="remark" id="des" cols="68" rows="2" placeholder="Describe your queries here..." required></textarea>
-                                </div>
-
-                                <div class="col-md-6">
-                                  <input type="file" class="form-control" placeholder="Choose relevent picture" id="" name="pic" >
-                                </div>
-
-                                <div class="col-md-6">
-                                  <input type="date" class="form-control" placeholder="Date" id="" name="deadline">
-                                </div>
-
-                                <div class="">
-                                <div class="form-check">
-                                  <input class="form-check-input" type="hidden" id="gridCheck1" name="time" value="">
-                                  <input class="form-check-input" type="checkbox" id="gridCheck1" name="time" value="TIME">
-                                  <label class="form-check-label" for="gridCheck1">
-                                   Time - Entry & Exit
-                                  </label>
-                                </div>
-
-                                <div class="form-check">
-                                  <input class="form-check-input" type="hidden" id="gridCheck1" name="cagr" value="">
-                                  <input class="form-check-input" type="checkbox" id="gridCheck1" name="cagr" value="CAGR">
-                                  <label class="form-check-label" for="gridCheck1">
-                                  CAGR % 
-                                  </label>
-                                </div>
-
-                                <div class="form-check">
-                                  <input class="form-check-input" type="hidden" id="gridCheck1" name="target" value="">
-                                  <input class="form-check-input" type="checkbox" id="gridCheck1" name="target" value="TARGET">
-                                  <label class="form-check-label" for="gridCheck2">
-                                    Target %
-                                  </label>
-                                </div>
-                                </div>
-                                <span id="valid" style="color: red;text-align: center;"></span><br>
-                                <div class="text-center">
-                                  <input type="submit" class="btn btn-primary" value="Request">
-                                  <button type="reset" class="btn btn-secondary">Reset</button>        
-                                </div>
-                              </form>
+                              
                 
                             </div>
                           </div>
@@ -156,37 +79,7 @@
                     </div>
 
                   </div>
-<!-- <script>
-    function Valida2(){
-  var a = document.getElementById('floatingSelect').value.trim();
- var b = document.getElementById('floatingSelect1').value.trim();
- var c = document.getElementById('sub').value.trim();
- var d = document.getElementById('des').value.trim();
- if(a=="")
-   {
-     document.getElementById('valid').innerHTML = "Choose Stock";
-     return false;
-   }
-   if(b=="")
-   {
-     document.getElementById('valid').innerHTML = "Enter Stock exchange";
-     return false;
-   }
-   if(c=="")
-   {
-     document.getElementById('valid').innerHTML = "Enter Subject";
-     return false;
-   }
-   if(d=="")
-   {
-     document.getElementById('valid').innerHTML = "Enter Description";
-     return false;
-   }
-   else{
-     return true;
-   }
-}
-</script> -->
+
                     <!-- End Profile Edit Form -->
 
                     <div class="tab-pane fade pt-3" id="profile-settings">

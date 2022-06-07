@@ -35,6 +35,8 @@ urlpatterns = [
     path('checklogin',views.checklogin),
     path('newindex/',views.newindex),
     path('logout/',views.logout),
+    path('pswdreset/',views.pswdreset),
+    path('forgot/',views.forgot),
 
     #admin
     path('ad_ac_reg/',views.ad_ac_reg),
@@ -63,6 +65,8 @@ urlpatterns = [
     path('other_req/',views.other_req),
 
     path('deletereq/',views.deletereq),
+    path('stock_prediction/',views.stock_prediction),
+    path('tradestock/',views.tradestock),
 
     #accademy
     path('ac_reg/',views.ac_reg),

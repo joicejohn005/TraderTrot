@@ -1,43 +1,61 @@
-from ast import Global
 from app.models import *
+from ast import Global
 from asyncio.windows_events import NULL
 
 from bs4 import BeautifulSoup
 
 import csv
 
-from django.contrib import messages
-from django.shortcuts import redirect, render
-from django.http import *
-from django.db.models import Q
-from django.core.files.storage import FileSystemStorage
-from datetime import datetime #service request
+from datetime import datetime,timedelta #service request
 import datetime as dt #plotly
+from datetime import date
+from django.contrib import messages
+from django.core.files.storage import FileSystemStorage
+from django.core.mail import send_mail
+from django.db.models import Q
+from django.http import *
+from django.shortcuts import redirect, render
+from django.urls import reverse
+from django.views.decorators.cache import cache_control
+
+import io
+
+from keras.models import Sequential
+from keras.layers import Dense, LSTM
 
 from matplotlib import pyplot as plt
 from matplotlib.style import context
 from matplotlib import ticker
+from .models import stockdata 
 
 from nsepy import get_history
+import numpy as np
 
 import pandas as pd
+import pdfkit
 from plotly import express as px
 import plotly.offline as opy
 from plotly import graph_objs as go
-import pdfkit
+import plotly.graph_objects as go
 
 import requests
 from requests.exceptions import ConnectionError
+import re
 
 import seaborn as sns
+from sklearn.preprocessing import MinMaxScaler
+import statistics
 from symtable import Symbol
 
+import TraderTrot.settings
+
 import urllib.request
+import urllib,base64
 
 import yfinance as yf
+
+# Create your views here.
 #all user
-
-
 def index(request):
     blogdata=blog_tbl.objects.select_related("b_tid").order_by('-id')[:3]
     return render (request,'index.html',{"blogdata":blogdata})
@@ -62,13 +80,14 @@ def login(request):
 def user_profile(request):
     return render (request,'user_profile.html')
 
-
 def user_reg(request):
     return render (request,'user_reg.html')
 
 def stockinfo(request):
-    context={'list':stocklist()}
-
+    id = request.session['id']
+    login = user_tbl.objects.get(login=id)
+    utype = login.trdr_type
+    context={'list':stocklist(),'utype':utype}
     return render (request,'stockinfo.html',context)
 
 def checklogin(request):
@@ -95,6 +114,7 @@ def checklogin(request):
                     request.session['id']=id
 
                     acid=academy_tbl.objects.get(login_id=id)
+                    
                     request.session['acname']=acid.ac_name
                     return redirect("/acc_home/")
 
@@ -109,6 +129,34 @@ def checklogin(request):
             return HttpResponseRedirect('/newindex')
         message="Invalid USername or Password Or Inactive user"
         return render(request,"login.html",{"message2":message})
+
+def forgot(request):
+    return render (request,'forgot.html')
+
+def pswdreset(request):
+    if request.method=="POST":
+        email = request.POST['email']
+        em = login_tbl.objects.filter(Unemail=email)
+        for i in em:
+            if i.Unemail != email:
+                alert2="Enter Registered Email"
+                return render(request,"forgot.html",{"message":alert2})
+            else:
+                subject = "TraderTrot Password Reset Mail"
+                fromemail = TraderTrot.settings.EMAIL_HOST_USER
+                message = f'Your password reset link: \n http://127.0.0.1:8000/resetpswd/ '
+                reciept = [email]
+                send_mail(subject, fromemail, message, reciept)
+                alert = "Check your Registered mail"                   
+                return render(request,"login.html",{"message":alert})
+
+def resetpswd(request,sid):
+     if request.method=="POST":
+        pswd = request.POST['pswd']
+        cpswd = request.POST['cpswd']
+        upswd = login_tbl.objects.get(id=sid)
+
+
 
 def newindex(request):
     if request.session.is_empty():
@@ -294,24 +342,82 @@ def pdf(request):
     pdfkit.from_url("tradebook.html","tradebook.pdf",configuration=config)
     return redirect('/tradebook/')
 
+def numOfDays(date1, date2):
+	return (date2-date1).days
 
+def tr_count(list1, l, r):
+    return len(list(x for x in list1 if l <= x <= r)) 
+
+import datetime
 def addtrade(request):
     if request.method=="POST":
         stock = request.POST['stock']
         quantity = int(request.POST['qty'])
         entry = float( request.POST['entry'])
-        edate = request.POST['edate']
         exit = float( request.POST['exit'])
+        edate = request.POST['edate']
         exdate = request.POST['exdate']
+        strategy = request.POST['strg']
+        remark = request.POST['remark']
         pnl = (exit-entry)*quantity
         gain = (pnl / (quantity*entry)) * 100
-        strategy = request.POST['strg']
-        remark = request.POST['remark'] 
 
-        id = request.session['id']
+        format = '%Y-%m-%d'
+
+        edat = datetime.datetime.strptime(edate, format) 
+        edate1=edat.date()  
+        exdat = datetime.datetime.strptime(exdate, format) 
+        exdate1=exdat.date() 
         
-        trade = tradebook_tbl.objects.create(stock=stock,qty=quantity,b_date=edate,s_date=exdate,buy=entry,sell=exit,pnl=pnl,gain=gain,strategy=strategy,remark=remark,login_id=id)
+        id = request.session['id']
+        nodays = numOfDays(edate1, exdate1)
+        
+        trade = tradebook_tbl.objects.create(stock=stock,nodays=nodays,qty=quantity,b_date=edate,s_date=exdate,buy=entry,sell=exit,pnl=pnl,gain=gain,strategy=strategy,remark=remark,login_id=id)
         trade.save()
+
+        day_list = []
+        days = tradebook_tbl.objects.filter(login=id)
+        for d in days:
+            day_list.append(d.nodays)
+
+        l = 0
+        r = 0
+        l2 = 1
+        r2 = 90
+        l3= 91
+        r3=732
+        l4=733
+        r4 = 40000
+        countlist = []
+        x= tr_count(day_list, l, r)
+        y= tr_count(day_list, l2, r2)
+        z= tr_count(day_list, l3, r3)
+        w = tr_count(day_list, l4, r4)
+
+        countlist.append(x)
+        countlist.append(y)
+        countlist.append(z)
+        countlist.append(w)
+
+        trdr_type = ["Day Trader","Swing Trader","Positional Trader","Investor"]
+
+        x = max(countlist)
+        if (x == countlist[0]):
+            ttype = trdr_type[0]
+
+        elif (x == countlist[1]):
+            ttype = trdr_type[1]
+        
+        elif (x == countlist[2]):
+            ttype = trdr_type[2]
+
+        elif (x == countlist[3]):
+            ttype = trdr_type[3]
+
+        utype = user_tbl.objects.get(login=id)
+        utype.trdr_type=ttype
+        utype.save()
+
     return redirect('/tradebook/')
     
 def user_request(request):
@@ -629,7 +735,7 @@ def solution(request):
 def clipboard(request):
     return render(request,'clipboard.html')
      
-def date(request):
+def date1(request):
     date = datetime.datetime.now().strftime("%b %d %Y")
     datetoday = {'date': date}
     return render(request,"ad_ac_reg.html", {"date":date})
@@ -682,48 +788,257 @@ def scrap_procon(ticker2):
         k = k.replace("Cons","")
         conslist.append(k)
     
-    url2 = 'https://www.screener.in/company/'+ticker2+'/consolidated/'
-    webpage2 = requests.get(url2) #Request to webpage
-    soup2 = BeautifulSoup(webpage2.text,'html.parser') #parse text frm website
+    # url2 = 'https://www.screener.in/company/'+ticker2+'/consolidated/'
+    # webpage2 = requests.get(url2) #Request to webpage
+    # soup2 = BeautifulSoup(webpage2.text,'html.parser') #parse text frm website
 
-    cmp = []
-    chgp = []
+    # cmp = []
+    # chgp = []
 
-    LTPData = soup2.find_all('div',attrs={'class':'flex flex-align-center'})
-    for i in LTPData:
-        x = i.text.split()
-        cmp.append(x[0])
-        cmp.append(x[1])
-        cmp.append(x[2])
+    # LTPData = soup2.find_all('div',attrs={'class':'flex flex-align-center'})
+    # for i in LTPData:
+    #     x = i.text.split()
+    #     cmp.append(x[0])
+    #     cmp.append(x[1])
+    #     cmp.append(x[2])
 
-        rs = cmp[0]
-        ltp = cmp[1]
-        chgp = cmp[2]
-
-    return proslist,conslist,rs,ltp,chgp
+    #     #rs = cmp[0]
+    #     ltp = cmp[1]
+    #     chgp = cmp[2].replace('%', '')
+    return proslist,conslist
+    # ltp,chgp
 
 def stockanalysis(request):
-    if request.method=="POST":
+    if request.session.is_empty():
+        return HttpResponseRedirect('login/')  
+    else:
+        id=request.session['id']  
+        if request.method=="POST":
 
-        ticker = request.POST['stock']+".NS"
-        ticker2 = request.POST['stock']
+            ticker = request.POST['stock']+".NS"
+            ticker2 = request.POST['stock']
 
-        longName = yf.Ticker(ticker).info['longName']
+            open = yf.Ticker(ticker).info['open']
+            volume = yf.Ticker(ticker).info['volume']
+
+            dayLow=yf.Ticker(ticker).info['dayLow']
+            dayHigh=yf.Ticker(ticker).info['dayHigh']
+
+            currentPrice=yf.Ticker(ticker).info['currentPrice']
+
+            fiftyTwoWeekHigh=yf.Ticker(ticker).info['fiftyTwoWeekHigh']
+            fiftyTwoWeekLow=yf.Ticker(ticker).info['fiftyTwoWeekLow']
+
+            previousClose=yf.Ticker(ticker).info['previousClose']
+            d=currentPrice-previousClose
+            p=(d/previousClose)*100
+            p=round(p, 2)
+
+            longName = yf.Ticker(ticker).info['longName']
+            sector = yf.Ticker(ticker).info['sector']
+            industry = yf.Ticker(ticker).info['industry']
+            website = yf.Ticker(ticker).info['website']
+            logo_url = yf.Ticker(ticker).info['logo_url'] 
+            longBusinessSummary = yf.Ticker(ticker).info['longBusinessSummary']
+
+            a, b = scrap_procon(ticker2)
+            l=a[0].split("\n")
+            l=[i for i in l if i]
+
+            m=b[0].split("\n")
+            m=[j for j in m if j]
+
+            user_activity(ticker,id)
+
+        context={'list':stocklist(),'a':l,'b':m,'percentage':p,'longName':longName,'sector':sector,'industry':industry,
+                'volume':volume,'open':open,'website':website,'logo_url':logo_url,'longBusinessSummary':longBusinessSummary,
+                'dayLow':dayLow,'dayHigh':dayHigh,'currentPrice':currentPrice,'fiftyTwoWeekHigh':fiftyTwoWeekHigh,
+                'fiftyTwoWeekLow':fiftyTwoWeekLow,'previousClose':previousClose
+                }
+        return render(request,'stockinfo.html',context)
+
+def stock_prediction(request):
+    if(request.session.is_empty()):
+        request.session.set_expiry(0) 
+        return HttpResponseRedirect('login/')
+    else:
+        if request.method == 'POST':
+            symbol=f"{request.POST['stock']}"
+        else:
+            symbol='TCS'
+            
+        import datetime 
+        
+        stock=stockdata()
+        import math
+        start=datetime.date(2020,1,1)
+        end=datetime.date.today()
+        st=stockdata.objects.filter(symbol=symbol)
+        loc=f"stockdata/{symbol}.csv"
+        
+        if st.count()==1:
+            for i in st:
+                if i.date==datetime.date.today():
+                    pass
+                else:
+                    df=pd.read_csv(loc)
+                    lastdate=datetime.datetime.strptime(df['Date'].max(),"%Y-%m-%d")
+                    print(type(lastdate))
+                    start=lastdate.date()+datetime.timedelta(days = 1)
+                    data=get_history(symbol=symbol, start=start , end=end)
+                    data.to_csv(loc,mode='a',index=True,header=False)
+                    i.date=datetime.date.today()
+                    i.save()
+                    
+        else:
+            data=get_history(symbol=symbol, start=start , end=end)
+            data.to_csv(loc)
+            stock.symbol=symbol
+            stock.date=datetime.date.today()
+            stock.save()
+            
+               
+        df=pd.read_csv(loc)
+        df=df.set_index('Date')
+        data=df.filter(["Close"])
+        dataset=data.values
+        training_data_len=math.ceil(len(dataset)*0.8)
+        scaler=MinMaxScaler(feature_range=(0,1))
+        scaled_data=scaler.fit_transform(dataset)
+        train_data=scaled_data[0:training_data_len,:]
+        x_train = []
+        y_train = []
+        for i in range(60, len(train_data)):
+            x_train.append(train_data[i-60:i, 0])
+            y_train.append(train_data[i, 0])
+        x_train, y_train = np.array(x_train), np.array(y_train)
+        x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1))
+        model = Sequential()
+        model.add(LSTM(50, return_sequences = True, input_shape = (x_train.shape[1], 1)))
+        model.add(LSTM(50, return_sequences = False))
+        model.add(Dense(25))
+        model.add(Dense(1))
+        model.compile(optimizer = 'adam', loss = 'mean_squared_error')
+        model.fit(x_train, y_train, batch_size = 1, epochs = 1)
+        test_data = scaled_data[training_data_len - 60: , :]
+        x_test = []
+        y_test = dataset[training_data_len:, :]
+        for i in range (60, len(test_data)):
+             x_test.append(test_data[i - 60:i, 0])
+
+        x_test = np.array(x_test)
+        x_test = np.reshape(x_test, (x_test.shape[0], x_test.shape[1], 1))
+        predictions = model.predict(x_test)
+        predictions = scaler.inverse_transform(predictions)
+        train = data[:training_data_len]
+        valid = data[training_data_len:]
+        valid.insert(1,'predictions',predictions)
+        last_60_days = data[-60:].values
+        last_60_days_scaled = scaler.transform(last_60_days)
+        X_test = []
+        X_test.append(last_60_days_scaled)
+        X_test = np.array(X_test)
+        X_test = np.reshape(X_test, (X_test.shape[0],X_test.shape[1], 1))
+        pred_price = model.predict(X_test)
+        pred_price = scaler.inverse_transform(pred_price)
+        
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x = train.index, y = train['Close'],
+                            mode='lines',
+                            name='Close',
+                            marker_color = '#1F77B4'))
+        fig.add_trace(go.Scatter(x = valid.index, y = valid['Close'],
+                            mode='lines',
+                            name='Val',
+                            marker_color = '#FF7F0E'))
+        fig.add_trace(go.Scatter(x = valid.index, y = valid.predictions,
+                            mode='lines',
+                            name='Predictions',
+                            marker_color = '#2CA02C'))
+
+        fig.update_layout(
+            title=symbol,
+            titlefont_size = 28,
+            hovermode = 'x',
+            xaxis = dict(
+                title='Date',
+                titlefont_size=16,
+                tickfont_size=14),
+            
+            height = 600,
+            
+            yaxis=dict(
+                title='Close price in INR (₹)',
+                titlefont_size=16,
+                tickfont_size=14),
+            legend=dict(
+                y=0,
+                x=1.0,
+                bgcolor='rgba(255, 255, 255, 0)',
+                bordercolor='rgba(255, 255, 255, 0)'))
+
+        div=opy.plot(fig,auto_open=False,output_type='div')
+        nse_list=stocklist()
+        context={'list':nse_list,'graph':div,'price':pred_price}
+        return render(request,'stockinfo.html',context)
+
+def download_from_url(url):
+    r = requests.get(url, allow_redirects=True)
+    open(url.split('/')[-1], 'wb').write(r.content)
+    return url.split('/')[-1]
+
+def join_2_csv(csv1, csv2, col1, col2, select_cols=[], rename_cols=[]):
+    csv1 = download_from_url(csv1)
+    csv2 = download_from_url(csv2)
+    df1 = pd.read_csv(csv1)
+    df2 = pd.read_csv(csv2)
+    df = pd.merge(df1, df2, how='inner', left_on=col1, right_on=col2)
+    df = df[select_cols]
+    df.columns = rename_cols
+    df = df[df[rename_cols[1]] > '0.02']
+    df = df.sort_values(by=rename_cols[1], ascending=False)
+    return df.reset_index()[rename_cols]
+
+def get_date():
+    p = dt.datetime.now()-timedelta(days=1)
+    if len(str(p.date().day))==2:
+        d=str(p.date().day)
+    else:
+        d='0'+str(p.date().day)
+    y = str(p.date().year)
+    if len(str(p.date().month))==2:
+        mth=str(p.date().month)
+    else:
+        mth='0'+str(p.date().month)
+    return d+mth+y
+
+def tradestock(request):
+
+    vol = 'https://www1.nseindia.com/archives/nsccl/volt/CMVOLT_'+get_date()+'.CSV'
+    n100 = 'https://www1.nseindia.com/content/indices/ind_nifty100list.csv'
+    select_cols = ['Symbol', 'Current Day Underlying Daily Volatility (E) = Sqrt(0.995*D*D + 0.005*C*C)',
+                'Underlying Annualised Volatility (F) = E*Sqrt(365)']
+    rename_cols = ['Symbol', 'Daily Vol', 'Yearly Vol']
+    stock=join_2_csv(vol, n100, select_cols[0], rename_cols[0], select_cols, rename_cols)
+    volstock=stock.iloc[:20]
+    volstock.index+=1
+    # json_records = volstock.reset_index().to_json(orient ='records')
+    # data = []
+    # data = json.loads(json_records)
+    context={'volstock':volstock}
+    # print(volstock)
+    return render(request,'tradestock.html',context)
+
+def user_activity(ticker,id):
+        #id=request.session['id']
         sector = yf.Ticker(ticker).info['sector']
         industry = yf.Ticker(ticker).info['industry']
-        website = yf.Ticker(ticker).info['website']
-        logo_url = yf.Ticker(ticker).info['logo_url']
-        longBusinessSummary = yf.Ticker(ticker).info['longBusinessSummary']
-
-        a, b, c, d, e = scrap_procon(ticker2)
-        l=a[0].split("\n")
-        l=[i for i in l if i]
-
-        m=b[0].split("\n")
-        m=[j for j in m if j]
-
-
-    context={'list':stocklist(),'a':l,'b':m,'c':c,'d':d,'e':e,'longName':longName,'sector':sector,'industry':industry,
-                'website':website,'logo_url':logo_url,'longBusinessSummary':longBusinessSummary
-            }
-    return render(request,'stockinfo.html',context)
+        revenueGrowth = yf.Ticker(ticker).info['revenueGrowth']
+        recommendationKey = yf.Ticker(ticker).info['recommendationKey']
+        ticker=ticker.replace(".NS","")
+        check = useractivity.objects.filter(login_id=id,stock=ticker)
+        if check.count() == 0:
+            user_activity=useractivity.objects.create(login_id=id,stock=ticker,sector=sector,industry=industry,revenueGrowth=revenueGrowth,recommendationKey=recommendationKey)
+            user_activity.save()
+        else:
+            pass    

@@ -63,11 +63,11 @@
                                 <div class="text-center">
                                   <input type="submit" class="btn btn-primary" value="Request">
                                   <button type="reset" class="btn btn-secondary">Reset</button>
-                                  <button class="btn btn-outline-primary" onclick="return Valida1();"><a href="#">Prediction</a></button>
+                                  <button class="btn btn-outline-primary" ><a href="/stock_prediction/">Prediction</a></button>
                                   <!-- <button class="btn btn-primary" type="button" disabled>
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                     Loading...
-                                  </button>   -->
+                                  </button>  onclick="return Valida1();" -->
                                 </div>
                               </form>
                 
@@ -82,7 +82,17 @@
                 </div>
                 <!-- End Bordered Tabs -->
               </div>
-
+              <div>
+                <div class="card mb-3">
+                    <div class="row g-0">
+                      <div class="col-md-10">
+                        <div class="card-body">
+                          <center> <h5 class="card-title">Trader Type : {{ utype }}</h5> </center>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
               <div class="card text-center">
                 <div class="card-header">
                   <ul class="nav nav-pills card-header-pills">
@@ -98,13 +108,11 @@
                   </ul>
                 </div>
                 <div class="card-body">
-                  <b><h5 class="card-title">{{longName}}</h5></b><br>
-                  {% if e >= 0%}                  
-                    <h2 class="card-title" style="color:rgba(6, 136, 8, 0.853);">{{c}} {{d}} <h4>{{e}}</h4> <i class="bx bxs-up-arrow"></i></h2>
-                    <h3 class="card-title" style="color:rgba(6, 136, 8, 0.853);"></h3>
+                  <b><h5 class="card-title">{{longName}}</h5></b>
+                  {% if percentage >= 0 %}                  
+                    <h2 style="color:rgba(6, 136, 8, 0.853);"> ₹<b> {{ currentPrice }} </b><p style="font-size: 15px;">{{ percentage }}%<i class="bx bxs-up-arrow"></i></p></h2>
                   {% else %}
-                    <h3 class="card-title" style="color:rgba(199, 17, 17, 0.853);">{{c}} {{d}} <h4>{{e}}</h4> <i class="bx bxs-down-arrow"></i></h3>
-                    <h3 class="card-title" style="color:rgba(199, 17, 15, 0.853);"></h3>
+                    <h2 style="color:rgba(199, 17, 17, 0.853);"> ₹<b> {{ currentPrice }} </b><p style="font-size: 15px;">{{ percentage }}%<i class="bx bxs-down-arrow"></i></p></h2>
                   {% endif %}
                   <a href="{{website}}" class="btn btn-primary">Go Company Website</a>
                 </div>
@@ -126,6 +134,8 @@
       </div>
 </div>
 
+
+
 <div class="row">
     <div class="col-xxl-6 col-md-6" style="color:rgba(6, 136, 8, 0.853);">
         <div class="card-body">
@@ -133,7 +143,7 @@
           {% for i in a %}
           <ul>
             <li>
-              {{i}} 
+              <i><b>{{i}}</b></i>
             </li>
           </ul>
           {% endfor %}
@@ -145,7 +155,7 @@
           {% for i in b %}
           <ul>
             <li>
-              {{i}} 
+              <i><b>{{i}} </b></i>
             </li>
           </ul>
           {% endfor %}
@@ -153,25 +163,53 @@
     </div>
 </div>
 <hr>
-<div class="row">
-  <div id="donutChart">
-<h4><b>Divident</b></h4>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      new ApexCharts(document.querySelector("#donutChart"), {
-        series: [44, 55, 13, 43, 22],
-        chart: {
-          height: 200,
-          type: 'donut',
-          toolbar: {
-            show: true
-          }
-        },
-        labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
-      }).render();
-    });
-  </script>
-  <!-- End Donut Chart -->
+
+
+  <!-- Card with header and footer -->
+  <div class="card">
+    {% if price %}
+    <div class="card-header">
+      <div style="width:600;height:500">
+        <b>Predicted price = {{price.0.0}}</b>
+      </div>
+    {% else %}
+    <p>No graph was provided.</p>
+    {% endif %}
+    {% if graph %}
+    <div style="width:600;height:500">
+    {{ graph|safe }}
+    </div>
+    {% else %}
+    <p>No graph was provided.</p>
+    {% endif %}
+    
+  
+     </div>
+    
+  </div>
+  
+  <!-- End Card with header and footer -->
+
+  <!-- <div class="row">
+    <div id="donutChart">
+  <h4><b>Divident</b></h4>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        new ApexCharts(document.querySelector("#donutChart"), {
+          series: [44, 55, 13, 43, 22],
+          chart: {
+            height: 200,
+            type: 'donut',
+            toolbar: {
+              show: true
+            }
+          },
+          labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+        }).render();
+      });
+    </script> -->
+    
+    <!-- End Donut Chart -->
 </div>
 </div>
 

@@ -1,0 +1,38 @@
+{% include "user_aside.html" %}
+{% include "user_header.html" %}
+{% include "ad_head.html" %}
+{% load static %}
+{% block content %}
+<main id="main" class="main">
+
+    <form action="/stock_prediction/" method="POST">
+        {% csrf_token %}
+        <input list="symbol" placeholder="Enter Stock Symbol" name="symbol">
+        <datalist id="symbol">
+            {% if list %}
+            {% for i in list %}
+            <option value={{i}}>{{i}}</option>
+            {% endfor %}
+            {% endif %}
+        </datalist>
+
+        <input type="submit" value="submit" class="btn-create" name="submit">
+    </form>
+    
+{% if price %}
+<div style="width:600;height:500">
+<p>predicted price = {{price.0.0}}</p>
+</div>
+{% else %}
+<p>No graph was provided.</p>
+{% endif %}
+{% if graph %}
+<div style="width:600;height:500">
+{{ graph|safe }}
+</div>
+{% else %}
+<p>No graph was provided.</p>
+{% endif %}
+
+</main>
+{% endblock %}
