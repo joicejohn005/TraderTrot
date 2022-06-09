@@ -1,3 +1,4 @@
+from datetime import datetime
 from distutils.log import info
 from matplotlib import ticker
 import pandas as pd
@@ -8,27 +9,24 @@ import yfinance as yf
 ticker = ['TCS.NS'] # code to select stock
 stock_info = yf.Ticker(ticker[0]).info #print(stock_info) to get information of stock
 
-stock_info['dayLow']
-stock_info['dayHigh']
+# stock_info['dayLow']
+# stock_info['dayHigh']
 
-x=stock_info['currentPrice']
+# x=stock_info['currentPrice']
 
-stock_info['fiftyTwoWeekHigh']
-stock_info['fiftyTwoWeekLow']
+# stock_info['fiftyTwoWeekHigh']
+# stock_info['fiftyTwoWeekLow']
 
-y=stock_info['previousClose']
-d=x-y
-p=(d/y)*100
-print(stock_info)
+# y=stock_info['previousClose']
+# d=x-y
+# p=(d/y)*100
+# print(stock_info)
 #user input
 
-yf_period   = "10y"   # 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max 
+#**************************************************************************************************************************#
+
+yf_period   = "5y"   # 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max 
 yf_interval = "1d"    # 1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo
-
-#fin_info contain information that we need for analysing
-
-# fin_info = ["sector","industry","shortName","quoteType", "exchange", "totalAssets", "marketCap", "beta", "trailingPE", "volume", "averageVolume", "fiftyTwoWeekLow", "fiftyTwoWeekHigh", "dividendRate", "phone"]
-# yf_info = pd.DataFrame(index = fin_info, columns=ticker)
 
 # print close prices
 yf_returns = yf.download(
@@ -42,12 +40,15 @@ yf_returns = yf.download(
         proxy = None)            # proxy
 
 yf_returns = yf_returns.iloc[:, yf_returns.columns.get_level_values(0)=='Close']
-print(yf_returns.tail(5))
+# print(yf_returns.tail(7))
 
+#**************************************************************************************************************************#
 
 #day % change
-yf_returns = round(yf_returns.pct_change()*100, 2)
-print(yf_returns.tail(5))
+# yf_returns = round(yf_returns.pct_change()*100, 2)
+# print(yf_returns.tail(5))
+
+#**************************************************************************************************************************#
 
 
 yf_divdend = pd.DataFrame()   # initialize dataframe
@@ -57,9 +58,32 @@ for i in ticker:
     yf_divdend = pd.concat([yf_divdend,x], axis=1) 
 #  match dates in yf_returns (first return data to now)
 #  print out dividends
-yf_divdend = yf_divdend[yf_divdend.index >= yf_returns.index[0]]
-print("\n",yf_divdend.tail(13)) # rs give by company per share with corresponding dates
 
+yf_divdend = yf_divdend[yf_divdend.index >= yf_returns.index[0]]
+print("\n",yf_divdend.tail(21)) # rs give by company per share with corresponding dates
+x=yf_divdend.tail(21)
+# dt=list(x['Date'])
+div=(list(x['Dividends']))
+dt=(list(x.index))
+# times=yf_divdend.index.tolist()
+# time=[]
+
+# print(times)
+# for i in times:
+#     a=datetime(i).strftime('%y-%m-%d')
+#     time.append(a)
+# print(time)    
+
+# dividends=yf_divdend['Dividends'].values
+
+
+#*************************************************
+# print(dt)
+# print(div)
+#*************************************************
+
+# plt.plot(dt,div)
+# plt.show()
 
 # yf_returns = yf_returns.add(yf_divdend, fill_value = 0)
 # print(yf_returns.tail(5))

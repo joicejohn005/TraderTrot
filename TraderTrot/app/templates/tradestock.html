@@ -47,12 +47,30 @@
 
                               <!-- investing request -->
                               
-                                <ul>
-                                  <li>
-                                    <i><b>{{volstock}}</b></i>
-                                    <b></b>
-                                  </li>
-                                </ul>
+                              <div class="container">
+                                <h2 class="text-center"><u>Volatile Stocks</u></h2><br>            
+                                <table class="table table-dark table-striped">
+                                  <thead>
+                                    <tr>
+                                      <th>Symbol</th>
+                                      <th>DailyVOL</th>
+                                      <th>YearlyVOL</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                  <!-- jinja2 Technique -->
+                                  {% if d %}  
+                                  {% for i in d %}
+                                    <tr>
+                                      <td>{{i.Symbol}}</td>
+                                      <td>{{i.DailyVol}}</td>
+                                      <td>{{i.YearlyVol}}</td>
+                                   </tr>
+                                  {% endfor %}
+                                  {% endif %}
+                                  </tbody>
+                                </table>
+                              </div>
                             
                 
                             </div>

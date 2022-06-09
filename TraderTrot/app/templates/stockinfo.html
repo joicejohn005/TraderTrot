@@ -89,6 +89,11 @@
                         <div class="card-body">
                           <center> <h5 class="card-title">Trader Type : {{ utype }}</h5> </center>
                         </div>
+                        <div class="card-body">
+                          <p>Volume: <b>{{ volume }}</b></p>
+                          <p>Day Low: <b>{{ dayLow }}</b> | Day High: <b>{{ dayHigh }}</b></p>
+                          <p>52 week Low: <b>{{ fiftyTwoWeekLow }}</b> | 52 week High: <b>{{ fiftyTwoWeekHigh }}</b></p>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -97,7 +102,10 @@
                 <div class="card-header">
                   <ul class="nav nav-pills card-header-pills">
                     <li class="nav-item">
-                      <b class="nav-link active">NSE</b>
+                      <b class="nav-link active">Open: {{ open }}</b> 
+                    </li>&nbsp;&nbsp;
+                    <li class="nav-item">
+                      <b class="nav-link active">Previous Close: {{ previousClose }}</b> 
                     </li>&nbsp;&nbsp;
                     <li class="nav-item">
                       <b class="nav-link active">Sector: {{sector}}</b> 
@@ -109,6 +117,7 @@
                 </div>
                 <div class="card-body">
                   <b><h5 class="card-title">{{longName}}</h5></b>
+
                   {% if percentage >= 0 %}                  
                     <h2 style="color:rgba(6, 136, 8, 0.853);"> ₹<b> {{ currentPrice }} </b><p style="font-size: 15px;">{{ percentage }}%<i class="bx bxs-up-arrow"></i></p></h2>
                   {% else %}
@@ -187,37 +196,69 @@
      </div>
     
   </div>
-  
+  <div class="container">
+    <h2 class="text-center">Divident Information</h2><br>            
+    <table class="table table-dark table-striped">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Divident Payout</th>
+        </tr>
+      </thead>
+      <tbody>
+      <!-- jinja2 Technique -->
+      {% if divident %}  
+      {% for i in divident %}
+        <tr>
+          <td>{{i.Date}}</td>
+          <td>{{i.Dividends}}</td>
+       </tr>
+      {% endfor %}
+      {% endif %}
+      </tbody>
+    </table>
+  </div>
+  <div class="container">
+    <h2 class="text-center">Recommendation Based on Your Activity</h2><br>            
+    <table class="table table-dark table-striped">
+      <thead>
+        <tr>
+          <th>Stock</th>
+          <th>Date Searched</th>
+          <th>LastPrice</th>
+          <th>CurrentPrice</th>
+          <th>Price Changed</th>
+          <th>Percentage Change</th>
+          <th>Recommendation status</th>
+
+        </tr>
+      </thead>
+      <tbody>
+      <!-- jinja2 Technique -->
+      {% if report %}  
+      {% for i in report %}
+        <tr>
+          <td>{{i.stock}}</td>
+          <td>{{i.date}}</td>
+          <td>{{i.previousprice}}</td>
+          <td>{{i.currentprice}}</td>
+          <td>{{i.prchange}}</td>
+          <td>{{i.pr_chg_ptg}}</td>
+          <th>{{i.recommendationKey}}</th>
+
+       </tr>
+      {% endfor %}
+      {% endif %}
+      </tbody>
+    </table>
+  </div>
+
   <!-- End Card with header and footer -->
 
-  <!-- <div class="row">
-    <div id="donutChart">
-  <h4><b>Divident</b></h4>
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        new ApexCharts(document.querySelector("#donutChart"), {
-          series: [44, 55, 13, 43, 22],
-          chart: {
-            height: 200,
-            type: 'donut',
-            toolbar: {
-              show: true
-            }
-          },
-          labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
-        }).render();
-      });
-    </script> -->
-    
     <!-- End Donut Chart -->
 </div>
 </div>
-
-  
             <div class="row">
-
-
-                
 
             </div>
         </div>

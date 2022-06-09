@@ -1,3 +1,4 @@
+from decimal import Decimal
 from app.models import *
 from ast import Global
 from asyncio.windows_events import NULL
@@ -54,6 +55,7 @@ import urllib,base64
 
 import yfinance as yf
 
+import json
 # Create your views here.
 #all user
 def index(request):
@@ -835,12 +837,42 @@ def stockanalysis(request):
             p=round(p, 2)
 
             longName = yf.Ticker(ticker).info['longName']
+
             sector = yf.Ticker(ticker).info['sector']
             industry = yf.Ticker(ticker).info['industry']
+
             website = yf.Ticker(ticker).info['website']
             logo_url = yf.Ticker(ticker).info['logo_url'] 
             longBusinessSummary = yf.Ticker(ticker).info['longBusinessSummary']
 
+#**************************************************************************************************************************#
+            yf_period   = "5y"   # 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max 
+            yf_interval = "1d"    # 1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo
+
+            # print close prices
+            yf_returns = yf.download(
+                    tickers = ticker,       # tickers list or string as well
+                    period = yf_period,      # optional, default is '1mo'
+                    interval = yf_interval,  # fetch data by intervaal
+                    group_by = 'ticker',     # group by ticker
+                    auto_adjust = True,      # adjust all OHLC (open-high-low-close)
+                    prepost = True,          # download market hours data
+                    threads = True,          # threads for mass downloading
+                    proxy = None)            # proxy
+
+            yf_returns = yf_returns.iloc[:, yf_returns.columns.get_level_values(0)=='Close']
+
+            yf_divdend = pd.DataFrame()   # initialize dataframe
+            # for i in ticker:
+            #     x = pd.DataFrame(yf.Ticker(i).dividends)
+            #     yf_divdend = pd.concat([yf_divdend,x], axis=1) 
+            # yf_divdend = yf_divdend[yf_divdend.index >= yf_returns.index[0]]
+            # print(yf_divdend.tail(21))
+            # dividend=yf_divdend.tail(21)
+            # json_records = dividend.reset_index().to_json(orient ="records")
+            # data = json.loads(json_records)
+
+#**************************************************************************************************************************#
             a, b = scrap_procon(ticker2)
             l=a[0].split("\n")
             l=[i for i in l if i]
@@ -849,24 +881,25 @@ def stockanalysis(request):
             m=[j for j in m if j]
 
             user_activity(ticker,id)
+            context2=stock_prediction(ticker2)
 
+            slist=[]
+
+            similar =  useractivity.objects.filter(sector=sector,industry=industry).exclude(stock=ticker2)
+            for i in similar:
+                slist.append(i.stock)
+            report=test(sector,industry,ticker2,id)    
+                
         context={'list':stocklist(),'a':l,'b':m,'percentage':p,'longName':longName,'sector':sector,'industry':industry,
                 'volume':volume,'open':open,'website':website,'logo_url':logo_url,'longBusinessSummary':longBusinessSummary,
                 'dayLow':dayLow,'dayHigh':dayHigh,'currentPrice':currentPrice,'fiftyTwoWeekHigh':fiftyTwoWeekHigh,
-                'fiftyTwoWeekLow':fiftyTwoWeekLow,'previousClose':previousClose
+                'fiftyTwoWeekLow':fiftyTwoWeekLow,'previousClose':previousClose,'report':report
                 }
-        return render(request,'stockinfo.html',context)
+        context3=context|context2
 
-def stock_prediction(request):
-    if(request.session.is_empty()):
-        request.session.set_expiry(0) 
-        return HttpResponseRedirect('login/')
-    else:
-        if request.method == 'POST':
-            symbol=f"{request.POST['stock']}"
-        else:
-            symbol='TCS'
-            
+        return render(request,'stockinfo.html',context3)
+
+def stock_prediction(symbol):
         import datetime 
         
         stock=stockdata()
@@ -979,8 +1012,8 @@ def stock_prediction(request):
 
         div=opy.plot(fig,auto_open=False,output_type='div')
         nse_list=stocklist()
-        context={'list':nse_list,'graph':div,'price':pred_price}
-        return render(request,'stockinfo.html',context)
+        context2={'list2':nse_list,'graph':div,'price':pred_price}
+        return context2
 
 def download_from_url(url):
     r = requests.get(url, allow_redirects=True)
@@ -1018,14 +1051,14 @@ def tradestock(request):
     n100 = 'https://www1.nseindia.com/content/indices/ind_nifty100list.csv'
     select_cols = ['Symbol', 'Current Day Underlying Daily Volatility (E) = Sqrt(0.995*D*D + 0.005*C*C)',
                 'Underlying Annualised Volatility (F) = E*Sqrt(365)']
-    rename_cols = ['Symbol', 'Daily Vol', 'Yearly Vol']
+    rename_cols = ['Symbol', 'DailyVol', 'YearlyVol']
     stock=join_2_csv(vol, n100, select_cols[0], rename_cols[0], select_cols, rename_cols)
     volstock=stock.iloc[:20]
     volstock.index+=1
-    # json_records = volstock.reset_index().to_json(orient ='records')
-    # data = []
-    # data = json.loads(json_records)
-    context={'volstock':volstock}
+    print(volstock.columns)
+    json_records = volstock.reset_index().to_json(orient ='records')
+    data = json.loads(json_records)
+    context = {'d': data}
     # print(volstock)
     return render(request,'tradestock.html',context)
 
@@ -1035,10 +1068,56 @@ def user_activity(ticker,id):
         industry = yf.Ticker(ticker).info['industry']
         revenueGrowth = yf.Ticker(ticker).info['revenueGrowth']
         recommendationKey = yf.Ticker(ticker).info['recommendationKey']
+        currentPrice=yf.Ticker(ticker).info['currentPrice']
+
+
         ticker=ticker.replace(".NS","")
-        check = useractivity.objects.filter(login_id=id,stock=ticker)
+        date=datetime.date.today()
+        check = useractivity.objects.filter(login_id=id,stock=ticker,date=date)
         if check.count() == 0:
-            user_activity=useractivity.objects.create(login_id=id,stock=ticker,sector=sector,industry=industry,revenueGrowth=revenueGrowth,recommendationKey=recommendationKey)
+            user_activity=useractivity.objects.create(login_id=id,last_price=currentPrice,stock=ticker,sector=sector,industry=industry,revenueGrowth=revenueGrowth,recommendationKey=recommendationKey)
             user_activity.save()
         else:
             pass    
+def test(sector,industry,stock,id):
+    slist=[]
+
+    similar =  useractivity.objects.filter(sector=sector,industry=industry,login=id).exclude(stock=stock)
+    for i in similar:
+        if i.stock not in slist:
+            slist.append(i.stock)
+    print(slist)
+    report = []
+    for i in slist: 
+        revenue =  useractivity.objects.filter(stock=i,login=id).order_by('date')[1]
+        ticker = [i+".NS"]
+        ticker2=[i]
+
+        sdate=revenue.date
+        # sdate=np.datetime64(sdate)
+
+        last_price=revenue.last_price
+        currentPrice=yf.Ticker(ticker[0]).info['currentPrice']
+        print(currentPrice)
+
+        currentPrice=Decimal(currentPrice)
+        currentPrice=round(currentPrice,2)
+        pr_chg= currentPrice-last_price
+        print(round(pr_chg, 2))
+        prchange=round(pr_chg, 2)
+        pr_chg_ptg=(pr_chg/last_price)*100
+        pr_chg_ptg=round(pr_chg_ptg, 2)
+
+        vdict= {}
+        vdict['stock']=i
+        vdict['date']=sdate
+        vdict['previousprice']=last_price
+        vdict['currentprice']=currentPrice
+        vdict['prchange']=prchange
+        vdict['pr_chg_ptg']=pr_chg_ptg
+        vdict['recommendationKey']=revenue.recommendationKey
+
+        report.append(vdict)
+    return report    
+
+    #return render(request,'clipboard.html')

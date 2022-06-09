@@ -90,7 +90,9 @@ urlpatterns = [
     path('clipboard/',views.clipboard),
     path('plotly/',views.plot),
     path('stockinfo/',views.stockinfo),
-    path('stockanalysis/',views.stockanalysis)
+    path('stockanalysis/',views.stockanalysis),
+
+    path('test/',views.test),
 ]
 
 if settings.DEBUG:
