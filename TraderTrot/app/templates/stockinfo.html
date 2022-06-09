@@ -63,7 +63,7 @@
                                 <div class="text-center">
                                   <input type="submit" class="btn btn-primary" value="Request">
                                   <button type="reset" class="btn btn-secondary">Reset</button>
-                                  <button class="btn btn-outline-primary" ><a href="/stock_prediction/">Prediction</a></button>
+                                  <button class="btn btn-outline-primary" ><a href="/predict/">Prediction</a></button>
                                   <!-- <button class="btn btn-primary" type="button" disabled>
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                     Loading...
@@ -205,17 +205,17 @@
           <th>Divident Payout</th>
         </tr>
       </thead>
-      <tbody>
-      <!-- jinja2 Technique -->
-      {% if divident %}  
-      {% for i in divident %}
-        <tr>
-          <td>{{i.Date}}</td>
-          <td>{{i.Dividends}}</td>
-       </tr>
-      {% endfor %}
-      {% endif %}
-      </tbody>
+      <!-- <tbody>
+      jinja2 Technique -->
+      <!-- {% if divident %}   -->
+      <!-- {% for i in divident %} -->
+        <!-- <tr> -->
+          <!-- <td>{{i.Date}}</td> -->
+          <!-- <td>{{i.Dividends}}</td> -->
+       <!-- </tr> -->
+      <!-- {% endfor %} -->
+      <!-- {% endif %} -->
+      </tbody> 
     </table>
   </div>
   <div class="container">
@@ -230,7 +230,6 @@
           <th>Price Changed</th>
           <th>Percentage Change</th>
           <th>Recommendation status</th>
-
         </tr>
       </thead>
       <tbody>

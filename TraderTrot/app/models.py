@@ -153,12 +153,12 @@ class loginactivity(models.Model):
 
 class useractivity(models.Model):
     login=models.ForeignKey(login_tbl, on_delete=models.CASCADE, null=True) #setting foreign key
-    stock=models.CharField(max_length=20)
+    stock=models.CharField(max_length=50)
     date=models.DateField(auto_now_add=True)
-    sector=models.CharField(max_length=20)
-    industry=models.CharField(max_length=20)
+    sector=models.CharField(max_length=50)
+    industry=models.CharField(max_length=50)
     revenueGrowth=models.DecimalField(max_digits=5, decimal_places=2)
-    recommendationKey=models.CharField(max_length=20)
+    recommendationKey=models.CharField(max_length=50)
     last_price=models.DecimalField(max_digits=20, decimal_places=2,null=False,default=0.00)
 
     class Meta:

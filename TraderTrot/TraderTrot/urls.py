@@ -92,7 +92,8 @@ urlpatterns = [
     path('stockinfo/',views.stockinfo),
     path('stockanalysis/',views.stockanalysis),
 
-    path('test/',views.test),
+    path('test/',views.test2),
+    path('predict/',views.predict),
 ]
 
 if settings.DEBUG:
