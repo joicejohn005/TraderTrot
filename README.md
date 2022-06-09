@@ -1,2 +1,2 @@
 # TraderTrot
-Mini Project
+Main Project
