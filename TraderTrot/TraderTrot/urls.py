@@ -65,8 +65,15 @@ urlpatterns = [
     path('other_req/',views.other_req),
 
     path('deletereq/',views.deletereq),
+    
     path('stock_prediction/',views.stock_prediction),
     path('tradestock/',views.tradestock),
+    path('stockinfo/',views.stockinfo),
+    path('stockanalysis/',views.stockanalysis),
+
+    # path('test/',views.test2),
+    path('graphpage/',views.graphpage),
+    path('prediction/',views.prediction),
 
     #accademy
     path('ac_reg/',views.ac_reg),
@@ -89,11 +96,7 @@ urlpatterns = [
     #testing
     path('clipboard/',views.clipboard),
     path('plotly/',views.plot),
-    path('stockinfo/',views.stockinfo),
-    path('stockanalysis/',views.stockanalysis),
-
-    path('test/',views.test2),
-    path('predict/',views.predict),
+  
 ]
 
 if settings.DEBUG:

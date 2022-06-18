@@ -27,7 +27,7 @@ from keras.layers import Dense, LSTM
 from matplotlib import pyplot as plt
 from matplotlib.style import context
 from matplotlib import ticker
-from .models import stockdata 
+from .models import stockdata
 
 from nsepy import get_history
 import numpy as np
@@ -789,26 +789,8 @@ def scrap_procon(ticker2):
     for k in cons: 
         k = k.replace("Cons","")
         conslist.append(k)
-    
-    # url2 = 'https://www.screener.in/company/'+ticker2+'/consolidated/'
-    # webpage2 = requests.get(url2) #Request to webpage
-    # soup2 = BeautifulSoup(webpage2.text,'html.parser') #parse text frm website
-
-    # cmp = []
-    # chgp = []
-
-    # LTPData = soup2.find_all('div',attrs={'class':'flex flex-align-center'})
-    # for i in LTPData:
-    #     x = i.text.split()
-    #     cmp.append(x[0])
-    #     cmp.append(x[1])
-    #     cmp.append(x[2])
-
-    #     #rs = cmp[0]
-    #     ltp = cmp[1]
-    #     chgp = cmp[2].replace('%', '')
+  
     return proslist,conslist
-    # ltp,chgp
 
 def stockanalysis(request):
     if request.session.is_empty():
@@ -883,11 +865,6 @@ def stockanalysis(request):
             user_activity(ticker,id)
             context2=stock_prediction(ticker2)
 
-            # slist=[]
-
-            # similar =  useractivity.objects.filter(sector=sector,industry=industry).exclude(stock=ticker2)
-            # for i in similar:
-            #     slist.append(i.stock)
             report=test(sector,industry,ticker2,id)    
                 
         context={'list':stocklist(),'a':l,'b':m,'percentage':p,'longName':longName,'sector':sector,'industry':industry,
@@ -1126,55 +1103,14 @@ def test(sector,industry,stock,id):
             report.append(vdict)
     return report    
 
-    #return render(request,'clipboard.html')
-def test2(request):
-    slist=[]
-   
-    similar =  useractivity.objects.filter(sector='Technology',industry='Information Technology Services',login_id=1).exclude(stock='INFY')
-    for i in similar:
-        print(i.stock)
-        if i.stock not in slist:
-            slist.append(i.stock)
-    print(slist)
-    report = []
-    for i in slist: 
-        print(i)
-        revenue =  useractivity.objects.filter(stock=i,login_id=1).order_by('date')[:1]
-        
-        for rev in revenue:   
-            ticker = [i+".NS"]
-            ticker2=[i]
-            print(ticker)
-            sdate=rev.date
-            print(sdate)
-            last_price=rev.last_price
-            currentPrice=yf.Ticker(ticker[0]).info['currentPrice']
-            print(currentPrice)
+def graphpage(request):
+    id = request.session['id']
+    login = user_tbl.objects.get(login=id)
+    utype = login.trdr_type
+    context={'list':stocklist(),'utype':utype}
+    return render(request,'prediction.html',context)
 
-            currentPrice=Decimal(currentPrice)
-            currentPrice=round(currentPrice,2)
-            pr_chg= currentPrice-last_price
-            print(round(pr_chg, 2))
-            prchange=round(pr_chg, 2)
-            pr_chg_ptg=(pr_chg/last_price)*100
-            pr_chg_ptg=round(pr_chg_ptg, 2)
-
-            vdict= {}
-            vdict['stock']=i
-            vdict['date']=sdate
-            vdict['previousprice']=last_price
-            vdict['currentprice']=currentPrice
-            vdict['prchange']=prchange
-            vdict['pr_chg_ptg']=pr_chg_ptg
-            vdict['recommendationKey']=rev.recommendationKey
-
-            report.append(vdict)
-    print(report)
-    #return report    
-
-    return render(request,'clipboard.html')
-
-def predict(request):
+def prediction(request):
     import datetime 
     if request.method=="POST":
         symbol = request.POST['stock']
@@ -1191,6 +1127,7 @@ def predict(request):
                     pass
                 else:
                     df=pd.read_csv(loc)
+            
                     lastdate=datetime.datetime.strptime(df['Date'].max(),"%Y-%m-%d")
                     print(type(lastdate))
                     start=lastdate.date()+datetime.timedelta(days = 1)
@@ -1212,9 +1149,13 @@ def predict(request):
         data=df.filter(["Close"])
         dataset=data.values
         training_data_len=math.ceil(len(dataset)*0.8)
+
+        #Data Normalization
         scaler=MinMaxScaler(feature_range=(0,1))
         scaled_data=scaler.fit_transform(dataset)
         train_data=scaled_data[0:training_data_len,:]
+
+        #Incorporating Timesteps Into Data
         x_train = []
         y_train = []
         for i in range(60, len(train_data)):
@@ -1222,6 +1163,8 @@ def predict(request):
             y_train.append(train_data[i, 0])
         x_train, y_train = np.array(x_train), np.array(y_train)
         x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1))
+        
+        #
         model = Sequential()
         model.add(LSTM(50, return_sequences = True, input_shape = (x_train.shape[1], 1)))
         model.add(LSTM(50, return_sequences = False))
@@ -1229,6 +1172,7 @@ def predict(request):
         model.add(Dense(1))
         model.compile(optimizer = 'adam', loss = 'mean_squared_error')
         model.fit(x_train, y_train, batch_size = 1, epochs = 1)
+        
         test_data = scaled_data[training_data_len - 60: , :]
         x_test = []
         y_test = dataset[training_data_len:, :]
@@ -1267,19 +1211,19 @@ def predict(request):
 
         fig.update_layout(
             title=symbol,
-            titlefont_size = 28,
+            titlefont_size = 26,
             hovermode = 'x',
             xaxis = dict(
                 title='Date',
-                titlefont_size=16,
-                tickfont_size=14),
+                titlefont_size=18,
+                tickfont_size=16),
             
-            height = 600,
+            height = 500,
             
             yaxis=dict(
                 title='Close price in INR (₹)',
-                titlefont_size=16,
-                tickfont_size=14),
+                titlefont_size=18,
+                tickfont_size=16),
             legend=dict(
                 y=0,
                 x=1.0,
@@ -1290,5 +1234,5 @@ def predict(request):
         nse_list=stocklist()
         context2={'list2':nse_list,'graph':div,'price':pred_price}
         # return context2
-        return render(request,'stockinfo.html',context2)
-    return render(request,'stockinfo.html')
+        return render(request,'prediction.html',context2)
+    return render(request,'prediction.html')
