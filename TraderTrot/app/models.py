@@ -34,8 +34,8 @@ class academy_tbl(models.Model):
     ac_city=models.CharField(max_length=30)
     ac_website=models.CharField(max_length=30)
     ac_logo=models.CharField(max_length=100)
-    ac_tutorcount=models.CharField(max_length=10)#tutortable
-    ac_packagecount=models.CharField(max_length=10)#package table
+    # ac_tutorcount=models.CharField(max_length=10)#tutortable
+    # ac_packagecount=models.CharField(max_length=10)#package table
     ac_date=models.DateField(auto_now_add=True)
     login=models.ForeignKey(login_tbl, on_delete=models.CASCADE, null=True) #setting foreign key
 
@@ -61,7 +61,7 @@ class package_tbl(models.Model):
     pkg_thumb=models.CharField(max_length=100)
     pkg_price=models.CharField(max_length=10)
     pkg_desc=models.CharField(max_length=100)
-    p_acid=models.ForeignKey(academy_tbl, on_delete=models.CASCADE)
+    p_ac=models.ForeignKey(academy_tbl, on_delete=models.CASCADE)
 
     class Meta:
         db_table= "package_tbl"
@@ -69,7 +69,7 @@ class package_tbl(models.Model):
 class pkgfeature_tbl(models.Model):
     pkg_feature=models.CharField(max_length=50)
     pf_acid=models.ForeignKey(academy_tbl, on_delete=models.CASCADE)
-    pf_pkgid=models.ForeignKey(package_tbl, on_delete=models.CASCADE)
+    pf_pkg=models.ForeignKey(package_tbl, on_delete=models.CASCADE)
 
     class Meta:
         db_table= "pkgfeature_tbl"

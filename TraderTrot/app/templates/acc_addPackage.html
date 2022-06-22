@@ -102,10 +102,12 @@
                                   <div class="col-md-12">
                                     <select class="form-select" aria-label="Default select example">
                                       <option selected>Choose Package</option>
-                                      <option value="1">One</option>
+                                      {% for i in package %}
+                                      <option value="1">{{i.pkg_name}}</option>
+                                      {% endfor %}
                                     </select>
                                   </div>
-                                </div>
+                                </div> 
             
                                 <div class="col-md-12">
                                   <input type="text" class="form-control" placeholder="New Feature" id="f1" name="ff1">

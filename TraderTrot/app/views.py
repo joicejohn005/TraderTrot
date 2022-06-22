@@ -213,7 +213,7 @@ def ac_reg(request):
     acinfo=request.POST.get('info')
     accity=request.POST.get('city')
     acweb=request.POST.get('web')
-    pkgcount = 0
+    
     if data == 0:
         e.password=request.POST.get('pswd')
         e.status=1
@@ -224,7 +224,7 @@ def ac_reg(request):
         fn=fs.save(Photo.name,Photo)
         uploaded_file_url=fs.url(fn)
         uurl=uploaded_file_url
-        d = academy_tbl.objects.create(ac_name=acname,ac_yr=acyr,ac_contact=accont,ac_info=acinfo,ac_city=accity,ac_website=acweb,ac_logo=uurl,login=e,ac_packagecount=pkgcount)
+        d = academy_tbl.objects.create(ac_name=acname,ac_yr=acyr,ac_contact=accont,ac_info=acinfo,ac_city=accity,ac_website=acweb,ac_logo=uurl,login=e)
         d.save()
 
     else:
@@ -244,7 +244,7 @@ def ad_userManage(request):
     acdata=academy_tbl.objects.all()
 
     tudata=tutor_tbl.objects.all()
-
+ 
     return render(request,'ad_userManage.html',{"a":acdata,"b":userdata,"c":logindata,"t":tudata})
 
 def ad_home(request):
@@ -580,7 +580,11 @@ def user_reqsolution(request,id):
 def acc_addPackage(request):
     if request.session.is_empty():
         return HttpResponseRedirect('login/')
-    return render(request,'acc_addPackage.html')
+    id = request.session['id']
+    acc = academy_tbl.objects.get(login=id)
+    package = package_tbl.objects.filter(p_acid_id=acc.id)
+    context = {'package':package}
+    return render(request,'acc_addPackage.html',context)
 
 def accheader(request):
 
@@ -604,6 +608,7 @@ def addPackage(request):
         id = request.session['id']
         acid = academy_tbl.objects.get(login_id=id)
         p = package_tbl.objects.create(pkg_name=pkg_name,pkg_duration=pkg_duration,pkg_price=pkg_price,pkg_desc=pkg_desc,pkg_thumb=uurl,p_acid_id=acid.id)
+        
         p.save()
 
         return redirect('/acc_addPackage/')

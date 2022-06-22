@@ -117,7 +117,7 @@
                                     <!-- <th scope="col">No</th> -->
                                     <th scope="col">Accademy</th>
                                     <th scope="col">Email</th>
-                                    <th scope="col">Packages</th>
+                                    <!-- <th scope="col">Tutors</th> -->
                                     <th scope="col">Website</th>
                                     <th scope="col">Status</th>
                                     <!-- <th scope="col">Action</th> -->
@@ -127,11 +127,10 @@
                                   <tr>
                                     {% for j in a %}
                                     {% for k in c %}
+                                    
                                     {% if j.login_id == k.id %}
-                                    <!-- <th scope="row">{{ forloop.counter }}</th> -->
                                     <td>{{j.ac_name}}</td>
                                     <td>{{k.Unemail}}</td>
-                                    <td>{{j.ac_tutorcount}}</td>
                                     <td>{{j.ac_website}}</td>
                                      <td>
                                       {% if k.status == 1 %}
@@ -192,7 +191,7 @@
                                         {% if j.login_id == k.id %}
                                         <!-- <th scope="row">{{ forloop.counter }}</th> -->
                                         <td>{{j.tu_name}}</td>
-                                        <td>{{j.tu_acid_id.ac_name}}</td>
+                                        <td>{{j.tu_acid.ac_name}}</td>
                                         <td>{{k.Unemail}}</td>
                                         <td>{{j.tu_contact}}</td>
                                         <td>

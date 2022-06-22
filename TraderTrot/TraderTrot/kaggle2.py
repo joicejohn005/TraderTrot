@@ -12,7 +12,10 @@ stock_info = yf.Ticker(ticker[0]).info #print(stock_info) to get information of 
 # stock_info['dayLow']
 # stock_info['dayHigh']
 
-# x=stock_info['currentPrice']
+x=[stock_info['currentPrice'],stock_info['dayHigh'],stock_info['fiftyTwoWeekHigh'],stock_info['sector']]
+stock_info.append(x) 
+data_test_df = pd.DataFrame(stock_info, columns=['symbol', 'sector','sd','gf'])
+print(data_test_df)
 
 # stock_info['fiftyTwoWeekHigh']
 # stock_info['fiftyTwoWeekLow']

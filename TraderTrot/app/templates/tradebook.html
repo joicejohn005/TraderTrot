@@ -62,11 +62,11 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                  <input type="number" class="form-control" placeholder="Quantity" id="a2" name="qty">
+                                  <input type="number" class="form-control" placeholder="Quantity" id="a2" name="qty" min="1" max="100000">
                                 </div>                      
                                 <div class="col-md-6">
                                   <div class="input-group mb-4">
-                                  <input type="text" class="form-control" placeholder="Entry" id="a3" name="entry">
+                                  <input type="text" class="form-control" placeholder="Entry" id="a3" name="entry" min="5">
                                   <span class="input-group-text">Rs</span>
                                   </div>
                                 </div>
@@ -75,7 +75,7 @@
                                 </div>
                                 <div class="col-6">
                                   <div class="input-group mb-4">
-                                  <input type="text" class="form-control" placeholder="Exit" id="a5" name="exit">
+                                  <input type="text" class="form-control" placeholder="Exit" id="a5" name="exit" min="5">
                                   <span class="input-group-text">Rs</span>
                                   </div>
                                 </div>
@@ -181,6 +181,7 @@
     var c = document.getElementById('a4').value.trim();
     var d = document.getElementById('a5').value.trim();
     var e = document.getElementById('a6').value.trim();
+    // dob.max = new Date().toISOString().split("T")[0];
 
       if(a1=="")
       {
@@ -202,9 +203,14 @@
         document.getElementById('valid').innerHTML = "Enter entry price";
         return false;
       }
+      if(b<5)
+      {
+        document.getElementById('valid').innerHTML = "Price can't be too small/negative";
+        return false;
+      }
       if(c=="")
       {
-        document.getElementById('valid').innerHTML = "Enter the date";
+        document.getElementById('valid').innerHTML = "Enter Entry date";
         return false;
       }
       if(d=="")
@@ -212,11 +218,20 @@
         document.getElementById('valid').innerHTML = "Enter the exit price";
         return false;
       }
-     
-    
+      if(d<5)
+      {
+        document.getElementById('valid').innerHTML = "Price can't be too small/negative";
+        return false;
+      }
       if(e=="")
       {
-        document.getElementById('valid').innerHTML = "enter the date";
+        document.getElementById('valid').innerHTML = "Enter Exit date";
+        return false;
+      }
+      
+      if(c>e)
+      {
+        document.getElementById('valid').innerHTML = "Exit date will be after Entry Date";
         return false;
       }
   }
