@@ -34,8 +34,6 @@ class academy_tbl(models.Model):
     ac_city=models.CharField(max_length=30)
     ac_website=models.CharField(max_length=30)
     ac_logo=models.CharField(max_length=100)
-    # ac_tutorcount=models.CharField(max_length=10)#tutortable
-    # ac_packagecount=models.CharField(max_length=10)#package table
     ac_date=models.DateField(auto_now_add=True)
     login=models.ForeignKey(login_tbl, on_delete=models.CASCADE, null=True) #setting foreign key
 
@@ -57,11 +55,14 @@ class tutor_tbl(models.Model):
 
 class package_tbl(models.Model):
     pkg_name=models.CharField(max_length=30)
+    pkg_description=models.CharField(max_length=300)
     pkg_duration=models.CharField(max_length=4)
     pkg_thumb=models.CharField(max_length=100)
-    pkg_price=models.CharField(max_length=10)
-    pkg_desc=models.CharField(max_length=100)
-    p_ac=models.ForeignKey(academy_tbl, on_delete=models.CASCADE)
+    pkg_datetime=models.DateTimeField(auto_now_add=True)
+    pkg_rating=models.DecimalField(max_digits=2, decimal_places=1)
+    pkg_language=models.CharField(max_length=20)
+    pkg_tutor=models.ForeignKey(tutor_tbl, on_delete=models.CASCADE)
+    pkg_ac=models.ForeignKey(academy_tbl, on_delete=models.CASCADE)
 
     class Meta:
         db_table= "package_tbl"
@@ -73,6 +74,26 @@ class pkgfeature_tbl(models.Model):
 
     class Meta:
         db_table= "pkgfeature_tbl"
+
+class unit_tbl(models.Model):
+    u_no=models.IntegerField()
+    u_title=models.CharField(max_length=50)
+    u_description=models.CharField(max_length=50)
+    u_content=models.CharField(max_length=100) #what will u learn | seperate[strip()] with ' , ' 
+    u_pkg=models.ForeignKey(package_tbl, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table= "unit_tbl"
+
+class chapter_tbl(models.Model):
+    ch_no=models.IntegerField()
+    ch_note=models.CharField(max_length=300)
+    ch_pdf=models.CharField(max_length=100)
+    ch_video=models.CharField(max_length=100)
+    ch_unit=models.ForeignKey(unit_tbl, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table= "chapter_tbl"
 
 class tradebook_tbl(models.Model):
     stock=models.CharField(max_length=20)

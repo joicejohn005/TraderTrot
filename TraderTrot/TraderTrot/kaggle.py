@@ -33,22 +33,22 @@ yf_info = pd.DataFrame(index = fin_info, columns=symbols)
 
 #**********************************************************************************************#
 
-# for i in symbols:
-#     l = []             # initialize
-#     x = yf.Ticker(i)   # get ticker info
-#     for j in fin_info:
-#         if 'date' in j.lower():
-#             d = pd.to_datetime(x.info[j])
-#             print(d)
-#             if d is not None:
-#                 l.append(d.strftime("%Y-%m-%d"))  # format date
-#         else:
-#             try:      # some parameters error
-#                 l.append(x.info[j])
-#             except:   # ignore error and continue
-#                 l.append("")
-#     yf_info[i] = l
-# print(yf_info) # print details of symbols in a table
+for i in symbols:
+    l = []             # initialize
+    x = yf.Ticker(i)   # get ticker info
+    for j in fin_info:
+        if 'date' in j.lower():
+            d = pd.to_datetime(x.info[j])
+            print(d)
+            if d is not None:
+                l.append(d.strftime("%Y-%m-%d"))  # format date
+        else:
+            try:      # some parameters error
+                l.append(x.info[j])
+            except:   # ignore error and continue
+                l.append("")
+    yf_info[i] = l
+print(yf_info) # print details of symbols in a table
 
 #**********************************************************************************************#
 #to see list of parameters 

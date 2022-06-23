@@ -581,10 +581,10 @@ def acc_addPackage(request):
     if request.session.is_empty():
         return HttpResponseRedirect('login/')
     id = request.session['id']
-    acc = academy_tbl.objects.get(login=id)
-    package = package_tbl.objects.filter(p_acid_id=acc.id)
-    context = {'package':package}
-    return render(request,'acc_addPackage.html',context)
+    # acc = academy_tbl.objects.get(login=id)
+    # package = package_tbl.objects.filter(pkg_ac=acc.id)
+    # context = {'package':package}
+    return render(request,'acc_addPackage.html')
 
 def accheader(request):
 
@@ -616,7 +616,11 @@ def addPackage(request):
 def acc_addTutors(request):
     if request.session.is_empty():
         return HttpResponseRedirect('login/')
-    return render(request,'acc_addTutors.html')
+    id = request.session['id']
+    accademy=academy_tbl.objects.get(login=id)
+    tutordata=tutor_tbl.objects.filter(tu_acid=accademy.id)
+    context={'a':tutordata}
+    return render(request,'acc_addTutors.html',context)
 
 def addTutors(request):
     e = login_tbl()
@@ -646,8 +650,7 @@ def addTutors(request):
     return redirect('/acc_addTutors/')
 
 def acc_tutorManage(request):
-    tutordata=tutor_tbl.objects.all()
-    return render(request,'acc_addTutors.html',{"a":tutordata})
+    return render(request,'acc_addTutors.html')
 
 def acc_home(request):
     if request.session.is_empty():
@@ -807,9 +810,33 @@ def stockanalysis(request):
             ticker = request.POST['stock']+".NS"
             ticker2 = request.POST['stock']
 
-            open = yf.Ticker(ticker).info['open']
-            volume = yf.Ticker(ticker).info['volume']
+            information = yf.Ticker(ticker)
+            # open = information.info['open']
+          
+            # volume = information.info['volume']
 
+            # dayLow=information.info['dayLow']
+            # dayHigh=information.info['dayHigh']
+
+            # currentPrice=information.info['currentPrice']
+
+            # fiftyTwoWeekHigh=information.info['fiftyTwoWeekHigh']
+            # fiftyTwoWeekLow=information.info['fiftyTwoWeekLow']
+
+            # previousClose=information.info['previousClose']
+
+            # longName = information.info['longName']
+
+            # sector = information.info['sector']
+            # industry = information.info['industry']
+
+            # website = information.info['website']
+            # logo_url =information.info['logo_url'] 
+            # longBusinessSummary = information.info['longBusinessSummary']
+
+            open = yf.Ticker(ticker).info['open']
+          
+            volume = yf.Ticker(ticker).info['volume']
             dayLow=yf.Ticker(ticker).info['dayLow']
             dayHigh=yf.Ticker(ticker).info['dayHigh']
 
@@ -819,6 +846,7 @@ def stockanalysis(request):
             fiftyTwoWeekLow=yf.Ticker(ticker).info['fiftyTwoWeekLow']
 
             previousClose=yf.Ticker(ticker).info['previousClose']
+
             d=currentPrice-previousClose
             p=(d/previousClose)*100
             p=round(p, 2)

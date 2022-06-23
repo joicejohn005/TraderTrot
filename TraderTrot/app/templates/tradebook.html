@@ -71,7 +71,7 @@
                                   </div>
                                 </div>
                                 <div class="col-md-6">
-                                  <input type="date" class="form-control" placeholder="Date" id="a4" name="edate">
+                                  <input type="date" class="form-control" placeholder="Date" id="a4" name="edate" onchange="datecheck();">
                                 </div>
                                 <div class="col-6">
                                   <div class="input-group mb-4">
@@ -80,7 +80,7 @@
                                   </div>
                                 </div>
                                 <div class="col-md-6">
-                                  <input type="date" class="form-control" placeholder="Date" id="a6" name="exdate">
+                                  <input type="date" class="form-control" placeholder="Date" id="a6" name="exdate" onchange="datecheck();">
                                 </div>
                                 
                                 <div class="col-md-6">
@@ -178,9 +178,10 @@
     var a1 = document.getElementById('floatingSelect').value.trim();
     var a = document.getElementById('a2').value.trim();
     var b = document.getElementById('a3').value.trim();
-    var c = document.getElementById('a4').value.trim();
+    var c = document.getElementById('a4').value;//date
     var d = document.getElementById('a5').value.trim();
-    var e = document.getElementById('a6').value.trim();
+    var e = document.getElementById('a6').value;//date
+
     // dob.max = new Date().toISOString().split("T")[0];
 
       if(a1=="")
@@ -229,11 +230,26 @@
         return false;
       }
       
-      if(c>e)
-      {
-        document.getElementById('valid').innerHTML = "Exit date will be after Entry Date";
-        return false;
-      }
+  }
+  function datecheck(){
+    var c = document.getElementById('a4').value;//date
+    var c1 = new Date(c);
+    var e = document.getElementById('a6').value;//date
+    var e1= new Date(e);
+    var cdate = new Date();
+     if(cdate.getTime() < c1.getTime()){
+            alert("Enter old Date");
+            document.getElementById('a4').value="";
+        }
+        if(cdate.getTime() < e1.getTime()){
+            alert("Enter old Date");
+            document.getElementById('a6').value="";
+        }
+        else if(c1.getTime() > e1.getTime()){    
+            alert("Incorrect start and end Date");
+            document.getElementById('a4').value="";
+            document.getElementById('a6').value="";
+        }
   }
 </script>
 {% endblock %}
