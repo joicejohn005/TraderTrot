@@ -40,68 +40,120 @@
                         <div class="card-body">
                           <h5 class="card-title"></h5>
 
-                          <form class="row g-3" method="post" action="#" enctype="multipart/form-data" name="course"
+                          <form class="row g-3" method="post" action="/addPackage/" enctype="multipart/form-data" name="course"
                             onsubmit="return Validate();">
 
                             {% csrf_token %}
                             <!-- this token takes data -->
 
                             <div class="col-md-12">
-                              <input type="text" class="form-control" placeholder="Course Name" id="cname" name="pname"
+                              <input type="text" class="form-control" placeholder="Course Name" id="cname" name="cname"
                                 onclick="return FormClear();">
                             </div>
 
                             <div class="col-md-12">
-                              <textarea name="info" id="cdes" cols="80" rows="2" placeholder="Description"
+                              <textarea id="cdes" cols="80" rows="2" placeholder="Description" name="Description"
                                 onclick="return FormClear();"></textarea>
                             </div>
 
                             <div class="col-md-6">
                               <div class="input-group mb-4">
                                 <input type="number" class="form-control" placeholder="Duration" id="month" min="1"
-                                  name="pmonth" onclick="return FormClear();">
+                                  name="cmonth" onclick="return FormClear();">
                                 <span class="input-group-text">Month</span>
                               </div>
                             </div>
 
                             <div class="col-md-6">
-                              <input type="file" class="form-control" placeholder="Logo" id="file" name="pfile" accept=".jpg/.png/.jpeg">
+                              <input type="file" class="form-control" placeholder="Logo" id="img" name="pfile"
+                                accept="image/*">
                             </div>
 
                             <div class="row mb-12">
                               <div class="col-md-6">
-                                <select class="form-select" aria-label="Default select example" id="tutor"
+                                <select class="form-select" aria-label="Default select example" id="tutor" name="tutor"
                                   onclick="return FormClear();">
-                                  <option selected>Choose Tutor</option>
-                                  <option value="1">One</option>
+                                  <option selected value="" disabled>Choose Tutor</option>
+                                  {% for i in tutor %}
+                                  <option value="{{i.id}}">{{i.tu_name}}</option>
+                                  {% endfor %}
                                 </select>
                               </div>
 
                               <div class="col-md-6">
-                                <select class="form-select" aria-label="Default select example" id="lang"
+                                <select class="form-select" aria-label="Default select example" id="lang" name="lang"
                                   onclick="return FormClear();">
-                                  <option selected>Language</option>
-                                  <option value="1">English</option>
-                                  <option value="1">Malayalam</option>
-                                  <option value="1">Hindi</option>
+                                  <option selected value="" disabled>Language</option>
+                                  <option value="English">English</option>
+                                  <option value="Malayalam">Malayalam</option>
+                                  <option value="Hindi">Hindi</option>
                                 </select>
                               </div>
                             </div>
 
                             <span id="valid" style="color: red;text-align: center;"></span>
                             <div class="text-center">
-                              <input type="submit" class="btn btn-primary" value="Submit" name="submit">
+                              <input type="submit" class="btn btn-primary" value="Add" name="submit">
                               <button type="reset" class="btn btn-secondary">Reset</button>
                             </div>
                           </form>
-
                         </div>
                       </div>
                     </div>
                   </div>
 
                 </div>
+                <script>
+                  function Validate() {
+                    var a = document.getElementById('cname').value.trim();
+                    var b = document.getElementById('cdes').value.trim();
+                    var c = document.getElementById('month').value.trim();
+                    var d = document.getElementById('tutor').value.trim();
+                    var e = document.getElementById('lang').value.trim();
+                    var fileInput = document.getElementById('img');
+                    var filepath = fileInput.value;
+                    var alwdextns = /(\.jpg|\.jpeg|\.png)$/i;
 
+                    if (a == "") {
+                      document.getElementById('valid').innerHTML = "Enter Course name";
+                      return false;
+                    }
+                    if (b == "") {
+                      document.getElementById('valid').innerHTML = "Enter Course Description";
+                      return false;
+                    }
+                    if (c == "") {
+                      document.getElementById('valid').innerHTML = "Enter Course Duration in Months";
+                      return false;
+                    }
+                    if (c < 1) {
+                      document.getElementById('valid').innerHTML = "Minimum Course duration is 1 Month";
+                      return false;
+                    }
+
+                    if (filepath == "") {
+                      document.getElementById('valid').innerHTML = "Choose Thumbnail";
+                      return false;
+                    }
+
+                    if (!alwdextns.exec(filepath)) {
+                      document.getElementById("valid").innerHTML = "only images files are allowed";
+                      return false;
+                    }
+
+                    if (d == "") {
+                      document.getElementById('valid').innerHTML = "Choose Tutor";
+                      return false;
+                    }
+                    if (e == "") {
+                      document.getElementById('valid').innerHTML = "Choose Language";
+                      return false;
+                    } else {
+                      return true;
+                    }
+                  }
+
+                </script>
                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                   <div class="row">
@@ -111,27 +163,29 @@
                         <div class="card-body">
                           <h5 class="card-title"></h5>
 
-                          <form class="row g-3" method="post" action="#" enctype="multipart/form-data"
-                            onsubmit="return Validate2();">
+                          <form class="row g-3" method="post" action="/addcoursefe/" onsubmit="return Validate2();">
+                            {% csrf_token %}
 
                             <div class="row mb-3">
                               <div class="col-md-12">
-                                <select class="form-select" aria-label="Default select example" id="course">
-                                  <option selected>Choose Course</option>
-                                  {% for i in package %}
-                                  <option value="1">{{i.pkg_name}}</option>
+                                <select class="form-select" aria-label="Default select example" id="course" name="course"
+                                  onclick="return FormClear2();">
+                                  <option selected value="" disabled>Choose Course</option>
+                                  {% for j in course %}
+                                  <option value="{{j.id}}">{{j.course_name}}</option>
                                   {% endfor %}
                                 </select>
                               </div>
                             </div>
 
                             <div class="col-md-12">
-                              <input type="text" class="form-control" placeholder="New Feature" id="feature" name="ff1">
+                              <input type="text" class="form-control" placeholder="New Feature" id="feature" name="ff1"
+                                onclick="return FormClear2();">
                             </div>
 
-                            <span id="" style="color: red;text-align: center;"></span>
+                            <span id="valid2" style="color: red;text-align: center;"></span>
                             <div class="text-center">
-                              <input type="submit" class="btn btn-primary" value="Submit" name="submit">
+                              <input type="submit" class="btn btn-primary" value="Add Feature" name="submit">
                               <button type="reset" class="btn btn-secondary">Reset</button>
                             </div>
                           </form>
@@ -144,268 +198,35 @@
 
                 </div>
 
-              </div>
-              <!-- End Bordered Tabs -->
+                <script>
 
-            </div>
-          </div>
+                  function Validate2() {
+                    var f = document.getElementById('course').value.trim();
+                    var g = document.getElementById('feature').value.trim();
 
-        </div>
-      </div>
-    </section>
+                    if (f == "") {
+                      document.getElementById('valid2').innerHTML = "Choose Course";
+                      return false;
+                    }
+                    if (g == "") {
+                      document.getElementById('valid2').innerHTML = "Enter Course Specification";
+                      return false;
+                    }
+                    else {
+                      return true;
+                    }
+                  }
 
-    <script>
-      function Validate() {
-        var a = document.getElementById('cname').value.trim();
-        var b = document.getElementById('cdes').value.trim();
-        var c = document.getElementById('month').value.trim();
-        var d = document.getElementById('tutor').value.trim();
-        var e = document.getElementById('lang').value.trim();
-        var file = document.getElementById('file').value.trim();
-        var alwdextns=/(\.jpg|\.png|\.jpeg)$/i;
+                  function FormClear() {
+                    document.getElementById('valid').innerHTML = "";
+                    return false;
+                  }
+                  function FormClear2() {
+                    document.getElementById('valid2').innerHTML = "";
+                    return false;
+                  }
 
-
-        if (a == "") {
-          document.getElementById('valid').innerHTML = "Enter Course name";
-          return false;
-        }
-        if (b == "") {
-          document.getElementById('valid').innerHTML = "Enter Course Description";
-          return false;
-        }
-        if (c == "") {
-          document.getElementById('valid').innerHTML = "Enter Course Duration in Months";
-          return false;
-        }
-        if (c < 1) {
-          document.getElementById('valid').innerHTML = "Minimum Course duration is 1 Month";
-          return false;
-        }
-        
-        if (file == "") {
-          document.getElementById('valid').innerHTML = "Choose Thumbnail";
-          return false;
-        }
-
-        if(!alwdextns.exec("file")){
-          document.getElementById("valid").innerHTML="only .jpg/.png/.jpeg extensions are allowed";
-          return false;
-        }
-        
-        if (d == "") {
-            document.getElementById('valid').innerHTML = "Cho o se Tutor";
-          return false;
-         }
-        if (e == "") {
-          document.getElementById('valid').innerHTML = "Choose Language";
-          return false;
-        }
-      }
-      function Validate2() {
-        var f = document.getElementById('course').value.trim();
-        var g = document.getElementById('feature').value.trim();
-
-        if (f == "") {
-          document.getElementById('valid').innerHTML = "Choose Course";
-          return false;
-        }
-        if (g == "") {
-          document.getElementById('valid').innerHTML = "Enter Course Specification";
-          return false;
-        }
-      }
-
-
-      function FormClear() {
-        document.getElementById('valid').innerHTML = "";
-        return false;
-      }
-
-    </script>
-
-    <section class="section">
-      <div class="row">
-        <div class="col-xl-8">
-
-          <div class="card">
-            <div class="card-body pt-3">
-              <!-- Bordered Tabs -->
-              <ul class="nav nav-tabs nav-tabs-bordered">
-
-                <li class="nav-item">
-                  <button class="nav-link btn btn-outline-warning" data-bs-toggle="tab"
-                    data-bs-target="#profile-settings">Add Units</button>
-                </li>
-
-                <li class="nav-item">
-                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings2">Add
-                    Chapters</button>
-                </li>
-
-              </ul>
-              <div class="tab-content pt-2">
-
-                <div class="tab-pane fade show active profile-overview" id="profile-settings">
-
-                  <div class="row">
-                    <div class="col-lg-12">
-
-                      <div class="card">
-                        <div class="card-body">
-                          <h5 class="card-title"></h5>
-
-                          <form class="row g-3" method="post" action="#" enctype="multipart/form-data"
-                            onsubmit="return Validate();">
-
-                            {% csrf_token %}
-                            <!-- this token takes data -->
-
-                            <div class="row mb-12">
-                              <div class="col-md-6">
-                                <select class="form-select" aria-label="Default select example">
-                                  <option selected>Choose Course</option>
-                                  {% for i in package %}
-                                  <option value="1">{{i.pkg_name}}</option>
-                                  {% endfor %}
-                                </select>
-                              </div>
-                              <div class="col-md-6">
-                                <input type="number" class="form-control" placeholder="Unit Number" min="1"
-                                  id="aname" name="pname" onclick="return FormClear();">
-                              </div>
-                            </div>
-
-                            <div class="col-md-12">
-                              <input type="text" class="form-control" placeholder="Unit Title" id="aname" name="pname"
-                                onclick="return FormClear();">
-                            </div>
-
-                            <div class="col-md-12">
-                              <textarea name="info" id="amobile" cols="80" rows="2" placeholder="Unit Description"
-                                onclick="return FormClear();"></textarea>
-                            </div>
-
-                            <div class="col-md-12">
-                              <textarea name="info" id="amobile" cols="80" rows="2"
-                                placeholder="Contents(seperate with ' , ' " ) onclick="return FormClear();"></textarea>
-                            </div>
-
-                            <span id="valid" style="color: red;text-align: center;"></span>
-                            <div class="text-center">
-                              <input type="submit" class="btn btn-primary" value="Submit" name="submit">
-                              <button type="reset" class="btn btn-secondary">Reset</button>
-                            </div>
-                          </form>
-
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-
-                <div class="tab-pane fade profile-edit pt-3" id="profile-settings2">
-
-                  <div class="row">
-                    <div class="col-lg-12">
-
-                      <div class="card">
-                        <div class="card-body">
-                          <h5 class="card-title"></h5>
-
-                          <form class="row g-3" >
-
-                            <div class="row mb-12">
-                              <div class="col-md-6">
-                                <select class="form-select" aria-label="Default select example">
-                                  <option selected>Choose Course</option>
-                                  {% for i in package %}
-                                  <option value="1">{{i.pkg_name}}</option>
-                                  {% endfor %}
-                                </select>
-                              </div>
-
-                              <div class="col-md-6">
-                                <select class="form-select" aria-label="Default select example">
-                                  <option selected>Choose Unit</option>
-                                  {% for i in package %}
-                                  <option value="1">{{i.pkg_name}}</option>
-                                  {% endfor %}
-                                </select>
-                              </div>
-                            </div>
-
-                            <div class="col-md-12">
-                              <input type="number" class="form-control" placeholder="Chapter Number" min="1"
-                                id="aname" name="pname" onclick="return FormClear();">
-                            </div>
-
-                            <div class="col-md-12">
-                              <input type="text" class="form-control" placeholder="Note " id="f1" name="ff1">
-                            </div>
-
-                            <div class="col-md-12">
-                              <input type="url" class="form-control" placeholder="Video Link " id="f1" name="ff1">
-                            </div>
-
-                            <div class="col-md-12">
-                              <input type="file" class="form-control" placeholder="pdf" id="f1" name="ff1">
-                            </div>
-
-                            <span id="" style="color: red;text-align: center;"></span>
-                            <div class="text-center">
-                              <input type="submit" class="btn btn-primary" value="Submit" name="submit">
-                              <button type="reset" class="btn btn-secondary">Reset</button>
-                            </div>
-                          </form>
-
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- End Profile Edit Form -->
-
-                </div>
-
-                <div class="tab-pane fade pt-3" id="profile-settings">
-                  <div class="row">
-                    <div class="col-lg-12">
-
-                      <div class="card">
-                        <div class="card-body">
-                          <h5 class="card-title"></h5>
-
-                          <form class="row g-3" method="post" action="#" enctype="multipart/form-data"
-                          onsubmit="return Validate();">
-
-                            {% csrf_token %}
-                            <!-- this token takes data -->
-
-                            <div class="col-md-12">
-                              <input type="number" class="form-control" placeholder="Unit Number" id="aname"
-                                name="pname" min="1" onclick="return FormClear();">
-                            </div>
-
-                            <div class="col-md-12">
-                              <input type="text" class="form-control" placeholder="Package Name" id="aname" name="pname"
-                                min="1" onclick="return FormClear();">
-                            </div>
-
-
-
-                            <div class="text-center">
-                              <input type="submit" class="btn btn-primary" value="Request">
-
-                              <button type="reset" class="btn btn-secondary">Reset</button>
-                            </div>
-                          </form>
-
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
+                </script>
 
               </div>
               <!-- End Bordered Tabs -->
@@ -416,7 +237,6 @@
         </div>
       </div>
     </section>
-
   </div>
 </main>
 

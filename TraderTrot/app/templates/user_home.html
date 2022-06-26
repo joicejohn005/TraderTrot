@@ -21,27 +21,23 @@
       <!-- Left side columns -->
       <div class="col-lg-8">
         <div class="row">
-
           <!-- Sales Card -->
           <div class="col-xxl-4 col-md-6">
             <div class="card info-card sales-card">
-
               <div class="card-body">
                 <h5 class="card-title"><a href="/blogs/">Blog Repository<span>| Explore</span></h5></a>
-
                 <div class="d-flex align-items-center">
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <i class="bi bi-cart"></i>
                   </div>
                   <div class="ps-3">
-                  <h6>{{ blogc }}</h6>
-                    <!-- <span class="text-success small pt-1 fw-bold"></span> <span class="text-muted small pt-2 ps-1">increase</span> -->
+                    <h6>{{ blogc }}</h6>
                   </div>
                 </div>
               </div>
-
             </div>
-          </div><!-- End Sales Card -->
+          </div>
+          <!-- End Sales Card -->
 
           <!-- Revenue Card -->
           <div class="col-xxl-4 col-md-6">
@@ -57,50 +53,48 @@
                   <div class="ps-3">
 
                     {% if profit >= 0%}
-                    <b><p >My Profit: <span style="color: rgb(10, 104, 5);">{{ profit }}</span></p></b>
+                    <b>
+                      <p>My Profit: <span style="color: rgb(10, 104, 5);">{{ profit }}</span></p>
+                    </b>
                     {% else %}
-                    <b><p >My Profit: <span style="color: rgb(143, 6, 6);">{{ profit }}</span></p></b>
+                    <b>
+                      <p>My Profit: <span style="color: rgb(143, 6, 6);">{{ profit }}</span></p>
+                    </b>
                     {% endif %}
-                  
+
                   </div>
                 </div>
               </div>
 
             </div>
           </div>
-                  
-        <!-- End Revenue Card -->
-        
+
+          <!-- End Revenue Card -->
+
           <!-- Customers Card -->
           <div class="col-xxl-4 col-md-6">
             <div class="card info-card customers-card">
-
               <div class="card-body">
-                <h5 class="card-title"><a href="/user_reqmanage/">Doubt Clearence<span>|Explore</span></a></h5>
-
+                <h5 class="card-title"><a href="/user_reqmanage/">Doubt Clearence</a></h5>
                 <div class="d-flex align-items-center">
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <i class="bi bi-people"></i>
                   </div>
                   <div class="ps-3">
                     <p><b>My Request : {{doubt}}</b></p>
-                    <span class="text-danger small pt-1 fw-bold">{{sc}}</span> <span class="text-muted small pt-2 ps-1">Solved</span>
-
+                    <span class="text-danger small pt-1 fw-bold">{{sc}}</span> <span
+                      class="text-muted small pt-2 ps-1">Solved</span>
                   </div>
                 </div>
-
               </div>
             </div>
-
           </div>
 
-           <!-- Revenue Card -->
-           <div class="col-xxl-4 col-md-6">
+          <!-- Revenue Card -->
+          <div class="col-xxl-4 col-md-6">
             <div class="card info-card revenue-card">
-
               <div class="card-body">
                 <h5 class="card-title"><a href="/stockinfo/">Stock Analysis<span>| Analyse</span></h5></a>
-
                 <div class="d-flex align-items-center">
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <i class="bi bi-graph-down"></i>
@@ -109,106 +103,95 @@
                     <i class="bi bi-graph-up"></i>
                   </div>
                   <div class="ps-3">
-
-                  
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
-                  
-        <!-- End Revenue Card -->
-        
-<!-- Revenue Card -->
-<div class="col-xxl-4 col-md-6">
-  <div class="card info-card revenue-card">
 
-    <div class="card-body">
-      <h5 class="card-title"><a href="/prediction/">Stock Price<span>| Prediction</span></h5></a>
+          <!-- End Revenue Card -->
 
-      <div class="d-flex align-items-center">
-        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-          <i class="bi bi-graph-down"></i>
-        </div>
-        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-          <i class="bi bi-graph-up"></i>
-        </div>
-        <div class="ps-3">
-
-        
-        </div>
-      </div>
-    </div>
-
-  </div>
-</div>
-        
-<!-- End Revenue Card -->
-
-<!-- Revenue Card -->
-<div class="col-xxl-4 col-md-6">
-  <div class="card info-card revenue-card">
-
-    <div class="card-body">
-      <h5 class="card-title"><a href="/tradestock/">Stock Recomendation<span>| Prediction</span></h5></a>
-
-      <div class="d-flex align-items-center">
-        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-          <i class="bi bi-graph-down"></i>
-        </div>
-        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-          <i class="bi bi-graph-up"></i>
-        </div>
-        <div class="ps-3">
-
-        
-        </div>
-      </div>
-    </div>
-
-  </div>
-</div>
-        
-<!-- End Revenue Card -->
-          <div class="col-xxl-4 col-xl-6">
-
+          <!-- Revenue Card -->
+          <div class="col-xxl-4 col-md-6">
             <div class="card info-card revenue-card">
-
               <div class="card-body">
-                <a href="/plotly/"><h5 class="card-title">Stock Screener <span>| View</span></h5></a>
-
+                <h5 class="card-title"><a href="/prediction/">Stock Price<span>| Prediction</span></h5></a>
                 <div class="d-flex align-items-center">
-
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <i class="bi bi-graph-down"></i>
                   </div>
-
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <i class="bi bi-graph-up"> </i>
-                    
+                    <i class="bi bi-graph-up"></i>
                   </div>
-
-                  <!-- <div class="ps-3">
-                    <h6>My Request : {{doubt}}</h6>
-                    <span class="text-danger small pt-1 fw-bold">{{sc}}</span> <span class="text-muted small pt-2 ps-1">Solved</span>
-
-                  </div> -->
+                  <div class="ps-3">
+                  </div>
                 </div>
-
               </div>
             </div>
-
           </div>
+          <!-- End Revenue Card -->
 
-          <!-- <div class="col-12">
-           End Recent Sales -->
+          <!-- Revenue Card -->
+          <div class="col-xxl-4 col-md-6">
+            <div class="card info-card revenue-card">
+              <div class="card-body">
+                <h5 class="card-title"><a href="/tradestock/">Recomendation</h5></a>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-graph-down"></i>
+                  </div>
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-graph-up"></i>
+                  </div>
+                  <div class="ps-3">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Revenue Card -->
 
+
+          <div class="col-xxl-4 col-xl-6">
+            <div class="card info-card revenue-card">
+              <div class="card-body">
+                <a href="/plotly/">
+                  <h5 class="card-title">Stock Screener <span>| View</span></h5>
+                </a>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-graph-down"></i>
+                  </div>
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-graph-up"> </i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--End Recent Sales -->
+          <div class="col-xxl-4 col-md-6">
+            <div class="card info-card customers-card">
+              <div class="card-body">
+                <a href="/user_course/"><h5 class="card-title">Course<span>| View</span></h5></a>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-book-half"></i>
+                  </div>
+                  <div class="ps-3">
+                    <p><b>Enrolled : <span class="text-danger small pt-1 fw-bold">no</span></b></p>
+                    <span class="text-danger small pt-1 fw-bold">no</span>
+                    <span class="text-muted small pt-2 ps-1">Completed</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
         </div>
       </div>
 
-      </div>
+    </div>
 
     </div>
   </section>

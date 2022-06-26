@@ -4,22 +4,24 @@
 {% load static %}
 {% block content %}
 <html>
-    <main id="main" class="main">
-        <form action="/plotly/" method="post">
-            {% csrf_token %}  <!-- this token takes data -->
+<main id="main" class="main">
+    <form action="/plotly/" method="post">
+        {% csrf_token %}
+        <!-- this token takes data -->
 
-            <div class="row 6">
-                <input name="stock" list="stock" class="form-select" id="floatingSelect" aria-label="Floating label select example" placeholder="Choose Stock">
-                <datalist id="stock">  
-                    <option selected>Stock</option>
-                      {% if list %}
-                      {% for i in list %}
-                      <option value={{i}}>{{i}}</option>
-                      {% endfor %}
-                     {% endif %}
-                    </datalist>
-                  </input>
-            </div>
+        <div class="row 6">
+            <input name="stock" list="stock" class="form-select" id="floatingSelect"
+                aria-label="Floating label select example" placeholder="Choose Stock">
+            <datalist id="stock">
+                <option selected>Stock</option>
+                {% if list %}
+                {% for i in list %}
+                <option value={{i}}>{{i}}</option>
+                {% endfor %}
+                {% endif %}
+            </datalist>
+            </input>
+        </div>
         <input type="submit" name="" id="" value="Search" class="btn btn-outline-success">
     </form>
 
@@ -31,5 +33,6 @@
     <p>NO graph</p>
     {% endif %}
 </main>
+
 </html>
 {% endblock %}

@@ -46,15 +46,16 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" placeholder="Sub heading" id="aemail" name="sub">
+                                    <input type="text" class="form-control" placeholder="Sub heading" id="aemail" name="sub" onclick="return FormClear();">
                                 </div>
                                 
                                 <div class="col-md-6">
-                                    <input type="file" class="form-control" placeholder="Thumbnail Image" name="logo"  required>
+                                  <input type="file" class="form-control" placeholder="Logo" id="img" name="pfile"
+                                    accept="image/*">
                                 </div>
 
                                 <div class="col-md-12">
-                                  <textarea name="content" id="apswd" cols="105" rows="4" placeholder="Paste content Here" ></textarea>
+                                  <textarea name="content" id="apswd" cols="129" rows="4" placeholder="Paste content Here" onclick="return FormClear();"></textarea>
                                 </div>
 
                                 <span id="valid" style="color: red;text-align: center;"></span>
@@ -113,6 +114,9 @@
       var a = document.getElementById('aname').value.trim();
       var b = document.getElementById('aemail').value.trim();
       var c = document.getElementById('apswd').value.trim();
+      var fileInput = document.getElementById('img');
+      var filepath=fileInput.value;
+      var alwdextns =/(\.jpg|\.jpeg|\.png)$/i;
 
       if(a=="")
       {
@@ -124,10 +128,23 @@
         document.getElementById('valid').innerHTML = "Enter SubhEading";
         return false;
       }
+     
+      if (filepath == "") {
+        document.getElementById('valid').innerHTML = "Choose Thumbnail";
+        return false;
+      }
+
+      if (!alwdextns.exec(filepath)) {
+        document.getElementById("valid").innerHTML = "only images files are allowed";
+        return false;
+      }
       if(c=="")
       {
         document.getElementById('valid').innerHTML = "Enter Content";
         return false;
+      }
+      else {
+        return true;
       }
 
     }

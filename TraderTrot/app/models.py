@@ -53,34 +53,35 @@ class tutor_tbl(models.Model):
     class Meta:
         db_table= "tutor_tbl"
 
-class package_tbl(models.Model):
-    pkg_name=models.CharField(max_length=30)
-    pkg_description=models.CharField(max_length=300)
-    pkg_duration=models.CharField(max_length=4)
-    pkg_thumb=models.CharField(max_length=100)
-    pkg_datetime=models.DateTimeField(auto_now_add=True)
-    pkg_rating=models.DecimalField(max_digits=2, decimal_places=1)
-    pkg_language=models.CharField(max_length=20)
-    pkg_tutor=models.ForeignKey(tutor_tbl, on_delete=models.CASCADE)
-    pkg_ac=models.ForeignKey(academy_tbl, on_delete=models.CASCADE)
+
+class course_tbl(models.Model):
+    course_name=models.CharField(max_length=30)
+    course_description=models.CharField(max_length=300)
+    course_duration=models.CharField(max_length=4)
+    course_thumb=models.CharField(max_length=100)
+    course_language=models.CharField(max_length=20)
+    course_date=models.DateField(auto_now_add=True)
+    course_rating=models.DecimalField(max_digits=2, decimal_places=1, default=0)
+    
+    course_tutor=models.ForeignKey(tutor_tbl, on_delete=models.CASCADE,null=True)
+    course_ac=models.ForeignKey(academy_tbl, on_delete=models.CASCADE,null=True)
 
     class Meta:
-        db_table= "package_tbl"
+        db_table= "course_tbl"
 
-class pkgfeature_tbl(models.Model):
-    pkg_feature=models.CharField(max_length=50)
-    pf_acid=models.ForeignKey(academy_tbl, on_delete=models.CASCADE)
-    pf_pkg=models.ForeignKey(package_tbl, on_delete=models.CASCADE)
+class coursefeature_tbl(models.Model):
+    course_feature=models.CharField(max_length=50)
+    cf_acid=models.ForeignKey(academy_tbl, on_delete=models.CASCADE,null=True)
+    cf_course=models.ForeignKey(course_tbl, on_delete=models.CASCADE,null=True)
 
     class Meta:
-        db_table= "pkgfeature_tbl"
+        db_table= "coursefeature_tbl"
 
 class unit_tbl(models.Model):
     u_no=models.IntegerField()
     u_title=models.CharField(max_length=50)
-    u_description=models.CharField(max_length=50)
     u_content=models.CharField(max_length=100) #what will u learn | seperate[strip()] with ' , ' 
-    u_pkg=models.ForeignKey(package_tbl, on_delete=models.CASCADE)
+    u_course=models.ForeignKey(course_tbl, on_delete=models.CASCADE,null=True)
 
     class Meta:
         db_table= "unit_tbl"
@@ -88,12 +89,32 @@ class unit_tbl(models.Model):
 class chapter_tbl(models.Model):
     ch_no=models.IntegerField()
     ch_note=models.CharField(max_length=300)
-    ch_pdf=models.CharField(max_length=100)
+    ch_videotitle=models.CharField(max_length=100)
     ch_video=models.CharField(max_length=100)
-    ch_unit=models.ForeignKey(unit_tbl, on_delete=models.CASCADE)
+    ch_pdftitle=models.CharField(max_length=100)
+    ch_pdf=models.CharField(max_length=100)
+    ch_unit=models.ForeignKey(unit_tbl, on_delete=models.CASCADE,null=True)
 
     class Meta:
         db_table= "chapter_tbl"
+
+class subscription_tbl(models.Model):
+    sub_status=models.CharField(max_length=20) #Subscribed,started,finished,unsubscribed
+    sub_date=models.DateField(auto_now_add=True)
+    user=models.ForeignKey(user_tbl, on_delete=models.CASCADE,null=True)
+    course=models.ForeignKey(course_tbl, on_delete=models.CASCADE,null=True)
+
+    class Meta:
+        db_table= "subscription_tbl"
+
+class courserating_tbl(models.Model):
+    rating=models.IntegerField()
+    user_review=models.CharField(max_length=150, null=True)
+    course=models.ForeignKey(course_tbl, on_delete=models.CASCADE,null=True)
+    user=models.ForeignKey(user_tbl, on_delete=models.CASCADE,null=True)
+
+    class Meta:
+        db_table="courserating_tbl"
 
 class tradebook_tbl(models.Model):
     stock=models.CharField(max_length=20)

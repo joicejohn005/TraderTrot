@@ -1,0 +1,117 @@
+{% include "user_aside.html" %}
+{% include "user_header.html" %}
+{% include "ad_head.html" %}
+{% load static %}
+{% block content %}
+<main id="main" class="main">
+
+  <div class="pagetitle" style="margin-top: -5%;">
+    <b>
+      <h1>Explore Courses</h1>
+    </b>
+
+    <section class="section">
+      <div class="row">
+        <div class="col-xl-12">
+
+          <div class="card">
+            <div class="card-body pt-3">
+              <!-- Bordered Tabs -->
+              <ul class="nav nav-tabs nav-tabs-bordered">
+
+                <li class="nav-item">
+                  <button class="nav-link active btn btn-outline-success" data-bs-toggle="tab"
+                    data-bs-target="#profile-overview">My Courses</button>
+                </li>
+
+                <li class="nav-item">
+                  <button class="nav-link btn btn-outline-info" data-bs-toggle="tab" data-bs-target="#profile-edit">All
+                    Courses</button>
+                </li>
+
+              </ul>
+              <div class="tab-content pt-2">
+
+                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                  <!-- Card with an image on left -->
+                  <div class="card">
+                    <div class="card mb-3">
+                      <div class="card-header">From : <b>Accademmy Name</b> Tutor: <b>TutorName</b> Units: <b>Total
+                          Unit</b></div>
+                      <div class="row g-0">
+                        <div class="col-md-3">
+                          <img src="assets/img/card.jpg" class="img-fluid rounded-start" alt="...">
+                        </div>
+                        <div class="col-md-9">
+                          <div class="card-body">
+                            <h5 class="card-title">Course NAme</h5>
+                            <p class="card-text">Course Description</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-footer">
+                        Enrolled: <b>dd/mm/yyyy</b> Duration <b>no: Months</b>
+                        <button type="button" class="btn btn-success">Finished</button>
+                        <button type="button" class="btn btn-info">Progressing</button>
+                        <button type="button" class="btn btn-danger">Enrolled</button>
+                      </div>
+                      <a href="/course/" class="btn btn-primary">Go to Course</a>
+                    </div>
+
+                  </div><!-- End Card with an image on left -->
+                </div>
+
+                <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+                  <!-- Card with an image on left -->
+                  <div class="card">
+                    {% for i in courselist %}
+                    <div class="card mb-3">
+                      <div class="card-header"><code>From :</code>  <b>{{i.course_ac.ac_name}}&nbsp;&nbsp;</b><code>Units:</code> <b>Total
+                          Unit</b></div>
+                      <div class="row g-0">
+                        <div class="col-md-3">
+                          <img src="{{i.course_thumb}}" class="img-fluid rounded-start" alt="...">
+                        </div>
+                        <div class="col-md-9">
+                          <div class="card-body">
+                            <h5 class="card-title">{{i.course_name}}</h5>
+                            <p class="card-text">{{i.course_description}}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-footer">
+                        {% if i.course_rating > 4.2 %}
+                        <button type="button" class="btn btn-outline-success btn-sm">{{i.course_rating}} <i
+                            class="ri-star-fill"></i></button>
+                        {%endif%}
+
+                        {% if i.course_rating > 2.5 and 4.1 > i.course_rating%}
+                        <button type="button" class="btn btn-outline-warning btn-sm">{{i.course_rating}} <i
+                            class="ri-star-half-fill"></i></button>
+                        {%endif%}
+                        
+                        {% if 2.5 > i.course_rating %}
+                        <button type="button" class="btn btn-outline-danger btn-sm">{{i.course_rating}}
+                          <i class="ri-star-line"></i></button>
+                        {%endif%}
+
+                       <code>Created:</code> <b>{{i.course_date}}</b> &nbsp;&nbsp; <code>Duration</code> <b>{{i.course_duration}} Month</b>
+
+                      </div>
+                      <a href="/course_details/" class="btn btn-primary">Details</a>
+                    </div>
+                    {%endfor%}
+                  </div><!-- End Card with an image on left -->
+                </div>
+
+                <!-- End Bordered Tabs -->
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+    </section>
+  </div>
+</main>
+{% endblock %}

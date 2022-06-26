@@ -1,0 +1,233 @@
+{% include "user_aside.html" %}
+{% include "user_header.html" %}
+{% include "ad_head.html" %}
+{%load static%}
+
+{% block content %}
+<main id="main" class="main">
+
+  <div class="pagetitle" style="margin-top: -5%;">
+    <center><b>
+        <h1>Course Title</h1>
+      </b></center>
+
+    <section class="section">
+      <div class="row">
+        <div class="col-xl-12">
+
+          <div class="card">
+            <div class="card-body pt-3">
+              <!-- Bordered Tabs -->
+
+              <div class="tab-content pt-2">
+
+                <div class="row">
+                  <div class="col-lg-12">
+
+                    <div class="card">
+                      <div class="card-body">
+                        <h5 class="card-title"></h5>
+
+                        <form class="row g-3" action="#" method="post">
+
+                          {% csrf_token %}
+                          <!-- this token takes data -->
+                          <div class="card mb-3">
+                            <span class="badge bg-info text-dark">Tutor: tutr name from Accademy Name</span>
+
+                            <div class="row g-0">
+                              <div class="col-md-4">
+                                <img src="{{reqdet.dthumb}}" width="250" height="200" class="img-fluid rounded-start"
+                                  alt="{{reqdet.dthumb}}">
+
+
+
+                              </div>
+                              <div class="col-md-8">
+                                <div class="card-body">
+                                  <h5 class="card-title">title</h5>
+                                  <p class="card-text">description</p>
+
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <p>Date: Dd/mm/yyyy</p>
+
+                              </div>
+                              <div class="col-md-4">
+                                <p>Duration: _ Months</p>
+
+                              </div>
+                              <div class="col-md-4">
+                                <p>Language: English</p>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-md-12">
+
+                            <!-- Default Accordion -->
+                            <div class="accordion" id="accordionExample">
+
+
+                            <div class="row">
+                              <div class="col-md-2">
+                                <button type="button" class="btn btn-info mb-2">
+                                  Unit <span class="badge bg-white text-info">No</span>
+                                </button>
+                              </div>
+                              <div class="col-md-10">
+                                <strong>Unit Title</strong>
+                                <ul>
+                                  <li>sdg</li>
+                                  <li>sgd</li>
+                                </ul>
+                              </div>
+                            </div>
+
+                              <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingOne">
+                                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Chapter 1 : Chapter Name
+                                  </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                                  data-bs-parent="#accordionExample">
+                                  <div class="accordion-body">
+                                    <strong>This is the first item's accordion body.</strong> Note by Tutor
+                                    <code>.accordion-body</code>, though the transition does limit overflow.
+
+                                    <div class="row">
+                                      <div class="col-md-3">
+                                        <!-- List group With Icons -->
+                                        <ul class="list-group">
+
+                                          <!-- Create Note -->
+                                          <li class="list-group-item"><button type="button"
+                                              class="btn btn-outline-secondary" data-bs-toggle="collapse"
+                                              data-bs-target="#note">
+
+                                              <span class="badge bg-success">+</span>Create Note</button>
+                                          </li>
+
+
+                                          <div class="collapse" id="note">
+                                            <textarea name="remark" id="" cols="20" rows="2" class="form-control"
+                                              placeholder="Create your Short Notes" required></textarea>
+                                            <button type="" class="btn btn-outline-dark">
+                                              <span class="badge bg-warning">Add</span>
+                                            </button>
+                                          </div>
+
+                                          <!-- Create Note  end-->
+
+                                          <!-- View PDF -->
+                                          <li class="list-group-item"><i
+                                              class="bi bi-collection me-1 text-primary"><button type="button"
+                                                class="btn btn-outline-danger" data-bs-toggle="collapse"
+                                                data-bs-target="#pdf">
+                                                <span></span>PDF Notes</button>
+                                              </button>
+
+                                            </i>
+                                          </li>
+                                          <!-- View PDF  end-->
+                                          <li class="list-group-item"><i
+                                              class="bi bi-check-circle me-1 text-danger"></i> Mark as Complete</li>
+                                        </ul><!-- End List group With Icons -->
+                                      </div>
+
+                                      <div class="col-md-9">
+                                        <hr>
+                                        <strong>My Notes :This is the first item's accordion body.This is the first
+                                          item's accordion body
+                                        </strong>
+                                        <hr>
+
+                                        <!-- Watch Video -->
+
+                                        <li class="list-group-item"><i class="bi bi-play me-1 text-warning"><button
+                                              type="button" class="btn btn-outline-danger" data-bs-toggle="collapse"
+                                              data-bs-target="#yt">
+                                              <span></span>Video</button>
+                                            </button>
+                                          </i>
+                                        </li>
+
+                                        <div class="collapse" id="yt">
+                                          <div class="col-md-12" style='content: "";
+                                          display: table;
+                                          box-sizing: border-box;
+                                          clear: both;'>
+
+                                            <div class="col-md-4" style="background-color:rgb(255, 255, 255);float: left;
+                                          width: 30%;
+                                          box-sizing: border-box;
+                                          margin: 5px;
+                                          padding: 1px;
+                                          height: 200px;">
+                                              <iframe width="100%" height="180px"
+                                                src="https://www.youtube.com/embed/of1pa3nbSwc"
+                                                title="YouTube video player" frameborder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                allowfullscreen></iframe>
+                                              <p>Video Title.</p>
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        <!-- Watch Video  end-->
+
+                                        <!-- View PDF -->
+                                        <div class="collapse" id="pdf">
+                                          <div class="col-md-12" style='content: "";
+                                          display: table;
+                                          box-sizing: border-box;
+                                          clear: both;'>
+
+                                            <div class="col-md-4" style="background-color:rgb(255, 255, 255);float: left;
+                                          width: 30%;
+                                          box-sizing: border-box;
+                                          margin: 5px;
+                                          padding: 1px;
+                                          height: 200px;">
+                                              <iframe width="100%" height="180px"
+                                                src="https://www.youtube.com/embed/56glEzsliWc"
+                                                title="YouTube video player" frameborder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                allowfullscreen></iframe>
+                                              <p>PDF title..</p>
+                                            </div>
+
+                                          </div>
+
+                                        </div>
+                                        <!-- View PDF  end-->
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div><!-- End Default Accordion Example -->
+                          </div>
+                      </div>
+                      <div class="text-center">
+                        <input type="submit" class="btn btn-outline-danger" value="UnSubscribe">
+                        <input type="submit" class="btn btn-outline-success" value="Download Certificate">
+                      </div>
+                      </form>
+                      <a href="/user_course/"> <input type="submit" class="btn btn-success" value="My Courses"> </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- End Bordered Tabs -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+{% endblock %}

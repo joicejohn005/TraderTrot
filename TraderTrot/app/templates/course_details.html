@@ -7,7 +7,7 @@
 
   <div class="pagetitle" style="margin-top: -5%;">
     <center><b>
-        <h1>Doubt Details</h1>
+        <h1>Course Details</h1>
       </b></center>
 
     <section class="section">
@@ -27,12 +27,12 @@
                       <div class="card-body">
                         <h5 class="card-title"></h5>
 
-                        <form class="row g-3" action="/deletereq/" method="post">
+                        <form class="row g-3" action="#" method="post">
 
                           {% csrf_token %}
                           <!-- this token takes data -->
                           <div class="card mb-3">
-                            <span class="badge bg-info text-dark">Send</span>
+                            <span class="badge bg-info text-dark">Accademy Name</span>
 
                             <div class="row g-0">
                               <div class="col-md-4">
@@ -42,42 +42,49 @@
                               </div>
                               <div class="col-md-8">
                                 <div class="card-body">
-                                  <h5 class="card-title">{{reqdet.dtitle}}</h5>
-                                  <p class="card-text">{{reqdet.ddesc}}</p>
+                                  <h5 class="card-title">title</h5>
+                                  <p class="card-text">description</p>
+                                  <ul>
+                              
+                                    <li> <i class="ri-star-half-fill"></i></li>
+                                    <li>Units : </li>
+                                    <li>Language : </li>
+                                    <li>Feature : </li>
+
+                                  </ul>
                                 </div>
                               </div>
                               <div class="col-md-4">
-                                <p>Date: {{reqdet.ddate}}</p>
+                                <p>Date: Dd/mm/yyyy</p>
 
                               </div>
                               <div class="col-md-4">
-                                <p>Stock: {{reqdet.stock}}</p>
+                                <p>Duration: _ Months</p>
 
                               </div>
                               <div class="col-md-4">
-                                <p>Stock Exchange: {{reqdet.exchange}}</p>
+                                <p>Tutor: tutr name</p>
                               </div>
                             </div>
                           </div>
 
                           <div class="col-md-8">
-                            <div class="card-body">
-                              <h5 class="card-title">Requested Services :
-                                {{reqdet.cagr}},{{reqdet.target}},{{reqdet.time}}</h5>
-
+                            
                               <div class="col-md-6">
-                                <h5 class="card-title">My Risk : {{reqdet.risk}}</h5>
-                                <h5 class="card-title">My Capital : {{reqdet.capital}}</h5>
-                                <h5 class="card-title">Sector : {{reqdet.sector}}</h5>
+                                <h5 class="card-title">Unit 1 : </h5>
+                                <h5 class="card-title">Unit 2 : </h5>
+                                <h5 class="card-title">Unit 3 : </h5>
                               </div>
-                            </div>
+                            
                           </div>
                       </div>
                       <div class="text-center">
-                        <input type="hidden" value="{{reqdet.id}}" name="doubtid">
-                        <input type="submit" class="btn btn-danger" value="Cancel">
+                        <!-- <input type="hidden" value="{{reqdet.id}}" name="doubtid"> -->
+                        <input type="submit" class="btn btn-warning" value="Subscribe">
+                        
                       </div>
                       </form>
+                     <a href="/user_course/"> <input type="submit" class="btn btn-success" value="My Courses"> </a>
 
                     </div>
                   </div>

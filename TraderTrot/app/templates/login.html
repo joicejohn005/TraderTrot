@@ -3,10 +3,10 @@
 <head>
   <script>
     var a = "{{message}}"
-    if(a.length!=0){
+    if (a.length != 0) {
       alert(a);
     }
-  </script> 
+  </script>
   <link rel="stylesheet" href="{% static 'assets/css/login.css' %}">
   <link rel="stylesheet" href="{% static 'assets/css/log_login.css' %}">
 
@@ -16,81 +16,79 @@
   <title>Trader Trot - Sign in</title>
 </head>
 <header class="header">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
+  <a href="#" class="logo"> <i class="fas fa-chart-line"></i> TraderTrot </a>
 
-    <a href="#" class="logo"> <i class="fas fa-chart-line"></i> TraderTrot </a>
+  <nav class="navbar">
+    <a href="/index/">Home</a>
+    <a href="#">Contact Us</a>
+  </nav>
 
-
-    <nav class="navbar">
-        <a href="/index/">Home</a>
-        <a href="#">Contact Us</a>
-    </nav>
-
-    <div id="menu-btn" class="fas fa-bars"></div>
+  <div id="menu-btn" class="fas fa-bars"></div>
 
 </header>
+
 <body>
-<section class="tab" >
-<div class="clearfix secondary-nav" style="margin-left:627px;margin-top:65px;">
-              <ul class="list">
-                 
-              </ul>
-          </div>
-</section>
- 
-<section class="home loginpage" id="home">
-    
-        <div class="loginimage" align ="center">
-            <img src="{% static 'assets/img/investing-animate.svg'%}"  alt="">
-        </div>
-    
-  <div class="main"  align ="center">
-    <p class="sign" align="center">Sign in</p>  
-    <form class="form1" action="checklogin" method="post" onclick="return validate()">
+  <section class="tab">
+    <div class="clearfix secondary-nav" style="margin-left:627px;margin-top:65px;">
+      <ul class="list">
 
-      {% csrf_token %} 
-      
-      <span id="un" style="color:rgb(255, 64, 0);"></span><br>
-      <input class="un " type="text" name="email" align="center" placeholder="Email" id="uname" onclick="return clearValid()"><br>
+      </ul>
+    </div>
+  </section>
 
-      <span id="psd" style="color:red;"></span><br>
-      <input class="un" type="password" name="pswd" align="center" placeholder="Password" id="pswd" onclick="return clearValid()"><br>
-      
-      <span id="un" style="color:red;">{{message2}}</span><br>
-      <input type="submit" name="submit" value="submit" class="submit" align="center" > 
-      
-    </form>    
-    <p class="forgot" align="center"><a  style="margin-left: 38px; " href="/forgot/">Forgot Password?</p> 
-    <p class="forgot" align="center"><a  style="margin-left: 38px; " href="/user_reg">New User?</p>      
-  </div>
-</section>
+  <section class="home loginpage" id="home">
+
+    <div class="loginimage" align="center">
+      <img src="{% static 'assets/img/investing-animate.svg'%}" alt="">
+    </div>
+
+    <div class="main" align="center">
+      <p class="sign" align="center">Sign in</p>
+      <form class="form1" action="checklogin" method="post" onclick="return validate()">
+
+        {% csrf_token %}
+
+        <span id="un" style="color:rgb(255, 64, 0);"></span><br>
+        <input class="un " type="text" name="email" align="center" placeholder="Email" id="uname"
+          onclick="return clearValid()"><br>
+
+        <span id="psd" style="color:red;"></span><br>
+        <input class="un" type="password" name="pswd" align="center" placeholder="Password" id="pswd"
+          onclick="return clearValid()"><br>
+
+        <span id="un" style="color:red;">{{message2}}</span><br>
+        <input type="submit" name="submit" value="submit" class="submit" align="center">
+
+      </form>
+      <p class="forgot" align="center"><a style="margin-left: 38px; " href="/forgot/">Forgot Password?</p>
+      <p class="forgot" align="center"><a style="margin-left: 38px; " href="/user_reg">New User?</p>
+    </div>
+  </section>
 </body>
 <script>
-  function validate()
-  {
-    var uname=document.getElementById('uname').value.trim();
-    var pswd=document.getElementById('pswd').value.trim();
+  function validate() {
+    var uname = document.getElementById('uname').value.trim();
+    var pswd = document.getElementById('pswd').value.trim();
 
-    if (uname=="")
-    {
-      document.getElementById('un').innerHTML="**Enter Username";
+    if (uname == "") {
+      document.getElementById('un').innerHTML = "**Enter Username";
       return false;
     }
-    if(pswd=="")
-    {
-      document.getElementById('psd').innerHTML="**Enter Password";
+    if (pswd == "") {
+      document.getElementById('psd').innerHTML = "**Enter Password";
       return false;
     }
-    else
-    {
+    else {
       return true;
     }
   }
-  function clearValid(){
-    document.getElementById('un').innerHTML="";
-    document.getElementById('psd').innerHTML="";
+  function clearValid() {
+    document.getElementById('un').innerHTML = "";
+    document.getElementById('psd').innerHTML = "";
     return false;
   }
 </script>
+
 </html

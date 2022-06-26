@@ -38,6 +38,7 @@ from plotly import express as px
 import plotly.offline as opy
 from plotly import graph_objs as go
 import plotly.graph_objects as go
+# import pywhatkit as kit
 
 import requests
 from requests.exceptions import ConnectionError
@@ -100,7 +101,6 @@ def checklogin(request):
         count= data.count()
         if count==1:
             for c in data:
-                #id = c.id
                 if c.type == 0:
                     id = c.id
                     request.session['id']=id
@@ -114,9 +114,7 @@ def checklogin(request):
                 elif c.type == 2:
                     id = c.id
                     request.session['id']=id
-
                     acid=academy_tbl.objects.get(login_id=id)
-                    
                     request.session['acname']=acid.ac_name
                     return redirect("/acc_home/")
 
@@ -296,6 +294,24 @@ def user_home(request):
 
     return render(request,'user_home.html',{"blogc":blogcount,"profit":profit,"doubt":requestdata,"sc":solutioncount})
 
+def user_course(request): 
+    if request.session.is_empty():
+        return HttpResponseRedirect('login/')
+    courselist=course_tbl.objects.all()
+    context={'courselist':courselist}
+    return render(request,'user_course.html',context)
+
+def course_details(request):
+    if request.session.is_empty():
+        return HttpResponseRedirect('login/')
+
+    return render(request,'course_details.html')
+
+def course(request):
+    if request.session.is_empty():
+        return HttpResponseRedirect('login/')
+    return render(request,'course.html')    
+
 def tradebook(request):
     if request.session.is_empty():
         return HttpResponseRedirect('/login')
@@ -306,6 +322,40 @@ def tradebook(request):
         profit = profit + t.pnl
     context={'list':stocklist(),"td":tradedata,"pnl":profit}
     return render(request,'tradebook.html',context)
+
+def search_company(request):
+    id = request.session['id']
+    if request.method=='POST':
+        cname=json.loads(request.body).get('com')
+        tb = tradebook_tbl.objects.filter(login=id) & (tradebook_tbl.objects.filter(stock=cname))
+        data = tb.values()
+        return JsonResponse(list(data),safe=False)
+
+def search_date(request):
+    id = request.session['id']
+    if request.method=='POST':
+
+        cname=json.loads(request.body).get('com')
+        fdate=json.loads(request.body).get('fdate')
+        tdate=json.loads(request.body).get('tdate')
+
+        tb = tradebook_tbl.objects.filter(login=id) & (tradebook_tbl.objects.filter(stock=cname) & tradebook_tbl.objects.filter(b_date__icontains=fdate))
+        data = tb.values()
+        return JsonResponse(list(data),safe=False)
+
+def search_trade(request):
+    id = request.session['id']
+    if request.method=='POST':
+        cname=json.loads(request.body).get('trade') #'trade' from html [fetch("\search-trade",{body:JSON.stringify({trade: searchvalue}),method:"POST"]
+        
+        tb=tradebook_tbl.objects.filter(login=id) & (tradebook_tbl.objects.filter(stock__icontains=cname) | tradebook_tbl.objects.filter(strategy__icontains=cname) | tradebook_tbl.objects.filter(remark__icontains=cname))
+        data = tb.values()
+        
+        profit = 0
+        for t in tb:
+            profit = profit + t.pnl
+        
+        return JsonResponse(list(data),safe=False)
 
 #pip install pandas
 def stocklist():
@@ -339,7 +389,7 @@ def pdf(request):
     csvfile = pd.read_csv("tradebook.csv")
     csvfile.to_html("tradebook.html")
     # https://wkhtmltopdf.org/downloads.html
-    path_wkhtmltopdf = r'C:\Users\Joice John\wkhtmltopdf\bin\wkhtmltopdf.exe'
+    path_wkhtmltopdf = r'C:\Users\joice\wkhtmltopdf\bin\wkhtmltopdf.exe'
     config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
     pdfkit.from_url("tradebook.html","tradebook.pdf",configuration=config)
     return redirect('/tradebook/')
@@ -581,34 +631,46 @@ def acc_addPackage(request):
     if request.session.is_empty():
         return HttpResponseRedirect('login/')
     id = request.session['id']
-    # acc = academy_tbl.objects.get(login=id)
-    # package = package_tbl.objects.filter(pkg_ac=acc.id)
-    # context = {'package':package}
-    return render(request,'acc_addPackage.html')
+    ac=academy_tbl.objects.get(login=id)
+    tutor=tutor_tbl.objects.filter(tu_acid=ac.id)
+    course=course_tbl.objects.filter(course_ac=ac.id)
+    return render(request,'acc_addPackage.html',{'tutor':tutor,'course':course})
 
 def accheader(request):
-
     id = request.session['id']
     name = academy_tbl.objects.get(ac_name=id)
     return render(request,'acc_header.html',{"name":name})
 
 def addPackage(request):
     if request.method=="POST":
-        pkg_name=request.POST['pname']
-        pkg_duration=request.POST['pmonth']
-        Photo=request.FILES['pfile']
+        id = request.session['id']
 
+        pkg_name=request.POST['cname']
+        pkg_desc=request.POST['Description']
+        pkg_duration=request.POST['cmonth']
+        Photo=request.FILES['pfile']
         fs=FileSystemStorage()
         fn=fs.save(Photo.name,Photo)
         uploaded_file_url=fs.url(fn)
         uurl=uploaded_file_url
-        pkg_price=request.POST['pprice']
-        pkg_desc=request.POST['info']
 
+        course_tutor=request.POST['tutor']
+        course_language=request.POST['lang']
+        # pkg_price=request.POST['pprice']
+
+        acid = academy_tbl.objects.get(login=id)
+        p = course_tbl.objects.create(course_ac_id=acid.id,course_name=pkg_name,course_description=pkg_desc,course_duration=pkg_duration,course_thumb=uurl,course_language=course_language,course_tutor_id=course_tutor)
+        p.save()
+        return redirect('/acc_addPackage/')
+
+def addcoursefe(request):
+    if request.method=="POST":
         id = request.session['id']
-        acid = academy_tbl.objects.get(login_id=id)
-        p = package_tbl.objects.create(pkg_name=pkg_name,pkg_duration=pkg_duration,pkg_price=pkg_price,pkg_desc=pkg_desc,pkg_thumb=uurl,p_acid_id=acid.id)
-        
+        course=request.POST['course']
+        feature=request.POST['ff1']
+
+        acid = academy_tbl.objects.get(login=id)
+        p=coursefeature_tbl.objects.create(course_feature=feature,cf_acid_id=acid.id,cf_course_id=course)
         p.save()
 
         return redirect('/acc_addPackage/')
@@ -673,13 +735,77 @@ def tu_home(request):
     blogcount = blog_tbl.objects.all().count()
     return render(request,'tu_home.html',{"count":count,"view":count2,"blogc":blogcount})
 
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+def tu_addUnitChapter(request,cid):
+    if request.session.is_empty():
+        return HttpResponseRedirect('login/')
+    course=course_tbl.objects.get(id=cid)
+    unit=unit_tbl.objects.filter(u_course=cid).order_by('u_no')
+    
+    # maxunit=max(unit)
+
+    return render(request,'tu_addUnitChapter.html',{'cid':cid,'course':course,'unit':unit})
+
+def unocheck(request):
+    if request.method=='POST':
+        unitno=json.loads(request.body).get('unovalue')
+        courseid=json.loads(request.body).get('covalue') 
+
+        tb=unit_tbl.objects.filter(u_no=unitno, u_course=courseid)
+        data=tb.count()
+        return JsonResponse(data,safe=False)
+
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+def tu_addUnitChap(request):
+    if request.session.is_empty():
+        return HttpResponseRedirect('login/')
+    if request.method=="POST":
+        u_no= request.POST['u_no']
+        u_title=request.POST['u_title']
+        u_content=request.POST['u_content']
+        u_course=request.POST['courseid']
+        cu = unit_tbl.objects.create(u_no=u_no,u_title=u_title,u_content=u_content,u_course_id=u_course)
+        cu.save()
+    return redirect('/tu_course/')
+
+
+def tu_addChap(request):
+    if request.session.is_empty():
+        return HttpResponseRedirect('login/')
+    else:
+        ch_unit= request.POST.get('ch_unit')
+        ch_no=request.POST.get('ch_no')
+        data=chapter_tbl.objects.get()
+        ch_note=request.POST.get('ch_note')
+        ch_videotitle=request.POST.get('ch_videotitle')
+        ch_video=request.POST.get('ch_video')
+        ch_pdftitle=request.POST.get('ch_pdftitle')
+
+        ch_pdf=request.FILES['ch_pdf']
+        fs=FileSystemStorage()
+        fn=fs.save(ch_pdf.name,ch_pdf)
+        uploaded_file_url=fs.url(fn)
+        url = uploaded_file_url
+
+        chd=chapter_tbl.objects.create(ch_unit_id=ch_unit,ch_no=ch_no,ch_note=ch_note,ch_videotitle=ch_videotitle,ch_video=ch_video,ch_pdftitle=ch_pdftitle,ch_pdf=url)
+        chd.save()
+        return redirect('/tu_course/')
+
+def tu_course(request):
+    if request.session.is_empty():
+        return HttpResponseRedirect('login/')
+    id = request.session['id']
+    tutor = tutor_tbl.objects.get(login=id)
+    c = course_tbl.objects.filter(course_tutor=tutor.id)
+    return render(request,'tu_course.html',{'c':c})
+    
 def addblog(request):
 
     if request.method=="POST":
         title = request.POST['title']
         sub = request.POST['sub']
         content = request.POST['content']
-        Photo=request.FILES['logo']
+        Photo=request.FILES['pfile']
 
         fs=FileSystemStorage()
         fn=fs.save(Photo.name,Photo)

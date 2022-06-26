@@ -5,176 +5,398 @@
 {% block content %}
 <main id="main" class="main">
 
-    <div class="pagetitle" style="margin-top: -5%;">
-      <b><h1>TradeBook</h1></b>
+  <div class="pagetitle" style="margin-top: -5%;">
+    <b>
+      <h1>TradeBook</h1>
+    </b>
 
-      <section class="section">
-        <div class="row">
-          <div class="col-xl-12">
+    <section class="section">
+      <div class="row">
+        <div class="col-xl-12">
 
-            <div class="card">
-              <div class="card-body pt-3">
-                <!-- Bordered Tabs -->
-                <ul class="nav nav-tabs nav-tabs-bordered">
-  
-                  <li class="nav-item">
-                    <button class="nav-link active btn btn-outline-success" data-bs-toggle="tab" data-bs-target="#profile-overview">Add Trade</button>
-                  </li>
-  
-                  <li class="nav-item">
-                    <button class="nav-link btn btn-outline-info" data-bs-toggle="tab" data-bs-target="#profile-edit">Trade Report</button>
-                  </li>
-  
-                </ul>
-                <div class="tab-content pt-2">
-  
-                  <div class="tab-pane fade show active profile-overview" id="profile-overview">
-                    
-                    <div class="row">
-                      <div class="col-lg-12">
-            
-                        <div class="card">
-                            <div class="card-body">
-                              <h5 class="card-title"></h5>
-                
-                              <form class="row g-3" action="/addtrade/" onsubmit="return Valida();" method="post">
+          <div class="card">
+            <div class="card-body pt-3">
+              <!-- Bordered Tabs -->
+              <ul class="nav nav-tabs nav-tabs-bordered">
 
-                              {% csrf_token %}  <!-- this token takes data -->
+                <li class="nav-item">
+                  <button class="nav-link active btn btn-outline-success" data-bs-toggle="tab"
+                    data-bs-target="#profile-overview">Add Trade</button>
+                </li>
 
-                                <!-- <div class="col-md-6">
-                                  <input type="text" class="form-control" placeholder="Stock" id="a1" name="stock">
-                                </div> -->
+                <li class="nav-item">
+                  <button class="nav-link btn btn-outline-info" data-bs-toggle="tab"
+                    data-bs-target="#profile-edit">Trade Report</button>
+                </li>
 
-                                <div class="col-md-6">
-                                  <div class="form-floating mb-3">
-                                    <input list="stock" class="form-select" name="stock" id="floatingSelect" aria-label="Floating label select example" placeholder="Stock">
-                                <datalist id="stock">  
+              </ul>
+              <div class="tab-content pt-2">
+
+                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+
+                  <div class="row">
+                    <div class="col-lg-12">
+
+                      <div class="card">
+                        <div class="card-body">
+                          <h5 class="card-title"></h5>
+
+                          <form class="row g-3" action="/addtrade/" onsubmit="return Valida();" method="post">
+
+                            {% csrf_token %}
+                            <!-- this token takes data -->
+
+
+                            <div class="col-md-6">
+                              <div class="form-floating mb-3">
+                                <input list="stock" class="form-select" name="stock" id="floatingSelect"
+                                  aria-label="Floating label select example" placeholder="Stock">
+                                <datalist id="stock">
                                   <option selected disabled>Stock</option>
                                   {% if list %}
                                   {% for i in list %}
-                                    <option value={{i}}>{{i}}</option>
+                                  <option value={{i}}>{{i}}</option>
                                   {% endfor %}
-                                 {% endif %}
+                                  {% endif %}
                                 </datalist>
-                              </input>
-                                    <!-- <label for="floatingSelect">Works with selects</label> -->
-                                  </div>
-                                </div>
+                                </input>
+                              </div>
+                            </div>
 
-                                <div class="col-md-6">
-                                  <input type="number" class="form-control" placeholder="Quantity" id="a2" name="qty" min="1" max="100000">
-                                </div>                      
-                                <div class="col-md-6">
-                                  <div class="input-group mb-4">
-                                  <input type="text" class="form-control" placeholder="Entry" id="a3" name="entry" min="5">
-                                  <span class="input-group-text">Rs</span>
-                                  </div>
-                                </div>
-                                <div class="col-md-6">
-                                  <input type="date" class="form-control" placeholder="Date" id="a4" name="edate" onchange="datecheck();">
-                                </div>
-                                <div class="col-6">
-                                  <div class="input-group mb-4">
-                                  <input type="text" class="form-control" placeholder="Exit" id="a5" name="exit" min="5">
-                                  <span class="input-group-text">Rs</span>
-                                  </div>
-                                </div>
-                                <div class="col-md-6">
-                                  <input type="date" class="form-control" placeholder="Date" id="a6" name="exdate" onchange="datecheck();">
-                                </div>
-                                
-                                <div class="col-md-6">
-                                  <input type="text" class="form-control" placeholder="Strategy" id="a7" name="strg">
-                                </div>
-                                <div class="col-md-6">
-                                  <textarea name="remark" id="a8" cols="50" rows="2" placeholder="Mistake / Remarks" ></textarea>
-                                </div>
-                                <span id="valid" style="color: red;text-align: center;"></span><br>
+                            <div class="col-md-6">
+                              <input type="number" class="form-control" placeholder="Quantity" id="a2" name="qty"
+                                min="1" max="100000">
+                            </div>
+                            <div class="col-md-6">
+                              <div class="input-group mb-4">
+                                <input type="text" class="form-control" placeholder="Entry" id="a3" name="entry"
+                                  min="5">
+                                <span class="input-group-text">Rs</span>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <input type="date" class="form-control" placeholder="Date" id="a4" name="edate"
+                                onchange="datecheck();">
+                            </div>
+                            <div class="col-6">
+                              <div class="input-group mb-4">
+                                <input type="text" class="form-control" placeholder="Exit" id="a5" name="exit" min="5">
+                                <span class="input-group-text">Rs</span>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <input type="date" class="form-control" placeholder="Date" id="a6" name="exdate"
+                                onchange="datecheck();">
+                            </div>
 
-                                <div class="text-center">
+                            <div class="col-md-6">
+                              <input type="text" class="form-control" placeholder="Strategy" id="a7" name="strg">
+                            </div>
+                            <div class="col-md-6">
+                              <textarea name="remark" id="a8" cols="62" rows="2"
+                                placeholder="Mistake / Remarks"></textarea>
+                            </div>
+                            <span id="valid" style="color: red;text-align: center;"></span><br>
 
-                                  <button type="submit" class="btn btn-primary">Save</button>
-                                  <button type="reset" class="btn btn-secondary">Reset</button>        
-                                </div>
-                              </form>
-                
+                            <div class="text-center">
+
+                              <button type="submit" class="btn btn-primary">Save</button>
+                              <button type="reset" class="btn btn-secondary">Reset</button>
+                            </div>
+                          </form>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="card">
+
+                        <div class="row">
+
+                          <div class="col-md-2">
+                            <div class="form-floating mb-4">
+
+                              <select id="company">
+                                <option selected disabled>Stock</option>
+                                {% if list %}
+                                {% for i in list %}
+                                <option value="{{i}}">{{i}}</option>
+                                {% endfor %}
+                                {% endif %}
+                              </select>
                             </div>
                           </div>
+
+                          <div class="col-md-3">
+                            From<input type="date" class="" id="fdate">
+                          </div>
+
+                          <div class="col-md-2">
+                            To<input type="date" class="" id="tdate">
+                          </div>
+
+                          <div class="col-md-2">
+                            <button type="button" class="btn btn-info" onclick="return filter();"><i
+                                class="bi bi-search"></i></button>
+                            <button type="button" class="btn btn-danger" onclick="filteReset();"><i
+                                class="bi bi-calendar-minus"></i></button>
+                          </div>
+
+                          <div class="col-md-2">
+                            <input type="text" name="query" placeholder="Search" title="Enter search keyword"
+                              id="search" class="form-control">
+                          </div>
+
+
+
                         </div>
-                    </div>
-  
-                  </div>
-  
-                  <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
-  
-                    <div class="row">
-                      <div class="col-lg-12">
-                        <div class="card">
-                          <div class="card-body">
-                            <table class="table table-hover">
-                              <thead>
-                                <tr>
-                                  <!-- <th scope="col">No</th> -->
-                                  <th scope="col">Stock</th>
-                                  <th scope="col">Quantity</th>
-                                  <th scope="col">Entry</th>
-                                  <th scope="col">Date</th>
-                                  <th scope="col">Exit</th>
-                                  <th scope="col">Date</th>
-                                  <th scope="col">Gain</th>
-                                  <th scope="col">Strategy</th>
-                                  <th scope="col">Mistake/Remark</th>
-                
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <!-- <th scope="row">1</th> -->
-                                  {% for j in td %}
-                                  <td>{{j.stock}}</td>
-                                  <td>{{j.qty}}</td>
-                                  <td>{{j.buy}}</td>
-                                  <td>{{j.b_date}}</td>
-                                  <td>{{j.sell}}</td>
-                                  <td>{{j.s_date}}</td>
-                                  <td>{{j.gain}}%</td>
-                                  <td>{{j.strategy}}</td>
-                                  <td>{{j.remark}}</td>
-                                </tr>
-                                {% endfor %}
-                              </tbody>
-                            </table>
-                             {% if pnl >= 0%}
-                            <b><p >Total Profit: <span style="color: rgb(10, 104, 5);">{{ pnl }}</span></p></b>
-                            {% else %}
-                            <b><p >Total Profit: <span style="color: rgb(143, 6, 6);">{{ pnl }}</span></p></b>
-                            {% endif %}
-                            <a href="/csvd/" class="btn btn-outline-success" >
-                              CSV<span class="badge bg-success">Convert</span>
-                            </a>
-                            <a href="/pdf/" class="btn btn-outline-danger" >
-                              PDF<span class="badge bg-danger">Convert</span>
-                            </a>
-                          </div>  
+
+
+                        <div class="table_output">
+                          <table class="table table-hover">
+                            <thead>
+                              <tr>
+                                <!-- <th scope="col">No</th> -->
+                                <th scope="col">Stock</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Entry</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Exit</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Gain</th>
+                                <th scope="col">Strategy</th>
+                                <th scope="col">Mistake/Remark</th>
+                              </tr>
+                            </thead>
+                            <tbody class="table-body">
+
+
+                            </tbody>
+
+                          </table>
                         </div>
-                        
+
+                        <div class="table_output1">
+                          <table class="table table-hover">
+                            <thead>
+                              <tr>
+                                <!-- <th scope="col">No</th> -->
+                                <th scope="col">Stock</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Entry</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Exit</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Gain</th>
+                                <th scope="col">Strategy</th>
+                                <th scope="col">Mistake/Remark</th>
+                              </tr>
+                            </thead>
+                            <tbody class="table-body1">
+
+
+                            </tbody>
+
+                          </table>
+                        </div>
+
+                        <div class="card-body">
+                          <table class="table table-hover" id="fulltrade">
+                            <thead>
+                              <tr>
+                                <!-- <th scope="col">No</th> -->
+                                <th scope="col">Stock</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Entry</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Exit</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Gain</th>
+                                <th scope="col">Strategy</th>
+                                <th scope="col">Mistake/Remark</th>
+
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <!-- <th scope="row">1</th> -->
+                                {% for j in td %}
+                                <td>{{j.stock}}</td>
+                                <td>{{j.qty}}</td>
+                                <td>{{j.buy}}</td>
+                                <td>{{j.b_date}}</td>
+                                <td>{{j.sell}}</td>
+                                <td>{{j.s_date}}</td>
+                                <td>{{j.gain}}%</td>
+                                <td>{{j.strategy}}</td>
+                                <td>{{j.remark}}</td>
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+                          </table>
+                          {% if pnl >= 0%}
+                          <b>
+                            <p>Total Profit: <span style="color: rgb(10, 104, 5);">{{ pnl }}</span></p>
+                          </b>
+                          {% else %}
+                          <b>
+                            <p>Total Profit: <span style="color: rgb(143, 6, 6);">{{ pnl }}</span></p>
+                          </b>
+                          {% endif %}
+                          <a href="/csvd/" class="btn btn-outline-success">
+                            CSV<span class="badge bg-success">Convert</span>
+                          </a>
+                          <a href="/pdf/" class="btn btn-outline-danger">
+                            PDF<span class="badge bg-danger">Convert</span>
+                          </a>
+                        </div>
+                      </div>
+
                     </div>
                     <!-- End Profile Edit Form -->
-  
+
                   </div>
                 </div>
                 <!-- End Bordered Tabs -->
-  
+
               </div>
             </div>
-  
+
           </div>
         </div>
-      </section>
-      </div>
+    </section>
+  </div>
 </main>
 <script>
-  function Valida(){
+  const search = document.querySelector("#search");
+  const tboutput1 = document.querySelector(".table_output1");
+  tboutput1.style.display = "none";
+  const tbody1 = document.querySelector(".table-body1");
+  const tdisplay = document.getElementById("fulltrade");
+
+  search.addEventListener("keyup", (e) => {
+    const searchvalue = e.target.value;
+
+    if (searchvalue.trim().length > 0) {
+      tdisplay.style.display = "none";
+      tbody1.innerHTML = "";
+
+      console.log("search:", searchvalue);
+      fetch("/search-trade", {
+        body: JSON.stringify({ trade: searchvalue }),
+        method: "POST",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          tboutput1.style.display = "block";
+          if (data.length === 0) {
+            // tboutput1.innerHTML = "No Result Found";
+          }
+          else {
+            data.forEach((item) => {
+              tbody1.innerHTML += `
+                                                                <tr>
+                                                                  <td>${item.stock}</td>
+                                                                  <td>${item.qty}</td>
+                                                                  <td>${item.buy}</td>
+                                                                  <td>${item.b_date}</td>
+                                                                  <td>${item.sell}</td>
+                                                                  <td>${item.s_date}</td>
+                                                                  <td>${item.gain}%</td>
+                                                                  <td>${item.strategy}</td>
+                                                                  <td>${item.remark}</td>
+                                                                </tr>
+                                                                  `;
+            });
+          }
+        });
+    }
+    else {
+      tboutput1.style.display = "none";
+      tdisplay.style.display = "block";
+    }
+  });
+  const tboutput = document.querySelector(".table_output");
+  tboutput.style.display = "none";
+  function filter() {
+    const tbody = document.querySelector(".table-body");
+    const tboutput = document.querySelector(".table_output");
+
+    var stock = document.getElementById('company');
+    const stock1 = stock.options[stock.selectedIndex].value;
+    var fdate = document.getElementById('fdate').value;
+
+    var tdate = document.getElementById('tdate').value;
+    console.log(stock1, fdate, tdate);
+    if (stock1.length > 0 & fdate == "" & tdate == "") {
+      const tdisplay = document.getElementById("fulltrade");
+
+      tdisplay.style.display = "none";
+      tbody.innerHTML = "";
+      fetch("/search-company", {
+        body: JSON.stringify({ com: stock1 }),
+        method: "POST",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("data", data);
+          tboutput.style.display = "block";
+          if (data.length === 0) {
+            // tboutput.innerHTML = "No Result Found";
+          }
+          else {
+            data.forEach((item) => {
+              tbody.innerHTML += `
+                                                                <tr>
+                                                                  <td>${item.stock}</td>
+                                                                  <td>${item.qty}</td>
+                                                                  <td>${item.buy}</td>
+                                                                  <td>${item.b_date}</td>
+                                                                  <td>${item.sell}</td>
+                                                                  <td>${item.s_date}</td>
+                                                                  <td>${item.gain}%</td>
+                                                                  <td>${item.strategy}</td>
+                                                                  <td>${item.remark}</td>
+                                                                </tr>
+                                                                  `;
+            });
+          }
+        });
+    }
+    if (stock1.length > 0 & fdate.length > 0 & tdate.length > 0) {
+      const tdisplay = document.getElementById("fulltrade");
+
+      tdisplay.style.display = "none";
+      tbody.innerHTML = "";
+      fetch("/search-date", {
+        body: JSON.stringify({ com: stock1, fdate: fdate, tdate: tdate }),
+        method: "POST",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("data", data);
+
+        });
+    }
+  }
+  function filteReset() {
+    const tdisplay = document.getElementById("fulltrade");
+    document.getElementById('company').value = '';
+    tdisplay.style.display = "block";
+    const tboutput = document.querySelector(".table_output");
+    tboutput.style.display = "none";
+  }
+</script>
+<script>
+  function Valida() {
     var a1 = document.getElementById('floatingSelect').value.trim();
     var a = document.getElementById('a2').value.trim();
     var b = document.getElementById('a3').value.trim();
@@ -184,72 +406,63 @@
 
     // dob.max = new Date().toISOString().split("T")[0];
 
-      if(a1=="")
-      {
-        document.getElementById('valid').innerHTML = "Choose Stock";
-        return false;
-      }
-      if(a=="")
-      {
-        document.getElementById('valid').innerHTML = "Enter Quantity";
-        return false;
-      }
-      if(a<=0)
-      {
-        document.getElementById('valid').innerHTML = "Add atleast 1 Quantity";
-        return false;
-      }
-      if(b=="")
-      {
-        document.getElementById('valid').innerHTML = "Enter entry price";
-        return false;
-      }
-      if(b<5)
-      {
-        document.getElementById('valid').innerHTML = "Price can't be too small/negative";
-        return false;
-      }
-      if(c=="")
-      {
-        document.getElementById('valid').innerHTML = "Enter Entry date";
-        return false;
-      }
-      if(d=="")
-      {
-        document.getElementById('valid').innerHTML = "Enter the exit price";
-        return false;
-      }
-      if(d<5)
-      {
-        document.getElementById('valid').innerHTML = "Price can't be too small/negative";
-        return false;
-      }
-      if(e=="")
-      {
-        document.getElementById('valid').innerHTML = "Enter Exit date";
-        return false;
-      }
-      
+    if (a1 == "") {
+      document.getElementById('valid').innerHTML = "Choose Stock";
+      return false;
+    }
+    if (a == "") {
+      document.getElementById('valid').innerHTML = "Enter Quantity";
+      return false;
+    }
+    if (a <= 0) {
+      document.getElementById('valid').innerHTML = "Add atleast 1 Quantity";
+      return false;
+    }
+    if (b == "") {
+      document.getElementById('valid').innerHTML = "Enter entry price";
+      return false;
+    }
+    if (b < 5) {
+      document.getElementById('valid').innerHTML = "Price can't be too small/negative";
+      return false;
+    }
+    if (c == "") {
+      document.getElementById('valid').innerHTML = "Enter Entry date";
+      return false;
+    }
+    if (d == "") {
+      document.getElementById('valid').innerHTML = "Enter the exit price";
+      return false;
+    }
+    if (d < 5) {
+      document.getElementById('valid').innerHTML = "Price can't be too small/negative";
+      return false;
+    }
+    if (e == "") {
+      document.getElementById('valid').innerHTML = "Enter Exit date";
+      return false;
+    }
+
   }
-  function datecheck(){
+  function datecheck() {
     var c = document.getElementById('a4').value;//date
     var c1 = new Date(c);
     var e = document.getElementById('a6').value;//date
-    var e1= new Date(e);
+    var e1 = new Date(e);
     var cdate = new Date();
-     if(cdate.getTime() < c1.getTime()){
-            alert("Enter old Date");
-            document.getElementById('a4').value="";
-        }
-        if(cdate.getTime() < e1.getTime()){
-            alert("Enter old Date");
-            document.getElementById('a6').value="";
-        }
-        else if(c1.getTime() > e1.getTime()){    
-            alert("Incorrect start and end Date");
-            document.getElementById('a4').value="";
-            document.getElementById('a6').value="";
-        }
+    if (cdate.getTime() < c1.getTime()) {
+      alert("Enter old Date");
+      document.getElementById('a4').value = "";
+    }
+    if (cdate.getTime() < e1.getTime()) {
+      alert("Enter old Date");
+      document.getElementById('a6').value = "";
+    }
+    else if (c1.getTime() > e1.getTime()) {
+      alert("Incorrect start and end Date");
+      document.getElementById('a4').value = "";
+      document.getElementById('a6').value = "";
+    }
   }
 </script>
 {% endblock %}

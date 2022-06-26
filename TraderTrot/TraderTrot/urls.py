@@ -18,6 +18,7 @@ from django.urls import path
 from app import views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.decorators.csrf import csrf_exempt
 
 
 urlpatterns = [
@@ -59,6 +60,9 @@ urlpatterns = [
     path('user_reqmanage/',views.user_reqmanage),
     path('user_reqdetails/<int:id>',views.user_reqdetails),
     path('user_reqsolution/<int:id>',views.user_reqsolution),
+    path('user_course/',views.user_course),
+    path('course_details/',views.course_details),
+    path('course/',views.course),
     path('invest_req/',views.invest_req),
     path('trade_req/',views.trade_req),
     path('tips_req/',views.tips_req),
@@ -81,11 +85,17 @@ urlpatterns = [
     path('acc_addTutors/',views.acc_addTutors),
     path('addTutors/',views.addTutors),
     path('addPackage/',views.addPackage),
+    path('addcoursefe/',views.addcoursefe),
     path('acc_home/',views.acc_home),
 
     #tutor
     path('tu_addBlog/',views.tu_addBlog),
     path('tu_home/',views.tu_home),
+    path('tu_addUnitChapter/<int:cid>',views.tu_addUnitChapter),
+    path('tu_addUnitChap/',views.tu_addUnitChap),
+    path('tu_addChap/',views.tu_addChap),
+    
+    path('tu_course/',views.tu_course),
     path('addblog/',views.addblog),
     path('tu_dbtlist/',views.tu_dbtlist),
     path('tu_dbtdetails/<int:id>',views.tu_dbtdetails),
@@ -96,6 +106,11 @@ urlpatterns = [
     #testing
     path('clipboard/',views.clipboard),
     path('plotly/',views.plot),
+
+    path('search-company',csrf_exempt(views.search_company),name='search-company'),
+    path('search-date',csrf_exempt(views.search_date),name='search-date'),
+    path('search-trade',csrf_exempt(views.search_trade),name='search-trade'),
+    path('uno',csrf_exempt(views.unocheck),name='uno'),
   
 ]
 
