@@ -26,92 +26,96 @@
 
                     <div class="card">
                       <div class="card-body">
-                        <h5 class="card-title"></h5>
+                        <h5 class="card-title">{{cdet.course_name}}</h5>
+                       
+                        
 
                         <form class="row g-3" action="#" method="post">
 
                           {% csrf_token %}
                           <!-- this token takes data -->
                           <div class="card mb-3">
-                            <span class="badge bg-info text-dark">Tutor: tutr name from Accademy Name</span>
+                            <span class="badge bg-info text-dark">Tutor: {{cdet.course_tutor.tu_name}} &nbsp;&nbsp;&nbsp;&nbsp; From: {{cdet.course_ac.ac_name}}</span>
 
                             <div class="row g-0">
                               <div class="col-md-4">
-                                <img src="{{reqdet.dthumb}}" width="250" height="200" class="img-fluid rounded-start"
-                                  alt="{{reqdet.dthumb}}">
+                                <img src="{{cdet.course_thumb}}" width="250" height="200" class="img-fluid rounded-start"
+                                  alt="{{cdet.course_thumb}}">
 
 
 
                               </div>
                               <div class="col-md-8">
                                 <div class="card-body">
-                                  <h5 class="card-title">title</h5>
-                                  <p class="card-text">description</p>
-
+                                  <h5 class="card-title"></h5>
+                                  <p class="card-text">{{cdet.course_description}}</p>
+                                  <ul>
+                                    {% for cofe in cofe%}
+                                    <li><code>{{cofe.course_feature}}</code></li>
+                                    {% endfor %}
+                                  </ul>
                                 </div>
                               </div>
                               <div class="col-md-4">
-                                <p>Date: Dd/mm/yyyy</p>
+                                <p>Date: {{cdet.course_date}}</p>
 
                               </div>
                               <div class="col-md-4">
-                                <p>Duration: _ Months</p>
+                                <p>Duration: <code>{{cdet.course_duration}} Months</code> </p>
 
                               </div>
                               <div class="col-md-4">
-                                <p>Language: English</p>
+                                <p>Language: <code>{{cdet.course_language}}</code></p>
                               </div>
                             </div>
                           </div>
 
                           <div class="col-md-12">
-
+                          
                             <!-- Default Accordion -->
+                            {%for unitdet in unitdet%}
                             <div class="accordion" id="accordionExample">
-
-
-                            <div class="row">
-                              <div class="col-md-2">
-                                <button type="button" class="btn btn-info mb-2">
-                                  Unit <span class="badge bg-white text-info">No</span>
-                                </button>
+                              <div class="row">
+                                <div class="col-md-2">
+                                  <button type="button" class="btn btn-info mb-2">
+                                    Unit <span class="badge bg-white text-info">{{unitdet.u_no}}</span>
+                                  </button>
+                                </div>
+                                <div class="col-md-10">
+                                  <strong>{{unitdet.u_title}}</strong>
+                                  <ul>
+                                    <li>{{unitdet.u_content}}</li>
+                                  </ul>
+                                </div>
                               </div>
-                              <div class="col-md-10">
-                                <strong>Unit Title</strong>
-                                <ul>
-                                  <li>sdg</li>
-                                  <li>sgd</li>
-                                </ul>
-                              </div>
-                            </div>
-
+                              {% for chap in chapter %}
+                              {% if unitdet.id == chap.ch_unit_id %}
                               <div class="accordion-item">
                                 <h2 class="accordion-header" id="headingOne">
-                                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    Chapter 1 : Chapter Name
+                                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                                    aria-expanded="true" aria-controls="collapseOne">
+                                    <code>Chapter{{chap.ch_no}} :</code> {{chap.ch_note}}
                                   </button>
                                 </h2>
                                 <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
                                   data-bs-parent="#accordionExample">
                                   <div class="accordion-body">
-                                    <strong>This is the first item's accordion body.</strong> Note by Tutor
-                                    <code>.accordion-body</code>, though the transition does limit overflow.
-
+                                    <strong>Note by Tutor</strong> 
+                                    {{chap.ch_note}}
+                          
                                     <div class="row">
                                       <div class="col-md-3">
                                         <!-- List group With Icons -->
                                         <ul class="list-group">
-
+                          
                                           <!-- Create Note -->
-                                          <li class="list-group-item"><button type="button"
-                                              class="btn btn-outline-secondary" data-bs-toggle="collapse"
-                                              data-bs-target="#note">
-
+                                          <li class="list-group-item"><button type="button" class="btn btn-outline-secondary"
+                                              data-bs-toggle="collapse" data-bs-target="#note">
+                          
                                               <span class="badge bg-success">+</span>Create Note</button>
                                           </li>
-
-
+                          
+                          
                                           <div class="collapse" id="note">
                                             <textarea name="remark" id="" cols="20" rows="2" class="form-control"
                                               placeholder="Create your Short Notes" required></textarea>
@@ -119,89 +123,83 @@
                                               <span class="badge bg-warning">Add</span>
                                             </button>
                                           </div>
-
+                          
                                           <!-- Create Note  end-->
-
+                          
                                           <!-- View PDF -->
-                                          <li class="list-group-item"><i
-                                              class="bi bi-collection me-1 text-primary"><button type="button"
-                                                class="btn btn-outline-danger" data-bs-toggle="collapse"
-                                                data-bs-target="#pdf">
+                                          <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"><button type="button"
+                                                class="btn btn-outline-danger" data-bs-toggle="collapse" data-bs-target="#pdf">
                                                 <span></span>PDF Notes</button>
                                               </button>
-
+                          
                                             </i>
                                           </li>
                                           <!-- View PDF  end-->
-                                          <li class="list-group-item"><i
-                                              class="bi bi-check-circle me-1 text-danger"></i> Mark as Complete</li>
+                                          <li class="list-group-item"><i class="bi bi-check-circle me-1 text-danger"></i> Mark as Complete</li>
                                         </ul><!-- End List group With Icons -->
                                       </div>
-
+                          
                                       <div class="col-md-9">
                                         <hr>
                                         <strong>My Notes :This is the first item's accordion body.This is the first
                                           item's accordion body
                                         </strong>
                                         <hr>
-
+                          
                                         <!-- Watch Video -->
-
-                                        <li class="list-group-item"><i class="bi bi-play me-1 text-warning"><button
-                                              type="button" class="btn btn-outline-danger" data-bs-toggle="collapse"
-                                              data-bs-target="#yt">
+                          
+                                        <li class="list-group-item"><i class="bi bi-play me-1 text-warning"><button type="button"
+                                              class="btn btn-outline-danger" data-bs-toggle="collapse" data-bs-target="#yt">
                                               <span></span>Video</button>
                                             </button>
                                           </i>
                                         </li>
-
+                          
                                         <div class="collapse" id="yt">
                                           <div class="col-md-12" style='content: "";
-                                          display: table;
-                                          box-sizing: border-box;
-                                          clear: both;'>
-
+                                                                    display: table;
+                                                                    box-sizing: border-box;
+                                                                    clear: both;'>
+                          
                                             <div class="col-md-4" style="background-color:rgb(255, 255, 255);float: left;
-                                          width: 30%;
-                                          box-sizing: border-box;
-                                          margin: 5px;
-                                          padding: 1px;
-                                          height: 200px;">
-                                              <iframe width="100%" height="180px"
-                                                src="https://www.youtube.com/embed/of1pa3nbSwc"
+                                                                    width: 30%;
+                                                                    box-sizing: border-box;
+                                                                    margin: 5px;
+                                                                    padding: 1px;
+                                                                    height: 200px;">
+                                              <iframe width="100%" height="180px" src="{{chap.ch_video}}"
                                                 title="YouTube video player" frameborder="0"
                                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                                 allowfullscreen></iframe>
-                                              <p>Video Title.</p>
+                                              <p>{{chap.ch_videotitle}}</p>
                                             </div>
                                           </div>
                                         </div>
-
+                          
                                         <!-- Watch Video  end-->
-
+                          
                                         <!-- View PDF -->
                                         <div class="collapse" id="pdf">
                                           <div class="col-md-12" style='content: "";
-                                          display: table;
-                                          box-sizing: border-box;
-                                          clear: both;'>
-
+                                                                    display: table;
+                                                                    box-sizing: border-box;
+                                                                    clear: both;'>
+                          
                                             <div class="col-md-4" style="background-color:rgb(255, 255, 255);float: left;
-                                          width: 30%;
-                                          box-sizing: border-box;
-                                          margin: 5px;
-                                          padding: 1px;
-                                          height: 200px;">
-                                              <iframe width="100%" height="180px"
-                                                src="https://www.youtube.com/embed/56glEzsliWc"
+                                                                    width: 30%;
+                                                                    box-sizing: border-box;
+                                                                    margin: 5px;
+                                                                    padding: 1px;
+                                                                    height: 200px;">
+                                              <iframe width="100%" height="180px" src="https://www.youtube.com/embed/56glEzsliWc"
                                                 title="YouTube video player" frameborder="0"
                                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                                 allowfullscreen></iframe>
                                               <p>PDF title..</p>
                                             </div>
-
+                          
                                           </div>
-
+                          
                                         </div>
                                         <!-- View PDF  end-->
                                       </div>
@@ -209,7 +207,12 @@
                                   </div>
                                 </div>
                               </div>
-                            </div><!-- End Default Accordion Example -->
+                              
+                            </div>
+                            {% endif %}
+                              {%endfor%}
+                            {% endfor %}
+                            <!-- End Default Accordion Example -->
                           </div>
                       </div>
                       <div class="text-center">

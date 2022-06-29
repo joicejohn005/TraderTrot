@@ -36,26 +36,28 @@
                   <!-- Card with an image on left -->
                   <div class="card">
                     <div class="card mb-3">
-                      <div class="card-header">From : <b>Accademmy Name</b> Tutor: <b>TutorName</b> Units: <b>Total
-                          Unit</b></div>
+                      {% for clist in courselist2 %}
+                      <div class="card-header">From : <b><code>{{clist.course_ac.ac_name}}</code></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tutor: <b><code>{{clist.course_tutor.tu_name}}</code></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          </b></div>
                       <div class="row g-0">
                         <div class="col-md-3">
-                          <img src="assets/img/card.jpg" class="img-fluid rounded-start" alt="...">
+                          <img src="{{clist.course_thumb}}" class="img-fluid rounded-start" alt="...">
                         </div>
                         <div class="col-md-9">
                           <div class="card-body">
-                            <h5 class="card-title">Course NAme</h5>
-                            <p class="card-text">Course Description</p>
+                            <h5 class="card-title">{{clist.course_name}}</h5>
+                            <p class="card-text">{{clist.course_description}}</p>
                           </div>
                         </div>
                       </div>
                       <div class="card-footer">
-                        Enrolled: <b>dd/mm/yyyy</b> Duration <b>no: Months</b>
-                        <button type="button" class="btn btn-success">Finished</button>
-                        <button type="button" class="btn btn-info">Progressing</button>
-                        <button type="button" class="btn btn-danger">Enrolled</button>
+                        Enrolled: <b><code>{{sub.sub_date}} </code></b> Duration <b><code>{{clist.course_duration}} Month</code></b>
+                
+                        <button type="button" class="btn btn-danger">Subscribed</button>
+
                       </div>
-                      <a href="/course/" class="btn btn-primary">Go to Course</a>
+                      <a href="/course/{{clist.id}}" class="btn btn-primary">Go to Course</a>
+                      {% endfor %}
                     </div>
 
                   </div><!-- End Card with an image on left -->
@@ -83,7 +85,7 @@
                         {% if i.course_rating > 4.2 %}
                         <button type="button" class="btn btn-outline-success btn-sm">{{i.course_rating}} <i
                             class="ri-star-fill"></i></button>
-                        {%endif%}
+                        {% endif %}
 
                         {% if i.course_rating > 2.5 and 4.1 > i.course_rating%}
                         <button type="button" class="btn btn-outline-warning btn-sm">{{i.course_rating}} <i
@@ -98,7 +100,7 @@
                        <code>Created:</code> <b>{{i.course_date}}</b> &nbsp;&nbsp; <code>Duration</code> <b>{{i.course_duration}} Month</b>
 
                       </div>
-                      <a href="/course_details/" class="btn btn-primary">Details</a>
+                      <a href="/course_details/{{i.id}}" class="btn btn-primary">Details</a>
                     </div>
                     {%endfor%}
                   </div><!-- End Card with an image on left -->

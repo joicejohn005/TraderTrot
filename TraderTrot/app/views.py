@@ -297,20 +297,97 @@ def user_home(request):
 def user_course(request): 
     if request.session.is_empty():
         return HttpResponseRedirect('login/')
+    id=request.session['id']
+    sub=subscription_tbl.objects.filter(sub_status="SUBSCRIBED")& subscription_tbl.objects.filter(user_id=id)
+    courselist2=[]
+    for a in sub:
+        c=course_tbl.objects.get(id=a.course_id)
+        courselist2.append(c)
     courselist=course_tbl.objects.all()
-    context={'courselist':courselist}
+    context={'courselist':courselist,'courselist2':courselist2}
     return render(request,'user_course.html',context)
 
-def course_details(request):
+def course_details(request,id):
     if request.session.is_empty():
         return HttpResponseRedirect('login/')
+    course=course_tbl.objects.get(id=id)
+    tid=course.course_tutor_id
+    t=tutor_tbl.objects.get(id=tid)
+    aid=t.tu_acid_id
+    a=academy_tbl.objects.get(id=aid)
+    coursefeature=coursefeature_tbl.objects.filter(cf_course_id=id)
+    unit=unit_tbl.objects.filter(u_course_id=id).order_by('u_no')
+    ucount=unit.count()
+    context={"c":course,"t":t,"a":a,'coursefeature':coursefeature,'unit':unit,'ucount':ucount}
+    return render(request,'course_details.html',context)
 
-    return render(request,'course_details.html')
-
-def course(request):
+def subscribe(request):
     if request.session.is_empty():
         return HttpResponseRedirect('login/')
-    return render(request,'course.html')    
+    
+    if request.method=='POST':
+        user_id=request.session['id']
+        cid=json.loads(request.body).get('couid')
+        tb=subscription_tbl()
+        s=subscription_tbl.objects.filter(user=user_id, course=cid)
+        if s.count() > 0:   
+            su=subscription_tbl.objects.get(user=user_id, course=cid)
+            su.sub_status="SUBSCRIBED"
+            su.save()
+        else:
+            tb.sub_status="SUBSCRIBED"
+            tb.user_id=user_id
+            tb.course_id=cid
+            tb.save()
+        t=subscription_tbl.objects.filter(user=user_id, course=cid)
+        data = t.values()
+        return JsonResponse(list(data),safe=False)
+
+def unsubscribe(request):
+    if request.session.is_empty():
+        return HttpResponseRedirect('login/')
+    
+    if request.method=='POST':
+        user_id=request.session['id']
+        cid=json.loads(request.body).get('couid')
+        tb=subscription_tbl.objects.get(user=user_id, course=cid)
+        tb.sub_status="UNSUBSCRIBED"
+        tb.save()
+
+        s=subscription_tbl.objects.filter(user=user_id, course=cid)
+
+        data = s.values()
+        return JsonResponse(list(data),safe=False)
+
+def subscribecheck(request):
+    if request.session.is_empty():
+        return HttpResponseRedirect('login/')
+    
+    if request.method=='POST':
+        user_id=request.session['id']
+        cid=json.loads(request.body).get('couid')
+        print(cid)
+        s=subscription_tbl.objects.filter(user=user_id, course=cid)
+
+        data = s.values()
+        return JsonResponse(list(data),safe=False)
+
+def course(request,cid):
+    if request.session.is_empty():
+        return HttpResponseRedirect('login/')
+    id = request.session['id']
+    cdet=course_tbl.objects.get(id=cid)
+
+    cofe=coursefeature_tbl.objects.filter(cf_course_id=cid)
+    unitdet=unit_tbl.objects.filter(u_course_id=cid)
+    chapter=[]
+    for a in unitdet:
+        print(a.id)
+        chapdet=chapter_tbl.objects.filter(ch_unit_id=a.id)
+        for ch in chapdet:
+         chapter.append(ch)
+    context={'cdet':cdet,'cofe':cofe,'unitdet':unitdet,'chapter':chapter}
+    return render(request,'course.html',context)    
 
 def tradebook(request):
     if request.session.is_empty():
@@ -775,7 +852,7 @@ def tu_addChap(request):
     else:
         ch_unit= request.POST.get('ch_unit')
         ch_no=request.POST.get('ch_no')
-        data=chapter_tbl.objects.get()
+        # data=chapter_tbl.objects.get()
         ch_note=request.POST.get('ch_note')
         ch_videotitle=request.POST.get('ch_videotitle')
         ch_video=request.POST.get('ch_video')
@@ -935,6 +1012,7 @@ def stockanalysis(request):
 
             ticker = request.POST['stock']+".NS"
             ticker2 = request.POST['stock']
+            start=request.POST['date']
 
             information = yf.Ticker(ticker)
             # open = information.info['open']
@@ -1395,3 +1473,7 @@ def prediction(request):
         # return context2
         return render(request,'prediction.html',context2)
     return render(request,'prediction.html')
+
+
+def parking(request):
+    return render (request,'parking.html')

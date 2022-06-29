@@ -61,8 +61,10 @@ urlpatterns = [
     path('user_reqdetails/<int:id>',views.user_reqdetails),
     path('user_reqsolution/<int:id>',views.user_reqsolution),
     path('user_course/',views.user_course),
-    path('course_details/',views.course_details),
+    path('course_details/<int:id>',views.course_details),
     path('course/',views.course),
+    path('subscribe/<int:cid>',views.subscribe),
+    
     path('invest_req/',views.invest_req),
     path('trade_req/',views.trade_req),
     path('tips_req/',views.tips_req),
@@ -71,9 +73,12 @@ urlpatterns = [
     path('deletereq/',views.deletereq),
     
     path('stock_prediction/',views.stock_prediction),
+    path('plotly/',views.plot),
+
     path('tradestock/',views.tradestock),
     path('stockinfo/',views.stockinfo),
     path('stockanalysis/',views.stockanalysis),
+    path('course/<int:cid>',views.course),
 
     # path('test/',views.test2),
     path('graphpage/',views.graphpage),
@@ -105,11 +110,16 @@ urlpatterns = [
 
     #testing
     path('clipboard/',views.clipboard),
-    path('plotly/',views.plot),
-
+    path('parking/',views.parking),
+    
+    #ajax Jquery
     path('search-company',csrf_exempt(views.search_company),name='search-company'),
     path('search-date',csrf_exempt(views.search_date),name='search-date'),
     path('search-trade',csrf_exempt(views.search_trade),name='search-trade'),
+    path('subscribe-course',csrf_exempt(views.subscribe)),
+    path('unsubscribe-course',csrf_exempt(views.unsubscribe)),
+    path('subscribe-check',csrf_exempt(views.subscribecheck)),
+
     path('uno',csrf_exempt(views.unocheck),name='uno'),
   
 ]

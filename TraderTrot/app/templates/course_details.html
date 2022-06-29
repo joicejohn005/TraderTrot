@@ -32,59 +32,153 @@
                           {% csrf_token %}
                           <!-- this token takes data -->
                           <div class="card mb-3">
-                            <span class="badge bg-info text-dark">Accademy Name</span>
+                            <span class="badge bg-info text-dark">{{a.ac_name}}</span>
 
                             <div class="row g-0">
                               <div class="col-md-4">
-                                <img src="{{reqdet.dthumb}}" width="250" height="200" class="img-fluid rounded-start"
-                                  alt="{{reqdet.dthumb}}">
+                                <img src="{{c.course_thumb}}" width="250" height="250" class="img-fluid rounded-start"
+                                  alt="No image">
 
                               </div>
                               <div class="col-md-8">
                                 <div class="card-body">
-                                  <h5 class="card-title">title</h5>
-                                  <p class="card-text">description</p>
+                                  <h5 class="card-title">{{c.course_name}}</h5>
+                                  <p class="card-text">{{c.course_description}}</p>
+                                  <hr>
                                   <ul>
-                              
-                                    <li> <i class="ri-star-half-fill"></i></li>
-                                    <li>Units : </li>
-                                    <li>Language : </li>
-                                    <li>Feature : </li>
+                                    <li>
+                                      {% if c.course_rating > 4.2 %}
+                                      <button type="button" class="btn btn-outline-success btn-sm">{{c.course_rating}}
+                                        <i class="ri-star-fill"></i></button>
+                                      {%endif%}
 
+                                      {% if c.course_rating > 2.5 and 4.1 > c.course_rating%}
+                                      <button type="button" class="btn btn-outline-warning btn-sm">{{c.course_rating}}
+                                        <i class="ri-star-half-fill"></i></button>
+                                      {%endif%}
+
+                                      {% if 2.5 > c.course_rating %}
+                                      <button type="button" class="btn btn-outline-danger btn-sm">{{c.course_rating}}
+                                        <i class="ri-star-line"></i></button>
+                                      {%endif%}
+                                    </li>
+
+                                    <li>Units : <code> {{ucount}}</code></li>
+                                    <li>Language : <code>{{c.course_language}}</code> </li>
+                                    <hr>
+                                    Features
+                                    {% for cf in coursefeature %}
+                                    <li> <code>{{cf.course_feature}}</code></li>
+                                    {%endfor%}
                                   </ul>
                                 </div>
                               </div>
                               <div class="col-md-4">
-                                <p>Date: Dd/mm/yyyy</p>
+                                <input type="hidden" value="{{c.id}}" id="coid">
+                                <p >Date Created: <code>{{c.course_date}}</code> </p>
 
                               </div>
                               <div class="col-md-4">
-                                <p>Duration: _ Months</p>
+                                <p>Duration: <code>{{c.course_duration}} Months</code></p>
 
                               </div>
                               <div class="col-md-4">
-                                <p>Tutor: tutr name</p>
+                                <p>Tutor: <code>{{t.tu_name}}</code></p>
                               </div>
                             </div>
                           </div>
-
                           <div class="col-md-8">
-                            
-                              <div class="col-md-6">
-                                <h5 class="card-title">Unit 1 : </h5>
-                                <h5 class="card-title">Unit 2 : </h5>
-                                <h5 class="card-title">Unit 3 : </h5>
-                              </div>
-                            
+                            <div class="col-md-6">
+                              {% for ut in unit%}
+                              <h5 class="card-title"> <code>Unit {{ut.u_no}} :</code> {{ut.u_title}} </h5>
+                              {% endfor %}
+                            </div>
                           </div>
                       </div>
                       <div class="text-center">
                         <!-- <input type="hidden" value="{{reqdet.id}}" name="doubtid"> -->
-                        <input type="submit" class="btn btn-warning" value="Subscribe">
-                        
+
+                        <button type="button" value=""  onclick="return Subscribe(document.getElementById('{{c.id}}').id);"
+                          id="{{c.id}}" class="btn btn-warning">Subscribe</button>
+                        <script>
+                          var cid=document.getElementById('coid').value;
+                          console.log(cid);
+                          fetch("/subscribe-check", {
+                              body: JSON.stringify({ couid: cid }),
+                              method: "POST",
+                            })
+                              .then((res) => res.json())
+                              .then((data) => {
+                                console.log(data);
+                                if(data.length == 0){
+                                  document.getElementById(cid).innerHTML = "SUBSCRIBE";
+                                  document.getElementById(cid).value="SUBSCRIBE";
+                                }
+                                else{
+                                  data.forEach((item) => {
+                                  if (item.sub_status == "SUBSCRIBED") {
+                                    document.getElementById(cid).innerHTML = "UNSUBSCRIBE";
+                                    document.getElementById(cid).value="UNSUBSCRIBE"
+                                  }
+                                  else if(item.sub_status == "UNSUBSCRIBED")
+                                  {
+                                    document.getElementById(cid).innerHTML = "SUBSCRIBE";
+                                    document.getElementById(cid).value="SUBSCRIBE";
+                                  }
+                                });
+                                }
+                              });
+                          function Subscribe(id) {
+                            console.log(id);
+                            if(document.getElementById(id).value=="SUBSCRIBE"){
+                              fetch("/subscribe-course", {
+                              body: JSON.stringify({ couid: id }),
+                              method: "POST",
+                            })
+                              .then((res) => res.json())
+                              .then((data) => {
+                                console.log(data);
+                                data.forEach((item) => {
+                                  if (item.sub_status == "SUBSCRIBED") {
+                                    document.getElementById(id).innerHTML = "UNSUBSCRIBE";
+                                    document.getElementById(id).value="UNSUBSCRIBE"
+                                  }
+                                  else
+                                  {
+                                    document.getElementById(id).innerHTML = "SUBSCRIBE";
+                                    document.getElementById(id).value="SUBSCRIBE";
+                                  }
+                                });
+                              });
+                            }
+                            else if(document.getElementById(id).value=="UNSUBSCRIBE"){
+                              fetch("/unsubscribe-course", {
+                              body: JSON.stringify({ couid: id }),
+                              method: "POST",
+                            })
+                              .then((res) => res.json())
+                              .then((data) => {
+                                console.log(data);
+                                data.forEach((item) => {
+                                  if (item.sub_status == "SUBSCRIBED") {
+                                    document.getElementById(id).innerHTML = "UNSUBSCRIBE";
+                                    document.getElementById(id).value="UNSUBSCRIBE"
+                                  }
+                                  else
+                                  {
+                                    document.getElementById(id).innerHTML = "SUBSCRIBE";
+                                    document.getElementById(id).value="SUBSCRIBE";
+                                  }
+                                });
+                              });
+                            }
+                            
+                          }
+                        </script>
+
                       </div>
                       </form>
-                     <a href="/user_course/"> <input type="submit" class="btn btn-success" value="My Courses"> </a>
+                      <a href="/user_course/"> <input type="submit" class="btn btn-success" value="My Courses"> </a>
 
                     </div>
                   </div>
