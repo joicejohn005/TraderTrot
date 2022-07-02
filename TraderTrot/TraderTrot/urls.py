@@ -110,8 +110,7 @@ urlpatterns = [
 
     #testing
     path('clipboard/',views.clipboard),
-    path('parking/',views.parking),
-    
+
     #ajax Jquery
     path('search-company',csrf_exempt(views.search_company),name='search-company'),
     path('search-date',csrf_exempt(views.search_date),name='search-date'),

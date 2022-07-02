@@ -7,10 +7,9 @@ import matplotlib.pyplot as plt
 import yfinance as yf
 
 ticker = ['TCS.NS'] # code to select stock
-stock_info = yf.Ticker(ticker[0]).info #print(stock_info) to get information of stock
+stock_info = yf.Ticker(ticker[0]).info 
+print(stock_info) #to get information of stock
 
-# stock_info['dayLow']
-# stock_info['dayHigh']
 
 x=[stock_info['currentPrice'],stock_info['dayHigh'],stock_info['fiftyTwoWeekHigh'],stock_info['sector']]
 stock_info.append(x) 

@@ -961,7 +961,7 @@ def plot(request):
         symbol = request.POST['stock'] 
     else:
         symbol = "TCS"
-    start=dt.date(2015,1,1)
+    start=dt.date(2020,1,1)
     end=dt.date.today()
     data = get_history(symbol = symbol,start=start,end=end) #fn in nsepy; library
     data.to_csv("stock.csv")
@@ -1012,7 +1012,7 @@ def stockanalysis(request):
 
             ticker = request.POST['stock']+".NS"
             ticker2 = request.POST['stock']
-            start=request.POST['date']
+            # start=request.POST['date']
 
             information = yf.Ticker(ticker)
             # open = information.info['open']
@@ -1284,7 +1284,6 @@ def user_activity(ticker,id):
         recommendationKey = yf.Ticker(ticker).info['recommendationKey']
         currentPrice=yf.Ticker(ticker).info['currentPrice']
 
-
         ticker=ticker.replace(".NS","")
         date=datetime.date.today()
         check = useractivity.objects.filter(login_id=id,stock=ticker,date=date)
@@ -1295,18 +1294,12 @@ def user_activity(ticker,id):
             pass    
 def test(sector,industry,stock,id):
     slist=[]
-    print(sector)
-    print(industry)
-    print(stock)
-    print(id)
     similar =  useractivity.objects.filter(sector=sector,industry=industry,login_id=id).exclude(stock=stock)
     for i in similar:
         print(i.stock)
         if i.stock not in slist:
             slist.append(i.stock)
-    print(slist)
     report = []
-    print(len(slist))
     for i in slist: 
         revenue =  useractivity.objects.filter(stock=i,login_id=id).order_by('date')[:1]
         for rev in revenue:
@@ -1318,7 +1311,6 @@ def test(sector,industry,stock,id):
 
             last_price=rev.last_price
             currentPrice=yf.Ticker(ticker[0]).info['currentPrice']
-            print(currentPrice)
 
             currentPrice=Decimal(currentPrice)
             currentPrice=round(currentPrice,2)
@@ -1380,7 +1372,6 @@ def prediction(request):
             stock.date=datetime.date.today()
             stock.save()
             
-                
         df=pd.read_csv(loc)
         df=df.set_index('Date')
         data=df.filter(["Close"])
@@ -1401,7 +1392,6 @@ def prediction(request):
         x_train, y_train = np.array(x_train), np.array(y_train)
         x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1))
         
-        #
         model = Sequential()
         model.add(LSTM(50, return_sequences = True, input_shape = (x_train.shape[1], 1)))
         model.add(LSTM(50, return_sequences = False))
@@ -1470,10 +1460,5 @@ def prediction(request):
         div=opy.plot(fig,auto_open=False,output_type='div')
         nse_list=stocklist()
         context2={'list2':nse_list,'graph':div,'price':pred_price}
-        # return context2
         return render(request,'prediction.html',context2)
     return render(request,'prediction.html')
-
-
-def parking(request):
-    return render (request,'parking.html')
