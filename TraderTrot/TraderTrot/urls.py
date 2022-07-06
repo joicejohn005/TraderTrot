@@ -82,7 +82,7 @@ urlpatterns = [
 
     # path('test/',views.test2),
     path('graphpage/',views.graphpage),
-    path('prediction/',views.prediction),
+    path('prediction/<str:symbol>',views.prediction),
 
     #accademy
     path('ac_reg/',views.ac_reg),

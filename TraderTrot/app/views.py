@@ -248,9 +248,7 @@ def ad_userManage(request):
 def ad_home(request):
     if request.session.is_empty():
         return HttpResponseRedirect('login/')
-
     blogcount = blog_tbl.objects.all().count()
-    
     return render(request,'ad_home.html',{"blogc":blogcount})
  
 #user
@@ -280,7 +278,7 @@ def register(request):
 
 def user_home(request):
     if request.session.is_empty():
-        return HttpResponseRedirect('login/')
+        return redirect(login)
     blogcount = blog_tbl.objects.all().count()
 
     id = request.session['id']
@@ -382,7 +380,6 @@ def course(request,cid):
     unitdet=unit_tbl.objects.filter(u_course_id=cid)
     chapter=[]
     for a in unitdet:
-        print(a.id)
         chapdet=chapter_tbl.objects.filter(ch_unit_id=a.id)
         for ch in chapdet:
          chapter.append(ch)
@@ -451,7 +448,6 @@ def csvd(request):
     for i in tradedata:
         list1 = [i.stock,i.qty,i.buy,i.b_date,i.sell,i.s_date,i.pnl,i.remark,i.strategy]
         list.append(list1)
-        print(list)
         
     with open('tradebook.csv', 'w',newline='') as csvfile:
         writer = csv.writer(csvfile)
@@ -730,10 +726,8 @@ def addPackage(request):
         fn=fs.save(Photo.name,Photo)
         uploaded_file_url=fs.url(fn)
         uurl=uploaded_file_url
-
         course_tutor=request.POST['tutor']
         course_language=request.POST['lang']
-        # pkg_price=request.POST['pprice']
 
         acid = academy_tbl.objects.get(login=id)
         p = course_tbl.objects.create(course_ac_id=acid.id,course_name=pkg_name,course_description=pkg_desc,course_duration=pkg_duration,course_thumb=uurl,course_language=course_language,course_tutor_id=course_tutor)
@@ -1011,86 +1005,49 @@ def stockanalysis(request):
         if request.method=="POST":
 
             ticker = request.POST['stock']+".NS"
+            print(ticker)
             ticker2 = request.POST['stock']
             # start=request.POST['date']
+            ti=[]
+            ti.append(ticker)
+            print(ti)
 
-            information = yf.Ticker(ticker)
-            # open = information.info['open']
+            information = yf.Ticker(ticker).info
+            open = information['open']
           
-            # volume = information.info['volume']
+            volume = information['volume']
 
-            # dayLow=information.info['dayLow']
-            # dayHigh=information.info['dayHigh']
+            dayLow=information['dayLow']
+            dayHigh=information['dayHigh']
 
-            # currentPrice=information.info['currentPrice']
+            currentPrice=information['currentPrice']
 
-            # fiftyTwoWeekHigh=information.info['fiftyTwoWeekHigh']
-            # fiftyTwoWeekLow=information.info['fiftyTwoWeekLow']
+            fiftyTwoWeekHigh=information['fiftyTwoWeekHigh']
+            fiftyTwoWeekLow=information['fiftyTwoWeekLow']
 
-            # previousClose=information.info['previousClose']
+            previousClose=information['previousClose']
 
-            # longName = information.info['longName']
+            longName = information['longName']
 
-            # sector = information.info['sector']
-            # industry = information.info['industry']
+            sector = information['sector']
+            industry = information['industry']
 
-            # website = information.info['website']
-            # logo_url =information.info['logo_url'] 
-            # longBusinessSummary = information.info['longBusinessSummary']
-
-            open = yf.Ticker(ticker).info['open']
-          
-            volume = yf.Ticker(ticker).info['volume']
-            dayLow=yf.Ticker(ticker).info['dayLow']
-            dayHigh=yf.Ticker(ticker).info['dayHigh']
-
-            currentPrice=yf.Ticker(ticker).info['currentPrice']
-
-            fiftyTwoWeekHigh=yf.Ticker(ticker).info['fiftyTwoWeekHigh']
-            fiftyTwoWeekLow=yf.Ticker(ticker).info['fiftyTwoWeekLow']
-
-            previousClose=yf.Ticker(ticker).info['previousClose']
-
+            website = information['website']
+            logo_url =information['logo_url'] 
+            longBusinessSummary = information['longBusinessSummary']
             d=currentPrice-previousClose
             p=(d/previousClose)*100
             p=round(p, 2)
-
-            longName = yf.Ticker(ticker).info['longName']
-
-            sector = yf.Ticker(ticker).info['sector']
-            industry = yf.Ticker(ticker).info['industry']
-
-            website = yf.Ticker(ticker).info['website']
-            logo_url = yf.Ticker(ticker).info['logo_url'] 
-            longBusinessSummary = yf.Ticker(ticker).info['longBusinessSummary']
-
 #**************************************************************************************************************************#
-            # yf_period   = "5y"   # 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max 
-            # yf_interval = "1d"    # 1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo
-
-            # # print close prices
-            # yf_returns = yf.download(
-            #         tickers = ticker,       # tickers list or string as well
-            #         period = yf_period,      # optional, default is '1mo'
-            #         interval = yf_interval,  # fetch data by intervaal
-            #         group_by = 'ticker',     # group by ticker
-            #         auto_adjust = True,      # adjust all OHLC (open-high-low-close)
-            #         prepost = True,          # download market hours data
-            #         threads = True,          # threads for mass downloading
-            #         proxy = None)            # proxy
-
-            # yf_returns = yf_returns.iloc[:, yf_returns.columns.get_level_values(0)=='Close']
-
-            # yf_divdend = pd.DataFrame()   # initialize dataframe
-            # for i in ticker:
-            #     x = pd.DataFrame(yf.Ticker(i).dividends)
-            #     yf_divdend = pd.concat([yf_divdend,x], axis=1) 
-            # yf_divdend = yf_divdend[yf_divdend.index >= yf_returns.index[0]]
-            # print(yf_divdend.tail(21))
-            # dividend=yf_divdend.tail(21)
-            # json_records = dividend.reset_index().to_json(orient ="records")
-            # data = json.loads(json_records)
-
+            from app.kaggle2 import analy
+            yf_divdend=analy(ti)
+            import datetime
+            df=yf_divdend.tail(21)
+            df.index = df.index.strftime('%d/%m/%Y')
+            json_records = df.reset_index().to_json(orient ='records',date_format='iso')
+            data = []
+            data = json.loads(json_records)
+                    
 #**************************************************************************************************************************#
             a, b = scrap_procon(ticker2)
             l=a[0].split("\n")
@@ -1107,11 +1064,19 @@ def stockanalysis(request):
         context={'list':stocklist(),'a':l,'b':m,'percentage':p,'longName':longName,'sector':sector,'industry':industry,
                 'volume':volume,'open':open,'website':website,'logo_url':logo_url,'longBusinessSummary':longBusinessSummary,
                 'dayLow':dayLow,'dayHigh':dayHigh,'currentPrice':currentPrice,'fiftyTwoWeekHigh':fiftyTwoWeekHigh,
-                'fiftyTwoWeekLow':fiftyTwoWeekLow,'previousClose':previousClose,'report':report
+                'fiftyTwoWeekLow':fiftyTwoWeekLow,'previousClose':previousClose,'report':report,'d':data
                 }
         context3=context|context2
 
         return render(request,'stockinfo.html',context3)
+
+#function to join columns if column is not null
+def sjoin(x): return ';'.join(x[x.notnull()].astype(str))
+
+#function to ignore the suffix on the column e.g. a.1, a.2 will be grouped together
+def groupby_field(col):
+    parts = col.split('.')
+    return '{}'.format(parts[0])
 
 def stock_prediction(symbol):
         import datetime 
@@ -1269,20 +1234,19 @@ def tradestock(request):
     stock=join_2_csv(vol, n100, select_cols[0], rename_cols[0], select_cols, rename_cols)
     volstock=stock.iloc[:20]
     volstock.index+=1
-    print(volstock.columns)
+    # print(volstock.columns)
     json_records = volstock.reset_index().to_json(orient ='records')
     data = json.loads(json_records)
     context = {'d': data}
-    # print(volstock)
     return render(request,'tradestock.html',context)
 
 def user_activity(ticker,id):
-        # id=request.session['id']
-        sector = yf.Ticker(ticker).info['sector']
-        industry = yf.Ticker(ticker).info['industry']
-        revenueGrowth = yf.Ticker(ticker).info['revenueGrowth']
-        recommendationKey = yf.Ticker(ticker).info['recommendationKey']
-        currentPrice=yf.Ticker(ticker).info['currentPrice']
+        information = yf.Ticker(ticker).info
+        sector = information['sector']
+        industry = information['industry']
+        revenueGrowth = information['revenueGrowth']
+        recommendationKey = information['recommendationKey']
+        currentPrice=information['currentPrice']
 
         ticker=ticker.replace(".NS","")
         date=datetime.date.today()
@@ -1296,7 +1260,6 @@ def test(sector,industry,stock,id):
     slist=[]
     similar =  useractivity.objects.filter(sector=sector,industry=industry,login_id=id).exclude(stock=stock)
     for i in similar:
-        print(i.stock)
         if i.stock not in slist:
             slist.append(i.stock)
     report = []
@@ -1315,7 +1278,6 @@ def test(sector,industry,stock,id):
             currentPrice=Decimal(currentPrice)
             currentPrice=round(currentPrice,2)
             pr_chg= currentPrice-last_price
-            print(round(pr_chg, 2))
             prchange=round(pr_chg, 2)
             pr_chg_ptg=(pr_chg/last_price)*100
             pr_chg_ptg=round(pr_chg_ptg, 2)
@@ -1339,126 +1301,7 @@ def graphpage(request):
     context={'list':stocklist(),'utype':utype}
     return render(request,'prediction.html',context)
 
-def prediction(request):
-    import datetime 
-    if request.method=="POST":
-        symbol = request.POST['stock']
-        stock=stockdata()
-        import math
-        start=datetime.date(2020,1,1)
-        end=datetime.date.today()
-        st=stockdata.objects.filter(symbol=symbol)
-        loc=f"stockdata/{symbol}.csv"
-        
-        if st.count()==1:
-            for i in st:
-                if i.date==datetime.date.today():
-                    pass
-                else:
-                    df=pd.read_csv(loc)
-            
-                    lastdate=datetime.datetime.strptime(df['Date'].max(),"%Y-%m-%d")
-                    print(type(lastdate))
-                    start=lastdate.date()+datetime.timedelta(days = 1)
-                    data=get_history(symbol=symbol, start=start , end=end)
-                    data.to_csv(loc,mode='a',index=True,header=False)
-                    i.date=datetime.date.today()
-                    i.save()
-                    
-        else:
-            data=get_history(symbol=symbol, start=start , end=end)
-            data.to_csv(loc)
-            stock.symbol=symbol
-            stock.date=datetime.date.today()
-            stock.save()
-            
-        df=pd.read_csv(loc)
-        df=df.set_index('Date')
-        data=df.filter(["Close"])
-        dataset=data.values
-        training_data_len=math.ceil(len(dataset)*0.8)
-
-        #Data Normalization
-        scaler=MinMaxScaler(feature_range=(0,1))
-        scaled_data=scaler.fit_transform(dataset)
-        train_data=scaled_data[0:training_data_len,:]
-
-        #Incorporating Timesteps Into Data
-        x_train = []
-        y_train = []
-        for i in range(60, len(train_data)):
-            x_train.append(train_data[i-60:i, 0])
-            y_train.append(train_data[i, 0])
-        x_train, y_train = np.array(x_train), np.array(y_train)
-        x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1))
-        
-        model = Sequential()
-        model.add(LSTM(50, return_sequences = True, input_shape = (x_train.shape[1], 1)))
-        model.add(LSTM(50, return_sequences = False))
-        model.add(Dense(25))
-        model.add(Dense(1))
-        model.compile(optimizer = 'adam', loss = 'mean_squared_error')
-        model.fit(x_train, y_train, batch_size = 1, epochs = 1)
-        
-        test_data = scaled_data[training_data_len - 60: , :]
-        x_test = []
-        y_test = dataset[training_data_len:, :]
-        for i in range (60, len(test_data)):
-                x_test.append(test_data[i - 60:i, 0])
-
-        x_test = np.array(x_test)
-        x_test = np.reshape(x_test, (x_test.shape[0], x_test.shape[1], 1))
-        predictions = model.predict(x_test)
-        predictions = scaler.inverse_transform(predictions)
-        train = data[:training_data_len]
-        valid = data[training_data_len:]
-        valid.insert(1,'predictions',predictions)
-        last_60_days = data[-60:].values
-        last_60_days_scaled = scaler.transform(last_60_days)
-        X_test = []
-        X_test.append(last_60_days_scaled)
-        X_test = np.array(X_test)
-        X_test = np.reshape(X_test, (X_test.shape[0],X_test.shape[1], 1))
-        pred_price = model.predict(X_test)
-        pred_price = scaler.inverse_transform(pred_price)
-        
-        fig = go.Figure()
-        fig.add_trace(go.Scatter(x = train.index, y = train['Close'],
-                            mode='lines',
-                            name='Close',
-                            marker_color = '#1F77B4'))
-        fig.add_trace(go.Scatter(x = valid.index, y = valid['Close'],
-                            mode='lines',
-                            name='Val',
-                            marker_color = '#FF7F0E'))
-        fig.add_trace(go.Scatter(x = valid.index, y = valid.predictions,
-                            mode='lines',
-                            name='Predictions',
-                            marker_color = '#2CA02C'))
-
-        fig.update_layout(
-            title=symbol,
-            titlefont_size = 26,
-            hovermode = 'x',
-            xaxis = dict(
-                title='Date',
-                titlefont_size=18,
-                tickfont_size=16),
-            
-            height = 500,
-            
-            yaxis=dict(
-                title='Close price in INR (₹)',
-                titlefont_size=18,
-                tickfont_size=16),
-            legend=dict(
-                y=0,
-                x=1.0,
-                bgcolor='rgba(255, 255, 255, 0)',
-                bordercolor='rgba(255, 255, 255, 0)'))
-
-        div=opy.plot(fig,auto_open=False,output_type='div')
-        nse_list=stocklist()
-        context2={'list2':nse_list,'graph':div,'price':pred_price}
-        return render(request,'prediction.html',context2)
-    return render(request,'prediction.html')
+def prediction(request,symbol):
+    print(symbol)
+    context2=stock_prediction(symbol)
+    return render(request,'prediction.html',context2)
