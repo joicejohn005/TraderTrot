@@ -6,9 +6,6 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import yfinance as yf
 
-
-
-#**************************************************************************************************************************#
 def analy(ticker):
     yf_period   = "5y"   # 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max 
     yf_interval = "1d"    # 1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo
@@ -24,11 +21,7 @@ def analy(ticker):
             proxy = None)            # proxy
 
     yf_returns = yf_returns.iloc[:, yf_returns.columns.get_level_values(0)=='Close']
-    # print(yf_returns.tail(7))
 
-    #**************************************************************************************************************************#
-
-    #**************************************************************************************************************************#
     yf_divdend = pd.DataFrame()   # initialize dataframe
     for i in ticker:
         x = pd.DataFrame(yf.Ticker(i).dividends)
@@ -39,4 +32,3 @@ def analy(ticker):
     yf_divdend = yf_divdend[yf_divdend.index >= yf_returns.index[0]]
     return(yf_divdend)
  
-

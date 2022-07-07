@@ -36,8 +36,8 @@ urlpatterns = [
     path('checklogin',views.checklogin),
     path('newindex/',views.newindex),
     path('logout/',views.logout),
-    path('pswdreset/',views.pswdreset),
-    path('forgot/',views.forgot),
+    # path('pswdreset/',views.pswdreset),
+    # path('forgot/',views.forgot),
 
     #admin
     path('ad_ac_reg/',views.ad_ac_reg),
@@ -118,6 +118,9 @@ urlpatterns = [
     path('subscribe-course',csrf_exempt(views.subscribe)),
     path('unsubscribe-course',csrf_exempt(views.unsubscribe)),
     path('subscribe-check',csrf_exempt(views.subscribecheck)),
+    path('status-change',csrf_exempt(views.status_change)),
+    path('status-unchange',csrf_exempt(views.status_unchange)),
+    path('status-check',csrf_exempt(views.status_check)),
 
     path('uno',csrf_exempt(views.unocheck),name='uno'),
   

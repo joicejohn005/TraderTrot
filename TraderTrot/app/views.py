@@ -130,33 +130,31 @@ def checklogin(request):
         message="Invalid USername or Password Or Inactive user"
         return render(request,"login.html",{"message2":message})
 
-def forgot(request):
-    return render (request,'forgot.html')
+# def forgot(request):
+#     return render (request,'forgot.html')
 
-def pswdreset(request):
-    if request.method=="POST":
-        email = request.POST['email']
-        em = login_tbl.objects.filter(Unemail=email)
-        for i in em:
-            if i.Unemail != email:
-                alert2="Enter Registered Email"
-                return render(request,"forgot.html",{"message":alert2})
-            else:
-                subject = "TraderTrot Password Reset Mail"
-                fromemail = TraderTrot.settings.EMAIL_HOST_USER
-                message = f'Your password reset link: \n http://127.0.0.1:8000/resetpswd/ '
-                reciept = [email]
-                send_mail(subject, fromemail, message, reciept)
-                alert = "Check your Registered mail"                   
-                return render(request,"login.html",{"message":alert})
+# def pswdreset(request):
+#     if request.method=="POST":
+#         email = request.POST['email']
+#         em = login_tbl.objects.filter(Unemail=email)
+#         for i in em:
+#             if i.Unemail != email:
+#                 alert2="Enter Registered Email"
+#                 return render(request,"forgot.html",{"message":alert2})
+#             else:
+#                 subject = "TraderTrot Password Reset Mail"
+#                 fromemail = TraderTrot.settings.EMAIL_HOST_USER
+#                 message = f'Your password reset link: \n http://127.0.0.1:8000/resetpswd/ '
+#                 reciept = [email]
+#                 send_mail(subject, fromemail, message, reciept)
+#                 alert = "Check your Registered mail"                   
+#                 return render(request,"login.html",{"message":alert})
 
-def resetpswd(request,sid):
-     if request.method=="POST":
-        pswd = request.POST['pswd']
-        cpswd = request.POST['cpswd']
-        upswd = login_tbl.objects.get(id=sid)
-
-
+# def resetpswd(request,sid):
+#      if request.method=="POST":
+#         pswd = request.POST['pswd']
+#         cpswd = request.POST['cpswd']
+#         upswd = login_tbl.objects.get(id=sid)
 
 def newindex(request):
     if request.session.is_empty():
@@ -195,7 +193,6 @@ def status2(request,sid):
     status.status = 1
     status.save()
     return redirect('/ad_userManage')
-
 
 def ac_reg(request):
     if request.session.is_empty():
@@ -665,7 +662,6 @@ def other_req(request):
         doubt = doubt_tbl.objects.create(dtitle=subject,ddesc=desc,dtype=dtype,dstatus=dstatus,risk=risk,time=time,cagr=cagr,target=target,login_id=id)
         doubt.save()
     return redirect('/user_request/')
-        
 
 def user_reqmanage(request):
     if request.session.is_empty():
@@ -736,7 +732,7 @@ def addPackage(request):
 
 def addcoursefe(request):
     if request.method=="POST":
-        id = request.session['id']
+        id = request.session['id'] 
         course=request.POST['course']
         feature=request.POST['ff1']
 
@@ -838,7 +834,6 @@ def tu_addUnitChap(request):
         cu = unit_tbl.objects.create(u_no=u_no,u_title=u_title,u_content=u_content,u_course_id=u_course)
         cu.save()
     return redirect('/tu_course/')
-
 
 def tu_addChap(request):
     if request.session.is_empty():
@@ -970,7 +965,6 @@ def plot(request):
     context={'graph':div,'list':stocklist()}
     return render(request,'plot.html',context)
 
-
 def scrap_procon(ticker2):
     url = 'https://www.screener.in/company/' +ticker2+ '/consolidated/'
     webpage = requests.get(url) #Request to webpage
@@ -1101,14 +1095,12 @@ def stock_prediction(symbol):
                     data.to_csv(loc,mode='a',index=True,header=False)
                     i.date=datetime.date.today()
                     i.save()
-                    
         else:
             data=get_history(symbol=symbol, start=start , end=end)
             data.to_csv(loc)
             stock.symbol=symbol
             stock.date=datetime.date.today()
             stock.save()
-            
                
         df=pd.read_csv(loc)
         df=df.set_index('Date')
@@ -1305,3 +1297,29 @@ def prediction(request,symbol):
     print(symbol)
     context2=stock_prediction(symbol)
     return render(request,'prediction.html',context2)
+
+def status_change(request):
+    id=json.loads(request.body).get('id')
+    l=login_tbl.objects.get(id=id)
+    l.status='1'
+    l.save()
+    data='enable'
+    return JsonResponse(data,safe=False)
+
+def status_unchange(request):
+    id=json.loads(request.body).get('id')
+    l=login_tbl.objects.get(id=id)
+    l.status='0'
+    l.save()
+    data='disable'
+    return JsonResponse(data,safe=False)
+
+def status_check(request):
+    id=json.loads(request.body).get('id')
+    l=login_tbl.objects.get(id=id)
+    print(l.status)
+    if l.status == '1':
+        data='enabled'
+    else:
+        data='disabled'
+    return JsonResponse(data,safe=False)
