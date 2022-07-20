@@ -73,6 +73,38 @@
                               <div class="spinner-border text-primary" role="status" id="load">
                                 <center><span class="visually-hidden"></span></center>
                               </div>
+                              <div> <span placeholder="dasghdfj" id="timer"></span></div>
+                              <script>
+                                function timer(){
+                                  document.getElementById('timer').innerHTML =
+                                  05 + ":" + 00;
+                                startTimer();
+
+
+                                function startTimer() {
+                                  var presentTime = document.getElementById('timer').innerHTML;
+                                  var timeArray = presentTime.split(/[:]+/);
+                                  var m = timeArray[0];
+                                  var s = checkSecond((timeArray[1] - 1));
+                                  if (s == 59) { m = m - 1 }
+                                  if (m < 0) {
+                                    return
+                                  }
+
+                                  document.getElementById('timer').innerHTML =
+                                    m + ":" + s;
+                                  console.log(m)
+                                  setTimeout(startTimer, 1000);
+
+                                }
+
+                                function checkSecond(sec) {
+                                  if (sec < 10 && sec >= 0) { sec = "0" + sec }; // add zero in front of numbers < 10
+                                  if (sec < 0) { sec = "59" };
+                                  return sec;
+                                }
+                                }
+                              </script>
 
                             </div>
                           </form>
@@ -86,9 +118,34 @@
                                 document.getElementById('valid').innerHTML = "Enter Stock";
                                 return false;
                               }
-                              document.getElementById('load').style.display = "block";
+                              document.getElementById('timer').innerHTML =
+                                  05 + ":" + 00;
+                                startTimer();
+
+
+                                function startTimer() {
+                                  var presentTime = document.getElementById('timer').innerHTML;
+                                  var timeArray = presentTime.split(/[:]+/);
+                                  var m = timeArray[0];
+                                  var s = checkSecond((timeArray[1] - 1));
+                                  if (s == 59) { m = m - 1 }
+                                  if (m < 0) {
+                                    return
+                                  }
+
+                                  document.getElementById('timer').innerHTML =
+                                    m + ":" + s;
+                                  console.log(m)
+                                  setTimeout(startTimer, 1000);
+
+                                }
+
+                                function checkSecond(sec) {
+                                  if (sec < 10 && sec >= 0) { sec = "0" + sec }; // add zero in front of numbers < 10
+                                  if (sec < 0) { sec = "59" };
+                                  return sec;
+                                }
                               return true;
-                              document.getElementById('loadbtn').setAttribute('disabled', 'true');
 
 
                             }
@@ -235,15 +292,15 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {% if d %}  
+                  {% if d %}
                   {% for i in d %}
-                    <tr>
-                      <td>{{i.Date}}</td>
-                      <td>{{i.Dividends}}</td>
-                    </tr>
+                  <tr>
+                    <td>{{i.Date}}</td>
+                    <td>{{i.Dividends}}</td>
+                  </tr>
                   {% endfor %}
                   {% endif %}
-                  </tbody>
+                </tbody>
               </table>
             </div>
             <div class="container">

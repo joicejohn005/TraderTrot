@@ -1036,7 +1036,9 @@ def stockanalysis(request):
             from app.kaggle2 import analy
             yf_divdend=analy(ti)
             import datetime
+
             df=yf_divdend.tail(21)
+
             df.index = df.index.strftime('%d/%m/%Y')
             json_records = df.reset_index().to_json(orient ='records',date_format='iso')
             data = []
