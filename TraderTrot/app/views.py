@@ -1,7 +1,7 @@
 from decimal import Decimal
 from app.models import *
 from ast import Global
-from asyncio.windows_events import NULL
+# from asyncio.windows_events import NULL
 
 from bs4 import BeautifulSoup
 
