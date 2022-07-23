@@ -1,6 +1,6 @@
 # from asyncio.windows_events import NULL
-from tkinter import CASCADE
-from unicodedata import decimal
+# from tkinter import CASCADE
+# from unicodedata import decimal
 from django.db import models
 
 # Create your models here.
