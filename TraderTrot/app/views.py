@@ -38,8 +38,9 @@ from plotly import express as px
 import plotly.offline as opy
 from plotly import graph_objs as go
 import plotly.graph_objects as go
-# import pywhatkit as kit
 
+# import pywhatkit as kit
+service_url='172.105.253.231'
 import requests
 from requests.exceptions import ConnectionError
 import re
