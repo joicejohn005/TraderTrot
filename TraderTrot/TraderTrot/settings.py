@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-(3_gxokr8_3a_ox87fl9&0xn&%qd58#1_&)!kc3^00lrk^+z76
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['172.105.253.231']
+ALLOWED_HOSTS = ['172.105.253.231','tradertrot.ml','tradertrot.live']
 
 # Application definition
 
